@@ -17,7 +17,7 @@ public class ProgrammaPrincipale extends Application{
 	Timeline timelineSfondo = new Timeline(new KeyFrame(
 			Duration.millis(8),
 			x -> aggiornaSfondo()));
-	Image cielo = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpeg"));
+	Image cielo = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpg"));
     ImageView cieloView = new ImageView(cielo);
     Image cielo2 = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpeg"));
     ImageView cieloView2 = new ImageView(cielo2);
