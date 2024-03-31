@@ -24,7 +24,7 @@ public class ProgrammaPrincipale extends Application{
 			x -> muoviDino()));
 	Image cielo = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpg"));
     ImageView cieloView = new ImageView(cielo);
-    Image cielo2 = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpeg"));
+    Image cielo2 = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpg"));
     ImageView cieloView2 = new ImageView(cielo2);
     Image montagne = new Image(getClass().getResourceAsStream("Sfondoprogramma_montagne.png"));
     ImageView montagneView = new ImageView(montagne);
@@ -38,7 +38,6 @@ public class ProgrammaPrincipale extends Application{
     ImageView dinosauroView = new ImageView(dinosauro);
     boolean arrivatoSù=false;
     boolean arrivatoGiù=false;
-    
 	public void start (Stage finestra) {
 		Pane quadro= new Pane();
 		
@@ -111,7 +110,6 @@ public class ProgrammaPrincipale extends Application{
 	private void muoviDino() {
 		if(dinosauroView.getY()>=200 && arrivatoSù==false) {
 			dinosauroView.setY(dinosauroView.getY()-10);
-			System.out.println("1");
 			if(dinosauroView.getY()==200) {
 				System.out.println("arrivato!");
 				arrivatoSù=true;
@@ -119,7 +117,6 @@ public class ProgrammaPrincipale extends Application{
 		}else {
 			if(dinosauroView.getY()<=300 && arrivatoSù) {
 				dinosauroView.setY(dinosauroView.getY()+10);
-				System.out.println("2");
 				if(dinosauroView.getY()==300) {
 					arrivatoGiù=true;
 				}
