@@ -98,14 +98,10 @@ public class ProgrammaPrincipale extends Application{
 		rettangoloDinoCoda.setY(300);
 		rettangoloDinoCoda.setRotate(78);
 
-		rettangoloUccello1.setY(296);
-		rettangoloUccello2.setY(296);
+		rettangoloUccello1.setY(299);
+		rettangoloUccello2.setY(299);
 		rettangoloUccello1.setRotate(90);
 		rettangoloUccello2.setRotate(90);
-
-		rettangoloFiamma.setX(245);
-		rettangoloFiamma.setY(287);
-		rettangoloFiamma.setRotate(90);
 
 		rettangoloDino.setVisible(false);
 		rettangoloDinoCoda.setVisible(false);
@@ -236,15 +232,24 @@ public class ProgrammaPrincipale extends Application{
 		}
 		if (intDinoUccelloFiamma1.getBoundsInLocal().getWidth() != -1){
 			quadro.getChildren().add(fiammaView);
+			fiammaView.setX(uccelloView.getX()-2);
+			fiammaView.setY(uccelloView.getY());
+			fiammaView.setFitHeight(85);
+			fiammaView.setPreserveRatio(true);
 		}
 		if (intDinoUccelloFiamma2.getBoundsInLocal().getWidth() != -1){
 			quadro.getChildren().add(fiammaView);
+			fiammaView.setX(uccelloView2.getX()-2);
+			fiammaView.setY(uccelloView2.getY());
+			fiammaView.setFitHeight(85);
+			fiammaView.setPreserveRatio(true);
 		}
 	}
 	private void muoviDino() {
 		if(dinosauroView.getY()>=120 && arrivatoSù==false) {
 			rettangoloDino.setY(rettangoloDino.getY()-15);
 			rettangoloDinoCoda.setY(rettangoloDinoCoda.getY()-15);
+			rettangoloFiamma.setY(rettangoloFiamma.getY()-15);
 			dinosauroView.setY(dinosauroView.getY()-15);
 			if(dinosauroView.getY()==120) {
 				arrivatoSù=true;
@@ -253,6 +258,7 @@ public class ProgrammaPrincipale extends Application{
 			if(dinosauroView.getY()<=300 && arrivatoSù) {
 				rettangoloDino.setY(rettangoloDino.getY()+6);
 				rettangoloDinoCoda.setY(rettangoloDinoCoda.getY()+6);
+				rettangoloFiamma.setY(rettangoloFiamma.getY()+6);
 				dinosauroView.setY(dinosauroView.getY()+6);
 				if(dinosauroView.getY()==300) {
 					arrivatoGiù=true;
@@ -276,16 +282,26 @@ public class ProgrammaPrincipale extends Application{
 			timelineMovDino.play();
 		}
 		if(evento.getText().equals("d") ) {
+			rettangoloFiamma.setX(245);
+			rettangoloFiamma.setY(287);
+			rettangoloFiamma.setRotate(90);
 			quadro.getChildren().add(rettangoloFiamma);
 			rettangoloFiamma.setVisible(true);
 		}
 		if(evento.getText().equals("D") ) {
-			quadro.getChildren().add(rettangoloFiamma);
-			rettangoloFiamma.setVisible(false);
-		}
-		if(evento.getCode() == KeyCode.RIGHT ) {
+			rettangoloFiamma.setX(245);
+			rettangoloFiamma.setY(287);
+			rettangoloFiamma.setRotate(90);
 			quadro.getChildren().add(rettangoloFiamma);
 			rettangoloFiamma.setVisible(true);
+		}
+		if(evento.getCode() == KeyCode.RIGHT ) {
+			rettangoloFiamma.setX(245);
+			rettangoloFiamma.setY(287);
+			rettangoloFiamma.setRotate(90);
+			quadro.getChildren().add(rettangoloFiamma);
+			rettangoloFiamma.setVisible(true);
+			
 		}
 	}
 	public static void main(String[] args) {
