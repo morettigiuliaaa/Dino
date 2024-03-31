@@ -30,7 +30,6 @@ public class ProgrammaPrincipale extends Application{
 	Rectangle rettangoloDinoCoda = new Rectangle(9,79);
 	Rectangle rettangoloFiamma = new Rectangle(2,79);
 	Image cielo = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpg"));
-<<<<<<< HEAD
 	ImageView cieloView = new ImageView(cielo);
 	Image cielo2 = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpg"));
 	ImageView cieloView2 = new ImageView(cielo2);
@@ -52,43 +51,15 @@ public class ProgrammaPrincipale extends Application{
 	ImageView uccelloView = new ImageView(uccello);
 	Image uccello2 = new Image(getClass().getResourceAsStream("uccelloPerProgramma.png"));
 	ImageView uccelloView2 = new ImageView(uccello2);
+	Image fiamma = new Image(getClass().getResourceAsStream("XCVT.gif"));
+	ImageView fiammaView = new ImageView(fiamma);
 	boolean arrivatoSù=false;
 	boolean arrivatoGiù=false;
 	Pane quadro= new Pane();
 
-=======
-    ImageView cieloView = new ImageView(cielo);
-    Image cielo2 = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpg"));
-    ImageView cieloView2 = new ImageView(cielo2);
-    Image montagne = new Image(getClass().getResourceAsStream("Sfondoprogramma_montagne.png"));
-    ImageView montagneView = new ImageView(montagne);
-    Image montagne2 = new Image(getClass().getResourceAsStream("Sfondoprogramma_montagne.png"));
-    ImageView montagneView2 = new ImageView(montagne2);
-    Image terreno = new Image(getClass().getResourceAsStream("Sfondoprogramma_terreno.PNG"));
-    ImageView terrenoView = new ImageView(terreno);
-    Image terreno2 = new Image(getClass().getResourceAsStream("Sfondoprogramma_terreno.PNG"));
-    ImageView terrenoView2 = new ImageView(terreno2);
-    Image dinosauro = new Image(getClass().getResourceAsStream("dinosauroProgramma.PNG"));
-    ImageView dinosauroView = new ImageView(dinosauro);
-    Image cactus = new Image(getClass().getResourceAsStream("cactusPerProgramma.png"));
-    ImageView cactusView = new ImageView(cactus);
-    Image cactus2 = new Image(getClass().getResourceAsStream("cactusPerProgramma.png"));
-    ImageView cactusView2 = new ImageView(cactus2);
-    Image uccello = new Image(getClass().getResourceAsStream("uccelloPerProgramma.png"));
-    ImageView uccelloView = new ImageView(uccello);
-    Image uccello2 = new Image(getClass().getResourceAsStream("uccelloPerProgramma.png"));
-    ImageView uccelloView2 = new ImageView(uccello2);
-    Image fiamma = new Image(getClass().getResourceAsStream("XCVT.gif"));
-    ImageView fiammaView = new ImageView(fiamma);
-    boolean arrivatoSù=false;
-    boolean arrivatoGiù=false;
-    Pane quadro= new Pane();
-    
->>>>>>> 00880dde32a738d5e6d56b9937c5da3794e81c78
 	public void start (Stage finestra) {
 
 		quadro.getChildren().add(cieloView);
-<<<<<<< HEAD
 		quadro.getChildren().add(cieloView2);
 		quadro.getChildren().add(montagneView);
 		quadro.getChildren().add(montagneView2);
@@ -99,13 +70,49 @@ public class ProgrammaPrincipale extends Application{
 		quadro.getChildren().add(cactusView2);
 		quadro.getChildren().add(uccelloView);
 		quadro.getChildren().add(uccelloView2);
+		quadro.getChildren().add(rettangoloCactus1);
+		quadro.getChildren().add(rettangoloCactus2);
+		quadro.getChildren().add(rettangoloDino);
+		quadro.getChildren().add(rettangoloDinoCoda);
+		quadro.getChildren().add(rettangoloUccello1);
+		quadro.getChildren().add(rettangoloUccello2);
+
+
 
 
 		timelineSfondo.setCycleCount(Timeline.INDEFINITE);
 		timelineSfondo.play();
 
+
 		timelineMovDino.setCycleCount(Timeline.INDEFINITE);
 
+		rettangoloCactus1.setX(782);
+		rettangoloCactus1.setY(327);
+		rettangoloCactus2.setY(327);
+
+		rettangoloDino.setX(160);
+		rettangoloDino.setY(297);
+		rettangoloDino.setRotate(68);
+
+		rettangoloDinoCoda.setX(130);
+		rettangoloDinoCoda.setY(300);
+		rettangoloDinoCoda.setRotate(78);
+
+		rettangoloUccello1.setY(296);
+		rettangoloUccello2.setY(296);
+		rettangoloUccello1.setRotate(90);
+		rettangoloUccello2.setRotate(90);
+
+		rettangoloFiamma.setX(245);
+		rettangoloFiamma.setY(287);
+		rettangoloFiamma.setRotate(90);
+
+		rettangoloDino.setVisible(false);
+		rettangoloDinoCoda.setVisible(false);
+		rettangoloCactus1.setVisible(false);
+		rettangoloCactus2.setVisible(false);
+		rettangoloUccello1.setVisible(false);
+		rettangoloUccello2.setVisible(false);
 
 		montagneView.setY(160);
 		montagneView2.setY(160);
@@ -113,14 +120,12 @@ public class ProgrammaPrincipale extends Application{
 		terrenoView.setY(370);
 		terrenoView2.setY(370);
 
-		dinosauroView.setX(160);
+		dinosauroView.setX(70);
 		dinosauroView.setY(300);
-
 
 		cactusView.setY(317);
 		cactusView2.setY(317);
 		cactusView.setX(700);
-
 
 		uccelloView.setY(270);
 		uccelloView2.setY(270);
@@ -135,89 +140,6 @@ public class ProgrammaPrincipale extends Application{
 		finestra.show();
 
 
-		//aggiunta size
-=======
-	    quadro.getChildren().add(cieloView2);
-	    quadro.getChildren().add(montagneView);
-	    quadro.getChildren().add(montagneView2);
-	    quadro.getChildren().add(terrenoView);
-	    quadro.getChildren().add(terrenoView2);
-	    quadro.getChildren().add(dinosauroView);
-	    quadro.getChildren().add(cactusView);
-	    quadro.getChildren().add(cactusView2);
-	    quadro.getChildren().add(uccelloView);
-	    quadro.getChildren().add(uccelloView2);
-	    quadro.getChildren().add(rettangoloCactus1);
-	    quadro.getChildren().add(rettangoloCactus2);
-	    quadro.getChildren().add(rettangoloDino);
-	    quadro.getChildren().add(rettangoloDinoCoda);
-	    quadro.getChildren().add(rettangoloUccello1);
-	    quadro.getChildren().add(rettangoloUccello2);
-	    
-	    
-	    
-	    
-		timelineSfondo.setCycleCount(Timeline.INDEFINITE);
-		timelineSfondo.play();
-		
-		
-		timelineMovDino.setCycleCount(Timeline.INDEFINITE);
-		
-		rettangoloCactus1.setX(782);
-		rettangoloCactus1.setY(327);
-		rettangoloCactus2.setY(327);
-	   
-		rettangoloDino.setX(160);
-		rettangoloDino.setY(297);
-		rettangoloDino.setRotate(68);
-		
-		rettangoloDinoCoda.setX(130);
-		rettangoloDinoCoda.setY(300);
-		rettangoloDinoCoda.setRotate(78);
-		
-		rettangoloUccello1.setY(296);
-		rettangoloUccello2.setY(296);
-		rettangoloUccello1.setRotate(90);
-		rettangoloUccello2.setRotate(90);
-		
-		rettangoloFiamma.setX(245);
-		rettangoloFiamma.setY(287);
-		rettangoloFiamma.setRotate(90);
-		
-		rettangoloDino.setVisible(false);
-		rettangoloDinoCoda.setVisible(false);
-		rettangoloCactus1.setVisible(false);
-		rettangoloCactus2.setVisible(false);
-		rettangoloUccello1.setVisible(false);
-		rettangoloUccello2.setVisible(false);
-		
-	    montagneView.setY(160);
-	    montagneView2.setY(160);
-	    
-	    terrenoView.setY(370);
-	    terrenoView2.setY(370);
-	    
-	    dinosauroView.setX(70);
-	    dinosauroView.setY(300);
-	    
-	    cactusView.setY(317);
-	    cactusView2.setY(317);
-	    cactusView.setX(700);
-	    
-	    uccelloView.setY(270);
-	    uccelloView2.setY(270);
-	    
-	    
-	    Scene scena = new Scene (quadro, 750, 500);
-	    scena.getStylesheets().add("it/edu/iisgubbio/dino/Dino.css");
-	    scena.setOnKeyPressed(e -> pigiato(e));
-	    
-		finestra.setTitle("Dino");
-		finestra.setScene(scena);
-		finestra.show();
-		
-
->>>>>>> 00880dde32a738d5e6d56b9937c5da3794e81c78
 		cieloView.setFitWidth(800);
 		cieloView2.setX(800);
 		montagneView.setFitWidth(800);
@@ -260,11 +182,6 @@ public class ProgrammaPrincipale extends Application{
 		if(terrenoView.getX()==0) {
 			terrenoView2.setX(700);
 		}
-<<<<<<< HEAD
-
-		//aggiunta loop cactus e uccello + fix alle varie cordinate di tutti gli oggetti
-=======
->>>>>>> 00880dde32a738d5e6d56b9937c5da3794e81c78
 		cactusView.setX(cactusView.getX()-2);
 		rettangoloCactus1.setX(rettangoloCactus1.getX()-2);
 		if(cactusView.getX()==0) {
@@ -289,31 +206,6 @@ public class ProgrammaPrincipale extends Application{
 			cactusView.setX(700);
 			rettangoloCactus1.setX(782);
 		}
-<<<<<<< HEAD
-
-		//contollo collisione beta 1
-		Bounds dinosauro = dinosauroView.getBoundsInParent();
-		Bounds uccello = uccelloView.getBoundsInParent();
-		Bounds uccello2 = uccelloView2.getBoundsInParent();
-		Bounds cactus = cactusView.getBoundsInParent();
-		Bounds cactus2 = cactusView2.getBoundsInParent();
-
-		if(dinosauro.intersects(cactus)) {
-			System.out.print(9);
-		}
-
-		if(dinosauro.intersects(cactus2)) {
-			System.out.print(9);
-		}
-
-		if(dinosauro.intersects(uccello)) {
-			System.out.print(9);
-		}
-
-		if(dinosauro.intersects(uccello2)) {
-			System.out.print(9);
-		}
-=======
 		// contollo collisione beta 2
 		Shape intDino1 = Shape.intersect(rettangoloDino, rettangoloCactus1);
 		Shape intDino2 = Shape.intersect(rettangoloDino, rettangoloCactus2);
@@ -323,54 +215,34 @@ public class ProgrammaPrincipale extends Application{
 		Shape intDinoUccello2 = Shape.intersect(rettangoloDino, rettangoloUccello2);
 		Shape intDinoUccelloFiamma1 = Shape.intersect(rettangoloFiamma, rettangoloUccello1);
 		Shape intDinoUccelloFiamma2 = Shape.intersect(rettangoloFiamma, rettangoloUccello2);
-        
-        if (intDino1.getBoundsInLocal().getWidth() != -1){
-            timelineSfondo.stop();
-        }
-        if (intDino2.getBoundsInLocal().getWidth() != -1){
-        	timelineSfondo.stop();
-        }
-        if (intDinoCoda1.getBoundsInLocal().getWidth() != -1){
-            timelineSfondo.stop();
-        }
-        if (intDinoCoda2.getBoundsInLocal().getWidth() != -1){
-        	timelineSfondo.stop();
-        }
-        if (intDinoUccello1.getBoundsInLocal().getWidth() != -1){
-            timelineSfondo.stop();
-        }
-        if (intDinoUccello2.getBoundsInLocal().getWidth() != -1){
-        	timelineSfondo.stop();
-        }
-        if (intDinoUccelloFiamma1.getBoundsInLocal().getWidth() != -1){
-        	quadro.getChildren().add(fiammaView);
-        }
-        if (intDinoUccelloFiamma2.getBoundsInLocal().getWidth() != -1){
-        	quadro.getChildren().add(fiammaView);
-        }
->>>>>>> 00880dde32a738d5e6d56b9937c5da3794e81c78
+
+		if (intDino1.getBoundsInLocal().getWidth() != -1){
+			timelineSfondo.stop();
+		}
+		if (intDino2.getBoundsInLocal().getWidth() != -1){
+			timelineSfondo.stop();
+		}
+		if (intDinoCoda1.getBoundsInLocal().getWidth() != -1){
+			timelineSfondo.stop();
+		}
+		if (intDinoCoda2.getBoundsInLocal().getWidth() != -1){
+			timelineSfondo.stop();
+		}
+		if (intDinoUccello1.getBoundsInLocal().getWidth() != -1){
+			timelineSfondo.stop();
+		}
+		if (intDinoUccello2.getBoundsInLocal().getWidth() != -1){
+			timelineSfondo.stop();
+		}
+		if (intDinoUccelloFiamma1.getBoundsInLocal().getWidth() != -1){
+			quadro.getChildren().add(fiammaView);
+		}
+		if (intDinoUccelloFiamma2.getBoundsInLocal().getWidth() != -1){
+			quadro.getChildren().add(fiammaView);
+		}
 	}
 	private void muoviDino() {
 		if(dinosauroView.getY()>=120 && arrivatoSù==false) {
-<<<<<<< HEAD
-			dinosauroView.setY(dinosauroView.getY()-10);
-			if(dinosauroView.getY()==200) {
-				System.out.println("1");
-				if(dinosauroView.getY()==120) {
-					System.out.println("arrivato!");
-					arrivatoSù=true;
-				}
-			}else {
-				if(dinosauroView.getY()<=300 && arrivatoSù) {
-					dinosauroView.setY(dinosauroView.getY()+10);
-
-					dinosauroView.setY(dinosauroView.getY()+5);
-					System.out.println("2");
-
-					if(dinosauroView.getY()==300) {
-						arrivatoGiù=true;
-					}
-=======
 			rettangoloDino.setY(rettangoloDino.getY()-15);
 			rettangoloDinoCoda.setY(rettangoloDinoCoda.getY()-15);
 			dinosauroView.setY(dinosauroView.getY()-15);
@@ -384,14 +256,12 @@ public class ProgrammaPrincipale extends Application{
 				dinosauroView.setY(dinosauroView.getY()+6);
 				if(dinosauroView.getY()==300) {
 					arrivatoGiù=true;
->>>>>>> 00880dde32a738d5e6d56b9937c5da3794e81c78
 				}
 			}
-			if(arrivatoGiù==true) {
-				timelineMovDino.stop();
-			}
 		}
-
+		if(arrivatoGiù==true) {
+			timelineMovDino.stop();
+		}
 	}
 	private void pigiato(KeyEvent evento) {
 		arrivatoSù=false;
@@ -415,7 +285,7 @@ public class ProgrammaPrincipale extends Application{
 		}
 		if(evento.getCode() == KeyCode.RIGHT ) {
 			quadro.getChildren().add(rettangoloFiamma);
-			rettangoloFiamma.setVisible(false);
+			rettangoloFiamma.setVisible(true);
 		}
 	}
 	public static void main(String[] args) {
