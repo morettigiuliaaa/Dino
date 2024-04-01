@@ -72,8 +72,10 @@ public class ProgrammaPrincipale extends Application{
 	ImageView uccelloView = new ImageView(uccello);
 	Image uccello2 = new Image(getClass().getResourceAsStream("uccelloPerProgramma.png"));
 	ImageView uccelloView2 = new ImageView(uccello2);
-	Image fiamma = new Image(getClass().getResourceAsStream("XCVT.gif"));
-	ImageView fiammaView = new ImageView(fiamma);
+	Image esplosione = new Image(getClass().getResourceAsStream("XCVT.gif"));
+	ImageView esplosioneView = new ImageView(esplosione);
+	Image fiammata = new Image(getClass().getResourceAsStream("fiammata.png"));
+	ImageView fiammataView = new ImageView(fiammata);
 	boolean arrivatoSù=false;
 	private boolean isDinoImage1 = true;
 	boolean arrivatoGiù=false;
@@ -134,6 +136,8 @@ public class ProgrammaPrincipale extends Application{
 		uccelloView.setPreserveRatio(true);
 		uccelloView2.setFitHeight(85);
 		uccelloView2.setPreserveRatio(true);
+		fiammataView.setFitHeight(95);
+		fiammataView.setPreserveRatio(true);
 		
 		pStart.setOnAction(e -> giocoPrincipale());
 	}
@@ -156,6 +160,7 @@ public class ProgrammaPrincipale extends Application{
 		quadro.getChildren().add(rettangoloDinoCoda);
 		quadro.getChildren().add(rettangoloUccello1);
 		quadro.getChildren().add(rettangoloUccello2);
+		
 		
 		quadro.getChildren().add(ePunteggio);
 		quadro.setId("sottoTitolo");
@@ -209,10 +214,6 @@ public class ProgrammaPrincipale extends Application{
 		cactusView2.setY(317);
 		cactusView.setX(700);
 		
-		uccelloView.setY(270);
-		uccelloView2.setY(270);
-		rettangoloUccello1.setY(299);
-		rettangoloUccello2.setY(299);
 		
 		timelineSfondo.play();
 		timelinePunteggio.play();
@@ -249,6 +250,16 @@ public class ProgrammaPrincipale extends Application{
 		if(cactusView.getX()==0) {
 			uccelloView.setX(780);
 			rettangoloUccello1.setX(800);
+			
+			boolean yCasuale = (Math.random()>0.5);
+			if(yCasuale) {
+				uccelloView.setY(230);
+				rettangoloUccello1.setY(259);
+			}else {
+				uccelloView.setY(270);
+				rettangoloUccello1.setY(299);
+			}
+			
 		}
 		rettangoloUccello1.setX(rettangoloUccello1.getX()-2);
 		uccelloView.setX(uccelloView.getX()-2);
@@ -261,6 +272,15 @@ public class ProgrammaPrincipale extends Application{
 		if(cactusView2.getX()==0) {
 			uccelloView2.setX(780);
 			rettangoloUccello2.setX(800);
+			
+			boolean yCasuale = (Math.random()>0.5);
+			if(yCasuale) {
+				uccelloView2.setY(230);
+				rettangoloUccello2.setY(259);
+			}else {
+				uccelloView2.setY(270);
+				rettangoloUccello2.setY(299);
+			}
 		}
 		rettangoloUccello2.setX(rettangoloUccello2.getX()-2);
 		uccelloView2.setX(uccelloView2.getX()-2);
@@ -417,6 +437,7 @@ public class ProgrammaPrincipale extends Application{
 	            quadro.getChildren().add(dinosauroView4);
 	        }
 		}
+		/*
 		if (intDinoUccelloFiamma1.getBoundsInLocal().getWidth() != -1){
 			quadro.getChildren().add(fiammaView);
 			fiammaView.setX(uccelloView.getX()-2);
@@ -431,6 +452,7 @@ public class ProgrammaPrincipale extends Application{
 			fiammaView.setFitHeight(85);
 			fiammaView.setPreserveRatio(true);
 		}
+		*/
 	}
 	
 	private void Zampette() {
@@ -518,9 +540,13 @@ public class ProgrammaPrincipale extends Application{
 			timelineMovDino.play();
 		}
 		if(evento.getText().equals("d") ) {
+			quadro.getChildren().remove(fiammataView);
+			fiammataView.setX(210);
+			fiammataView.setY(273);
 			rettangoloFiamma.setX(245);
 			rettangoloFiamma.setY(287);
 			rettangoloFiamma.setRotate(90);
+			quadro.getChildren().add(fiammataView);
 			quadro.getChildren().add(rettangoloFiamma);
 			rettangoloFiamma.setVisible(true);
 		}
