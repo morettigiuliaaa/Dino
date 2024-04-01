@@ -1,4 +1,24 @@
+@font-face{
+    font-family: Minecraft;
+    src: url('Minecraft.ttf');
+}
 #pannello{
 	background-image: url("Sfondoprogramma_cielo.jpeg");
 	-fx-background-repeat: repeat-x;
+}
+#titolo{
+	-fx-font-size: 35pt;
+	-fx-font-family: Minecraft;
+}
+#sottoTitolo{
+	-fx-font-size: 15pt;
+	-fx-font-family: Minecraft;
+}
+#start{
+	-fx-font-size: 15pt;
+	-fx-font-family: Minecraft;
+	-fx-border-color: black;
+}
+#punteggio{
+	-fx-font-weight: bold;
 }

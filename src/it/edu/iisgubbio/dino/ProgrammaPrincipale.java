@@ -1,9 +1,12 @@
 package it.edu.iisgubbio.dino;
 
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -11,17 +14,26 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 public class ProgrammaPrincipale extends Application{
+	Label eTitolo = new Label("Dino game");
+	Label eSottoTitolo = new Label("affronta il deserto con Dino!");
+	Label ePunteggio = new Label("");
+	Button pStart = new Button("start!");
 	private final int velocitàDino=20;
 	private final int velocitàGioco=5;
+	int segnaPunti=0;
 	Timeline timelineSfondo = new Timeline(new KeyFrame(
 			Duration.millis(velocitàGioco),
 			x -> aggiornaSfondo()));
 	Timeline timelineMovDino = new Timeline(new KeyFrame(
 			Duration.millis(velocitàDino),
 			x -> muoviDino()));
+	Timeline timelinePunteggio = new Timeline(new KeyFrame(
+			Duration.millis(100),
+			x -> aggiornaPunteggio()));
 	Rectangle rettangoloCactus1 = new Rectangle(15,70);
 	Rectangle rettangoloCactus2 = new Rectangle(15,70);
 	Rectangle rettangoloUccello1 = new Rectangle(9,50);
@@ -56,9 +68,61 @@ public class ProgrammaPrincipale extends Application{
 	boolean arrivatoSù=false;
 	boolean arrivatoGiù=false;
 	Pane quadro= new Pane();
-
 	public void start (Stage finestra) {
+		quadro.getChildren().add(eTitolo);
+		eTitolo.setLayoutX(252);
+		eTitolo.setLayoutY(80);
+		eTitolo.setId("titolo");
+		
+		quadro.getChildren().add(eSottoTitolo);
+		eSottoTitolo.setLayoutX(230);
+		eSottoTitolo.setLayoutY(150);
+		eSottoTitolo.setId("sottoTitolo");
+		
+		quadro.getChildren().add(pStart);
+		pStart.setLayoutX(330);
+		pStart.setLayoutY(230);
+		pStart.setId("start");
+		
+		quadro.getChildren().add(ePunteggio);
+		quadro.setId("sottoTitolo");
+		
+		timelineSfondo.setCycleCount(Timeline.INDEFINITE);
 
+		timelineMovDino.setCycleCount(Timeline.INDEFINITE);
+
+		timelinePunteggio.setCycleCount(Timeline.INDEFINITE);
+
+
+		Scene scena = new Scene (quadro, 750, 500);
+		scena.getStylesheets().add("it/edu/iisgubbio/dino/Dino.css");
+		scena.setOnKeyPressed(e -> pigiato(e));
+
+		finestra.setTitle("Dino");
+		finestra.setScene(scena);
+		finestra.show();
+
+		cieloView.setFitWidth(800);
+		cieloView2.setX(800);
+		montagneView.setFitWidth(800);
+		montagneView2.setX(800);
+		terrenoView.setFitWidth(800);
+		terrenoView2.setX(800);
+		dinosauroView.setFitHeight(100);
+		dinosauroView.setPreserveRatio(true);
+		cactusView.setFitHeight(85);
+		cactusView.setPreserveRatio(true);
+		cactusView2.setFitHeight(85);
+		cactusView2.setPreserveRatio(true);
+		uccelloView.setFitHeight(85);
+		uccelloView.setPreserveRatio(true);
+		uccelloView2.setFitHeight(85);
+		uccelloView2.setPreserveRatio(true);
+		
+		pStart.setOnAction(e -> giocoPrincipale());
+	}
+	public void giocoPrincipale() {
+		quadro.getChildren().clear();
 		quadro.getChildren().add(cieloView);
 		quadro.getChildren().add(cieloView2);
 		quadro.getChildren().add(montagneView);
@@ -76,16 +140,14 @@ public class ProgrammaPrincipale extends Application{
 		quadro.getChildren().add(rettangoloDinoCoda);
 		quadro.getChildren().add(rettangoloUccello1);
 		quadro.getChildren().add(rettangoloUccello2);
-
-
-
-
-		timelineSfondo.setCycleCount(Timeline.INDEFINITE);
-		timelineSfondo.play();
-
-
-		timelineMovDino.setCycleCount(Timeline.INDEFINITE);
-
+		
+		quadro.getChildren().add(ePunteggio);
+		quadro.setId("sottoTitolo");
+		
+		ePunteggio.setLayoutX(700);
+		ePunteggio.setLayoutY(20);
+		ePunteggio.setId("punteggio");
+		
 		rettangoloCactus1.setX(782);
 		rettangoloCactus1.setY(327);
 		rettangoloCactus2.setY(327);
@@ -122,36 +184,12 @@ public class ProgrammaPrincipale extends Application{
 		cactusView.setY(317);
 		cactusView2.setY(317);
 		cactusView.setX(700);
-
+		
 		uccelloView.setY(270);
 		uccelloView2.setY(270);
-
-
-		Scene scena = new Scene (quadro, 750, 500);
-		scena.getStylesheets().add("it/edu/iisgubbio/dino/Dino.css");
-		scena.setOnKeyPressed(e -> pigiato(e));
-
-		finestra.setTitle("Dino");
-		finestra.setScene(scena);
-		finestra.show();
-
-
-		cieloView.setFitWidth(800);
-		cieloView2.setX(800);
-		montagneView.setFitWidth(800);
-		montagneView2.setX(800);
-		terrenoView.setFitWidth(800);
-		terrenoView2.setX(800);
-		dinosauroView.setFitHeight(100);
-		dinosauroView.setPreserveRatio(true);
-		cactusView.setFitHeight(85);
-		cactusView.setPreserveRatio(true);
-		cactusView2.setFitHeight(85);
-		cactusView2.setPreserveRatio(true);
-		uccelloView.setFitHeight(85);
-		uccelloView.setPreserveRatio(true);
-		uccelloView2.setFitHeight(85);
-		uccelloView2.setPreserveRatio(true);
+		
+		timelineSfondo.play();
+		timelinePunteggio.play();
 	}
 	private void aggiornaSfondo() {
 		cieloView.setX(cieloView.getX()-0.25);
@@ -214,21 +252,27 @@ public class ProgrammaPrincipale extends Application{
 
 		if (intDino1.getBoundsInLocal().getWidth() != -1){
 			timelineSfondo.stop();
+			timelineMovDino.stop();
 		}
 		if (intDino2.getBoundsInLocal().getWidth() != -1){
 			timelineSfondo.stop();
+			timelinePunteggio.stop();
 		}
 		if (intDinoCoda1.getBoundsInLocal().getWidth() != -1){
 			timelineSfondo.stop();
+			timelinePunteggio.stop();
 		}
 		if (intDinoCoda2.getBoundsInLocal().getWidth() != -1){
 			timelineSfondo.stop();
+			timelinePunteggio.stop();
 		}
 		if (intDinoUccello1.getBoundsInLocal().getWidth() != -1){
 			timelineSfondo.stop();
+			timelinePunteggio.stop();
 		}
 		if (intDinoUccello2.getBoundsInLocal().getWidth() != -1){
 			timelineSfondo.stop();
+			timelinePunteggio.stop();
 		}
 		if (intDinoUccelloFiamma1.getBoundsInLocal().getWidth() != -1){
 			quadro.getChildren().add(fiammaView);
@@ -268,6 +312,10 @@ public class ProgrammaPrincipale extends Application{
 		if(arrivatoGiù==true) {
 			timelineMovDino.stop();
 		}
+	}
+	private void aggiornaPunteggio() {
+		segnaPunti++;
+		ePunteggio.setText(""+segnaPunti);
 	}
 	private void pigiato(KeyEvent evento) {
 		arrivatoSù=false;
