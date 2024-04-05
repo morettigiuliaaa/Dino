@@ -202,6 +202,8 @@ public class ProgrammaPrincipale extends Application{
 		rettangoloCactus2.setVisible(false);
 		rettangoloUccello1.setVisible(false);
 		rettangoloUccello2.setVisible(false);
+		uccelloView2.setVisible(false);
+		uccelloView.setVisible(false);
 
 		montagneView.setY(160);
 		montagneView2.setY(160);
@@ -217,13 +219,14 @@ public class ProgrammaPrincipale extends Application{
 		dinosauroView3.setY(300);
 		dinosauroView4.setX(70);
 		dinosauroView4.setY(300);
+		
+		
 
 		cactusView.setX(700);
 		cactusView.setY(317);
 		cactusView2.setX(2170);
 		cactusView2.setY(317);
 		
-
 
 		timelineSfondo.play();
 		timelinePunteggio.play();
@@ -258,6 +261,7 @@ public class ProgrammaPrincipale extends Application{
 		cactusView.setX(cactusView.getX()-2);
 		rettangoloCactus1.setX(rettangoloCactus1.getX()-2);
 		if(cactusView.getX()==0) {
+			uccelloView.setVisible(true);
 			uccelloView.setX(780);
 			rettangoloUccello1.setX(800);
 
@@ -280,6 +284,7 @@ public class ProgrammaPrincipale extends Application{
 		rettangoloCactus2.setX(rettangoloCactus2.getX()-2);
 		cactusView2.setX(cactusView2.getX()-2);
 		if(cactusView2.getX()==0) {
+			uccelloView2.setVisible(true);
 			uccelloView2.setX(780);
 			rettangoloUccello2.setX(800);
 
