@@ -168,8 +168,11 @@ public class ProgrammaPrincipale extends Application{
 		quadro.getChildren().add(rettangoloDinoCoda);
 		quadro.getChildren().add(rettangoloUccello1);
 		quadro.getChildren().add(rettangoloUccello2);
-
-
+		quadro.getChildren().add(esplosioneView);
+		
+		esplosioneView.setX(-550);
+		esplosioneView.setY(-550);
+		
 		quadro.getChildren().add(ePunteggio);
 		quadro.setId("sottoTitolo");
 
@@ -220,14 +223,11 @@ public class ProgrammaPrincipale extends Application{
 		dinosauroView4.setX(70);
 		dinosauroView4.setY(300);
 		
-		
-
 		cactusView.setX(700);
 		cactusView.setY(317);
 		cactusView2.setX(2170);
 		cactusView2.setY(317);
 		
-
 		timelineSfondo.play();
 		timelinePunteggio.play();
 		timelineZampette.setCycleCount(Timeline.INDEFINITE);
@@ -460,20 +460,21 @@ public class ProgrammaPrincipale extends Application{
 		}
 		/*
 		if (intDinoUccelloFiamma1.getBoundsInLocal().getWidth() != -1){
-			quadro.getChildren().add(fiammaView);
-			fiammaView.setX(uccelloView.getX()-2);
-			fiammaView.setY(uccelloView.getY());
-			fiammaView.setFitHeight(85);
-			fiammaView.setPreserveRatio(true);
+			System.out.println("fiamma 1!");
+			esplosioneView.setX(uccelloView.getX()-2);
+			esplosioneView.setY(uccelloView.getY());
+			esplosioneView.setFitHeight(85);
+			esplosioneView.setPreserveRatio(true);
 		}
 		if (intDinoUccelloFiamma2.getBoundsInLocal().getWidth() != -1){
-			quadro.getChildren().add(fiammaView);
-			fiammaView.setX(uccelloView2.getX()-2);
-			fiammaView.setY(uccelloView2.getY());
-			fiammaView.setFitHeight(85);
-			fiammaView.setPreserveRatio(true);
+			System.out.println("fiamma 2!");
+			// quadro.getChildren().add(esplosioneView);
+			esplosioneView.setX(uccelloView2.getX()-2);
+			esplosioneView.setY(uccelloView2.getY());
+			esplosioneView.setFitHeight(85);
+			esplosioneView.setPreserveRatio(true);
 		}
-		 */
+		*/
 	}
 
 private void Zampette() {
@@ -624,15 +625,20 @@ private void pigiato(KeyEvent evento) {
 		timelineMovDino.play();
 	}
 	if(evento.getText().equals("d") ) {
-		quadro.getChildren().remove(fiammataView);
-		fiammataView.setX(158);
-		fiammataView.setY(273);
-		rettangoloFiamma.setX(200);
-		rettangoloFiamma.setY(289);
-		rettangoloFiamma.setRotate(90);
-		quadro.getChildren().add(fiammataView);
-		quadro.getChildren().add(rettangoloFiamma);
-		rettangoloFiamma.setVisible(false);
+		if(quadro.getChildren().contains(rettangoloFiamma) && quadro.getChildren().contains(fiammataView)) {
+			quadro.getChildren().remove(fiammataView);
+			quadro.getChildren().remove(rettangoloFiamma);
+		}else {
+			quadro.getChildren().add(fiammataView);
+			quadro.getChildren().add(rettangoloFiamma);
+			fiammataView.setX(158);
+			fiammataView.setY(273);
+			rettangoloFiamma.setX(200);
+			rettangoloFiamma.setY(289);
+			rettangoloFiamma.setRotate(90);
+			rettangoloFiamma.setVisible(false);
+		}
+		
 	}
 	if(evento.getText().equals("D") ) {
 		fiammataView.setX(158);
