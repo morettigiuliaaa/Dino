@@ -24,6 +24,7 @@ public class ProgrammaPrincipale extends Application{
 	private final int VELOCITA_DINO=20;
 	double velocitàGioco=5;
 	int segnaPunti=0;
+	int incrementaFiamme=1;
 	Timeline timelineSfondo = new Timeline(new KeyFrame(
 			Duration.millis(velocitàGioco),
 			x -> aggiornaSfondo()));
@@ -39,6 +40,9 @@ public class ProgrammaPrincipale extends Application{
 	Timeline timelineZampetteAbbassate = new Timeline(new KeyFrame(
 			Duration.millis(59),
 			x -> ZampetteDinoAbbassate()));
+	Timeline timelineFiammata = new Timeline(new KeyFrame(
+			Duration.millis(velocitàGioco),
+			x -> spostaFiamma()));
 	Rectangle rettangoloCactus1 = new Rectangle(15,70);
 	Rectangle rettangoloCactus2 = new Rectangle(15,70);
 	Rectangle rettangoloUccello1 = new Rectangle(9,60);
@@ -46,7 +50,6 @@ public class ProgrammaPrincipale extends Application{
 	Rectangle rettangoloDinoTesta = new Rectangle(9,37);
 	Rectangle rettangoloDinoCorpo = new Rectangle(9,70);
 	Rectangle rettangoloDinoCoda = new Rectangle(9,37);
-	Rectangle rettangoloFiamma = new Rectangle(2,79);
 	Image cielo = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpg"));
 	ImageView cieloView = new ImageView(cielo);
 	Image cielo2 = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpg"));
@@ -81,8 +84,8 @@ public class ProgrammaPrincipale extends Application{
 	ImageView uccelloView2 = new ImageView(uccello2);
 	Image esplosione = new Image(getClass().getResourceAsStream("XCVT.gif"));
 	ImageView esplosioneView = new ImageView(esplosione);
-	Image fiammata = new Image(getClass().getResourceAsStream("fiammata.png"));
-	ImageView fiammataView = new ImageView(fiammata);
+	ImageView vettoreFiamme[];
+	Rectangle rettangoliFiamme[];
 	boolean arrivatoSù=false;
 	private boolean isDinoImage1 = true;
 	private boolean isDinoImage2 = true;
@@ -108,6 +111,8 @@ public class ProgrammaPrincipale extends Application{
 		quadro.setId("sottoTitolo");
 
 		timelineSfondo.setCycleCount(Timeline.INDEFINITE);
+		
+		timelineFiammata.setCycleCount(Timeline.INDEFINITE);
 
 		timelineMovDino.setCycleCount(Timeline.INDEFINITE);
 
@@ -144,8 +149,7 @@ public class ProgrammaPrincipale extends Application{
 		uccelloView.setPreserveRatio(true);
 		uccelloView2.setFitHeight(85);
 		uccelloView2.setPreserveRatio(true);
-		fiammataView.setFitHeight(95);
-		fiammataView.setPreserveRatio(true);
+		
 
 		pStart.setOnAction(e -> giocoPrincipale());
 	}
@@ -170,6 +174,17 @@ public class ProgrammaPrincipale extends Application{
 		quadro.getChildren().add(rettangoloUccello2);
 		quadro.getChildren().add(esplosioneView);
 		
+		vettoreFiamme = new ImageView[1000];
+		for(int indiceFiamma=0; indiceFiamma<vettoreFiamme.length;indiceFiamma++) {
+			Image fiammata = new Image(getClass().getResourceAsStream("fiammata.png"));
+			ImageView fiammataView = new ImageView(fiammata);
+			vettoreFiamme[indiceFiamma]=fiammataView;
+		}
+		rettangoliFiamme = new Rectangle[1000];
+		for(int indiceRettangoli=0; indiceRettangoli<rettangoliFiamme.length;indiceRettangoli++) {
+			Rectangle rettangoloFiamma = new Rectangle(2,79);
+			rettangoliFiamme[indiceRettangoli]=rettangoloFiamma;
+		}
 		esplosioneView.setX(-550);
 		esplosioneView.setY(-550);
 		
@@ -303,12 +318,14 @@ public class ProgrammaPrincipale extends Application{
 			cactusView.setX(700);
 			rettangoloCactus1.setX(782);
 		}
+		/*
 		fiammataView.setX(fiammataView.getX()+6);
 		rettangoloFiamma.setY(rettangoloFiamma.getX()+6);
 		if(rettangoloFiamma.getX()>=650 && fiammataView.getX()>=650) {
 			quadro.getChildren().remove(rettangoloFiamma);
 			quadro.getChildren().remove(fiammataView);
 		}
+		*/
 		// contollo collisione beta 2
 		Shape intDino1 = Shape.intersect(rettangoloDinoTesta, rettangoloCactus1);
 		Shape intDino2 = Shape.intersect(rettangoloDinoTesta, rettangoloCactus2);
@@ -322,8 +339,10 @@ public class ProgrammaPrincipale extends Application{
 		Shape intDinoCorpoUccello2 = Shape.intersect(rettangoloDinoCorpo, rettangoloUccello2);
 		Shape intDinoCodaUccello1 = Shape.intersect(rettangoloDinoCoda, rettangoloUccello1);
 		Shape intDinoCodaUccello2 = Shape.intersect(rettangoloDinoCoda, rettangoloUccello2);
+		/*
 		Shape intDinoUccelloFiamma1 = Shape.intersect(rettangoloFiamma, rettangoloUccello1);
 		Shape intDinoUccelloFiamma2 = Shape.intersect(rettangoloFiamma, rettangoloUccello2);
+		*/
 
 		if (intDino1.getBoundsInLocal().getWidth() != -1){
 			timelineSfondo.stop();
@@ -477,54 +496,56 @@ public class ProgrammaPrincipale extends Application{
 		*/
 	}
 
-private void Zampette() {
-	if (isDinoImage1) {
-		if (!quadro.getChildren().contains(dinosauroView)) {
-			quadro.getChildren().add(dinosauroView);
+	private void Zampette() {
+		if (isDinoImage1) {
+			if (!quadro.getChildren().contains(dinosauroView)) {
+				quadro.getChildren().add(dinosauroView);
+			}
+			if (quadro.getChildren().contains(dinosauroView2)) {
+				quadro.getChildren().remove(dinosauroView2);
+			}
+		} else {
+			if (!quadro.getChildren().contains(dinosauroView2)) {
+				quadro.getChildren().add(dinosauroView2);
+			}
+			if (quadro.getChildren().contains(dinosauroView)) {
+				quadro.getChildren().remove(dinosauroView);
+			}
 		}
-		if (quadro.getChildren().contains(dinosauroView2)) {
-			quadro.getChildren().remove(dinosauroView2);
-		}
-	} else {
-		if (!quadro.getChildren().contains(dinosauroView2)) {
-			quadro.getChildren().add(dinosauroView2);
-		}
-		if (quadro.getChildren().contains(dinosauroView)) {
-			quadro.getChildren().remove(dinosauroView);
-		}
+		isDinoImage1 = !isDinoImage1;
 	}
-	isDinoImage1 = !isDinoImage1;
-}
-private void ZampetteDinoAbbassate() {
-	if (isDinoImage2) {
-		if (!quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-			quadro.getChildren().add(dinosauroView5);
+	private void ZampetteDinoAbbassate() {
+		if (isDinoImage2) {
+			if (!quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
+				quadro.getChildren().add(dinosauroView5);
+			}
+			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
+				quadro.getChildren().remove(dinosauroView);
+				quadro.getChildren().remove(dinosauroView2);
+				quadro.getChildren().remove(dinosauroView3);
+			}
+		} else {
+			if (!quadro.getChildren().contains(dinosauroView6)) {
+				quadro.getChildren().add(dinosauroView6);
+			}
+			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
+				quadro.getChildren().remove(dinosauroView);
+				quadro.getChildren().remove(dinosauroView2);
+				quadro.getChildren().remove(dinosauroView3);
+			}
 		}
-		if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-			quadro.getChildren().remove(dinosauroView);
-			quadro.getChildren().remove(dinosauroView2);
-			quadro.getChildren().remove(dinosauroView3);
-		}
-	} else {
-		if (!quadro.getChildren().contains(dinosauroView6)) {
-			quadro.getChildren().add(dinosauroView6);
-		}
-		if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-			quadro.getChildren().remove(dinosauroView);
-			quadro.getChildren().remove(dinosauroView2);
-			quadro.getChildren().remove(dinosauroView3);
-		}
+		isDinoImage2 = !isDinoImage2;
 	}
-	isDinoImage2 = !isDinoImage2;
-}
 
 private void muoviDino() {
 	if(dinosauroView3.getY()>=120 && arrivatoSù==false) {
 		rettangoloDinoTesta.setY(rettangoloDinoTesta.getY()-15);
 		rettangoloDinoCorpo.setY(rettangoloDinoCorpo.getY()-15);
 		rettangoloDinoCoda.setY(rettangoloDinoCoda.getY()-15);
+		/*
 		rettangoloFiamma.setY(rettangoloFiamma.getY()-15);
 		fiammataView.setY(fiammataView.getY()-15);
+		*/
 		dinosauroView3.setY(dinosauroView3.getY()-15);
 		if(dinosauroView3.getY()<=120) {
 			arrivatoSù=true;
@@ -534,8 +555,10 @@ private void muoviDino() {
 			rettangoloDinoTesta.setY(rettangoloDinoTesta.getY()+6);
 			rettangoloDinoCorpo.setY(rettangoloDinoCorpo.getY()+6);
 			rettangoloDinoCoda.setY(rettangoloDinoCoda.getY()+6);
+			/*
 			rettangoloFiamma.setY(rettangoloFiamma.getY()+6);
 			fiammataView.setY(fiammataView.getY()+6);
+			*/
 			dinosauroView3.setY(dinosauroView3.getY()+6);
 			if(dinosauroView3.getY()==300) {
 				arrivatoGiù=true;
@@ -554,6 +577,15 @@ private void muoviDino() {
 private void aggiornaPunteggio() {
 	segnaPunti++;
 	ePunteggio.setText(""+segnaPunti);
+}
+private void spostaFiamma() {
+	vettoreFiamme[incrementaFiamme].setX(vettoreFiamme[incrementaFiamme].getX()+6);
+	rettangoliFiamme[incrementaFiamme].setX(rettangoliFiamme[incrementaFiamme].getX()+6);
+	System.out.println("spara!");
+	if(rettangoliFiamme[incrementaFiamme].getX()>=700 && vettoreFiamme[incrementaFiamme].getX()>=700) {
+		quadro.getChildren().remove(rettangoliFiamme[incrementaFiamme]);
+		quadro.getChildren().remove(vettoreFiamme[incrementaFiamme]);
+	}
 }
 private void pigiato(KeyEvent evento) {
 	arrivatoSù=false;
@@ -625,6 +657,25 @@ private void pigiato(KeyEvent evento) {
 		timelineMovDino.play();
 	}
 	if(evento.getText().equals("d") ) {
+		incrementaFiamme++;
+		if(quadro.getChildren().contains(vettoreFiamme[incrementaFiamme-1]) && quadro.getChildren().contains(rettangoliFiamme[incrementaFiamme-1])) {
+			quadro.getChildren().remove(vettoreFiamme[incrementaFiamme-1]);
+			quadro.getChildren().remove(rettangoliFiamme[incrementaFiamme-1]);
+			System.out.println("rimuovi!");
+		}
+		vettoreFiamme[incrementaFiamme].setFitHeight(95);
+		vettoreFiamme[incrementaFiamme].setPreserveRatio(true);
+		vettoreFiamme[incrementaFiamme].setX(158);
+		vettoreFiamme[incrementaFiamme].setY(273);
+		rettangoliFiamme[incrementaFiamme].setX(200);
+		rettangoliFiamme[incrementaFiamme].setY(289);
+		rettangoliFiamme[incrementaFiamme].setRotate(90);
+		quadro.getChildren().add(rettangoliFiamme[incrementaFiamme]);
+		quadro.getChildren().add(vettoreFiamme[incrementaFiamme]);
+		rettangoliFiamme[incrementaFiamme].setVisible(false);
+		timelineFiammata.play();
+		System.out.println("start!");
+		/*
 		if(quadro.getChildren().contains(rettangoloFiamma) && quadro.getChildren().contains(fiammataView)) {
 			quadro.getChildren().remove(fiammataView);
 			quadro.getChildren().remove(rettangoloFiamma);
@@ -638,9 +689,10 @@ private void pigiato(KeyEvent evento) {
 			rettangoloFiamma.setRotate(90);
 			rettangoloFiamma.setVisible(false);
 		}
-		
+		*/
 	}
 	if(evento.getText().equals("D") ) {
+		/*
 		fiammataView.setX(158);
 		fiammataView.setY(273);
 		rettangoloFiamma.setX(200);
@@ -649,8 +701,10 @@ private void pigiato(KeyEvent evento) {
 		quadro.getChildren().add(fiammataView);
 		quadro.getChildren().add(rettangoloFiamma);
 		rettangoloFiamma.setVisible(false);
+		*/
 	}
 	if(evento.getCode() == KeyCode.RIGHT ) {
+		/*
 		fiammataView.setX(158);
 		fiammataView.setY(273);
 		rettangoloFiamma.setX(200);
@@ -659,7 +713,7 @@ private void pigiato(KeyEvent evento) {
 		quadro.getChildren().add(fiammataView);
 		quadro.getChildren().add(rettangoloFiamma);
 		rettangoloFiamma.setVisible(false);
-
+		*/
 	}
 }
 public static void main(String[] args) {
