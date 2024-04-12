@@ -15,6 +15,16 @@
 	-fx-font-family: Minecraft;
 	-fx-border-color: black;
 }
+#restart{
+	-fx-font-size: 15pt;
+	-fx-font-family: Minecraft;
+	-fx-border-color: black;
+}
 #punteggio{
 	-fx-font-weight: bold;
+}
+#sconfitta{
+	-fx-font-size: 35pt;
+	-fx-font-family: Minecraft;
+	-fx-text-fill: red;
 }

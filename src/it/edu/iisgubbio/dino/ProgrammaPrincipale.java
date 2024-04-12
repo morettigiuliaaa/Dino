@@ -23,7 +23,9 @@ public class ProgrammaPrincipale extends Application{
 	Label eTitolo = new Label("Dino game");
 	Label eSottoTitolo = new Label("affronta il deserto con Dino!");
 	Label ePunteggio = new Label("");
+	Label eSconfitta = new Label("G A M E  O V E R !");
 	Button pStart = new Button("start!");
+	Button pRestart = new Button("restart!");
 	private final int VELOCITA_DINO=20;
 	double velocitàGioco=5;
 	int segnaPunti=0;
@@ -116,7 +118,17 @@ public class ProgrammaPrincipale extends Application{
 		pStart.setLayoutX(330);
 		pStart.setLayoutY(230);
 		pStart.setId("start");
-
+		
+		quadro.getChildren().add(eSconfitta);
+		eSconfitta.setLayoutX(-200);
+		eSconfitta.setLayoutY(-200);
+		eSconfitta.setId("sconfitta");
+		
+		quadro.getChildren().add(pRestart);
+		pRestart.setLayoutX(-300);
+		pRestart.setLayoutY(-300);
+		pRestart.setId("restart");
+		
 		quadro.getChildren().add(ePunteggio);
 		quadro.setId("sottoTitolo");
 
@@ -158,6 +170,8 @@ public class ProgrammaPrincipale extends Application{
 
 
 		pStart.setOnAction(e -> giocoPrincipale());
+		pRestart.setOnAction(e -> restart());
+		
 		Scene scena = new Scene (quadro, 750, 500);
 		scena.getStylesheets().add("it/edu/iisgubbio/dino/Dino.css");
 		scena.setOnKeyPressed(e -> pigiato(e));
@@ -230,6 +244,8 @@ public class ProgrammaPrincipale extends Application{
 
 		rettangoloUccello1.setRotate(90);
 		rettangoloUccello2.setRotate(90);
+		rettangoloUccello1.setY(290);
+		rettangoloUccello2.setY(215);
 
 		rettangoloDinoTesta.setVisible(false);
 		rettangoloDinoCorpo.setVisible(false);
@@ -262,9 +278,9 @@ public class ProgrammaPrincipale extends Application{
 		cactusView2.setY(317);
 		
 		uccelloView.setX(0);
-		uccelloView.setY(259);
-		uccelloView2.setX(1560);
-		uccelloView2.setY(230);
+		uccelloView.setY(270);
+		uccelloView2.setX(2340);
+		uccelloView2.setY(190);
 
 		timelineSfondo.play();
 		timelinePunteggio.play();
@@ -274,38 +290,13 @@ public class ProgrammaPrincipale extends Application{
 	// sistemaz. oggetti vari 
 
 	private void aggiornaSfondo() {
-		
-		if(cactusView.getX()==0) {
-			uccelloView.setVisible(true);
-			System.out.println("comparsoPrimo");
-			uccelloView.setX(780);
-			rettangoloUccello1.setX(800);
-		}
-		
-		if(uccelloView.getX()==0) {
-			cactusView2.setX(700);
-			rettangoloCactus2.setX(782);
-		}
-		
-		if(cactusView2.getX()==0) {
-			uccelloView2.setVisible(true);
-			System.out.println("comparso");
-			uccelloView2.setX(780);
-			rettangoloUccello2.setX(800);
-		}
-		
-		if(uccelloView2.getX()==0) {
-			cactusView.setX(700);
-			rettangoloCactus1.setX(782);
-		}
-		
 		cieloView.setX(cieloView.getX()-0.25);
 		cieloView2.setX(cieloView2.getX()-0.25);
-		if(cieloView.getX()==0) {
-			cieloView2.setX(800);
-		}
 		if(cieloView2.getX()==0) {
 			cieloView.setX(800);
+		}
+		if(cieloView.getX()==0) {
+			cieloView2.setX(800);
 		}
 		montagneView.setX(montagneView.getX()-0.5);
 		montagneView2.setX(montagneView2.getX()-0.5);
@@ -318,52 +309,70 @@ public class ProgrammaPrincipale extends Application{
 		terrenoView.setX(terrenoView.getX()-2);
 		terrenoView2.setX(terrenoView2.getX()-2);
 		if(terrenoView2.getX()==0) {
-			terrenoView.setX(720);
+			terrenoView.setX(800);
 		}
 		if(terrenoView.getX()==0) {
-			terrenoView2.setX(700);
+			terrenoView2.setX(800);
 		}
 		cactusView.setX(cactusView.getX()-2);
 		rettangoloCactus1.setX(rettangoloCactus1.getX()-2);
+		if(cactusView.getX()==0) {
+			uccelloView.setVisible(true);
+			uccelloView.setX(780);
+			rettangoloUccello1.setX(815);
+		}
+		//uccelloView Y
 		if(uccelloView.getY()==259) {
 			sopra=false;
 		}
 		if(uccelloView.getY()==300) {
 			sopra=true;
 		}
-		if(uccelloView2.getY()==230) {
-			sopraSecondo=false;
-		}
-		if(uccelloView2.getY()==270) {
-			sopraSecondo=true;
-		}
 		if(sopra==false) {
 			uccelloView.setY(uccelloView.getY()+0.25);
 			rettangoloUccello1.setY(rettangoloUccello1.getY()+0.25);
-			rettangoloUccello1.setX(rettangoloUccello1.getX()-2.5);
-			uccelloView.setX(uccelloView.getX()-2.5);
+			rettangoloUccello1.setX(rettangoloUccello1.getX()-2);
+			uccelloView.setX(uccelloView.getX()-2);
 		}else {
 			uccelloView.setY(uccelloView.getY()-0.25);
 			rettangoloUccello1.setY(rettangoloUccello1.getY()-0.25);
-			rettangoloUccello1.setX(rettangoloUccello1.getX()-2.5);
-			uccelloView.setX(uccelloView.getX()-2.5);
+			rettangoloUccello1.setX(rettangoloUccello1.getX()-2);
+			uccelloView.setX(uccelloView.getX()-2);
 		}
-		if(sopraSecondo==false) {
-			
-			uccelloView2.setY(uccelloView.getY()+0.25);
-			rettangoloUccello2.setY(rettangoloUccello2.getY()+0.25);
-			rettangoloUccello2.setX(rettangoloUccello2.getX()-2.5);
-			uccelloView2.setX(uccelloView2.getX()-2.5);
-			
-		}else {
-			uccelloView2.setY(uccelloView.getY()-0.25);
-			rettangoloUccello2.setY(rettangoloUccello2.getY()-0.25);
-			rettangoloUccello2.setX(rettangoloUccello2.getX()-2.5);
-			uccelloView2.setX(uccelloView2.getX()-2.5);
+		
+		if(uccelloView.getX()==0) {
+			cactusView2.setX(700);
+			rettangoloCactus2.setX(782);
 		}
 		rettangoloCactus2.setX(rettangoloCactus2.getX()-2);
 		cactusView2.setX(cactusView2.getX()-2);
-
+		if(cactusView2.getX()==0) {
+			uccelloView2.setVisible(true);
+			uccelloView2.setX(780);
+			rettangoloUccello2.setX(815);
+		}
+		if(uccelloView2.getY()==200) {
+			sopraSecondo=false;
+		}
+		if(uccelloView2.getY()==240) {
+			sopraSecondo=true;
+		}
+		if(sopraSecondo==false) {
+			uccelloView2.setY(uccelloView2.getY()+0.25);
+			rettangoloUccello2.setY(rettangoloUccello2.getY()+0.25);
+			rettangoloUccello2.setX(rettangoloUccello2.getX()-2);
+			uccelloView2.setX(uccelloView2.getX()-2);
+		}else {
+			uccelloView2.setY(uccelloView2.getY()-0.25);
+			rettangoloUccello2.setY(rettangoloUccello2.getY()-0.25);
+			rettangoloUccello2.setX(rettangoloUccello2.getX()-2);
+			uccelloView2.setX(uccelloView2.getX()-2);
+		}
+		if(uccelloView2.getX()==0) {
+			cactusView.setX(700);
+			rettangoloCactus1.setX(782);
+		}
+		
 		// contollo collisione 
 
 		Shape intDino1 = Shape.intersect(rettangoloDinoTesta, rettangoloCactus1);
@@ -384,149 +393,40 @@ public class ProgrammaPrincipale extends Application{
 		
 
 		if (intDino1.getBoundsInLocal().getWidth() != -1){
-			morte.play();
-			timelineSfondo.stop();
-			timelineMovDino.stop();
-			timelinePunteggio.stop();
-			timelineZampette.stop();
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().remove(dinosauroView3);
-				quadro.getChildren().add(dinosauroView4);
-			}
+			sconfitta();
 		}
 		if (intDino2.getBoundsInLocal().getWidth() != -1){
-			morte.play();
-			timelineSfondo.stop();
-			timelinePunteggio.stop();
-			timelineZampette.stop();
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().remove(dinosauroView3);
-				quadro.getChildren().add(dinosauroView4);
-			}
+			sconfitta();
 		}
 		if (intDinoCorpo1.getBoundsInLocal().getWidth() != -1){
-			morte.play();
-			timelineSfondo.stop();
-			timelinePunteggio.stop();
-			timelineZampette.stop();
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().remove(dinosauroView3);
-				quadro.getChildren().add(dinosauroView4);
-			}
+			sconfitta();
 		}
 		if (intDinoCorpo2.getBoundsInLocal().getWidth() != -1){
-			morte.play();
-			timelineSfondo.stop();
-			timelinePunteggio.stop();
-			timelineZampette.stop();
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().remove(dinosauroView3);
-				quadro.getChildren().add(dinosauroView4);
-			}
+			sconfitta();
 		}
 		if (intDinoCoda1.getBoundsInLocal().getWidth() != -1){
-			morte.play();
-			timelineSfondo.stop();
-			timelinePunteggio.stop();
-			timelineZampette.stop();
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().remove(dinosauroView3);
-				quadro.getChildren().add(dinosauroView4);
-			}
+			sconfitta();
 		}
 		if (intDinoCoda2.getBoundsInLocal().getWidth() != -1){
-			morte.play();
-			timelineSfondo.stop();
-			timelinePunteggio.stop();
-			timelineZampette.stop();
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().remove(dinosauroView3);
-				quadro.getChildren().add(dinosauroView4);
-			}
+			sconfitta();
 		}
 		if (intDinoUccello1.getBoundsInLocal().getWidth() != -1){
-			morte.play();
-			timelineSfondo.stop();
-			timelinePunteggio.stop();
-			timelineZampette.stop();
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().remove(dinosauroView3);
-				quadro.getChildren().add(dinosauroView4);
-			}
+			sconfitta();
 		}
 		if (intDinoUccello2.getBoundsInLocal().getWidth() != -1){
-			morte.play();
-			timelineSfondo.stop();
-			timelinePunteggio.stop();
-			timelineZampette.stop();
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().remove(dinosauroView3);
-				quadro.getChildren().add(dinosauroView4);
-			}
+			sconfitta();
 		}
 		if (intDinoCorpoUccello1.getBoundsInLocal().getWidth() != -1){
-			morte.play();
-			timelineSfondo.stop();
-			timelinePunteggio.stop();
-			timelineZampette.stop();
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().remove(dinosauroView3);
-				quadro.getChildren().add(dinosauroView4);
-			}
+			sconfitta();
 		}
 		if (intDinoCorpoUccello2.getBoundsInLocal().getWidth() != -1){
-			morte.play();
-			timelineSfondo.stop();
-			timelinePunteggio.stop();
-			timelineZampette.stop();
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().remove(dinosauroView3);
-				quadro.getChildren().add(dinosauroView4);
-			}
+			sconfitta();
 		}
 		if (intDinoCodaUccello1.getBoundsInLocal().getWidth() != -1){
-			morte.play();
-			timelineSfondo.stop();
-			timelinePunteggio.stop();
-			timelineZampette.stop();
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().remove(dinosauroView3);
-				quadro.getChildren().add(dinosauroView4);
-			}
+			sconfitta();
 		}
 		if (intDinoCodaUccello2.getBoundsInLocal().getWidth() != -1){
-			morte.play();
-			timelineSfondo.stop();
-			timelinePunteggio.stop();
-			timelineZampette.stop();
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().remove(dinosauroView3);
-				quadro.getChildren().add(dinosauroView4);
-			}
+			sconfitta();
 		}
 		
 //		if (intDinoUccelloFiamma1.getBoundsInLocal().getWidth() != -1){
@@ -548,7 +448,27 @@ public class ProgrammaPrincipale extends Application{
 	}
 
 	// funzione movimento zampe del dino ( camminata )
-
+	private void sconfitta() {
+		morte.play();
+		timelineSfondo.stop();
+		timelinePunteggio.stop();
+		timelineZampette.stop();
+		if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
+			quadro.getChildren().remove(dinosauroView);
+			quadro.getChildren().remove(dinosauroView2);
+			quadro.getChildren().remove(dinosauroView3);
+			quadro.getChildren().add(dinosauroView4);
+		}
+		quadro.getChildren().add(eSconfitta);
+		eSconfitta.setLayoutX(175);
+		eSconfitta.setLayoutY(110);
+		quadro.getChildren().add(pRestart);
+		pRestart.setLayoutX(327);
+		pRestart.setLayoutY(200);
+	}
+	private void restart() {
+		giocoPrincipale();
+	}
 	private void Zampette() {
 		if (isDinoImage1) {
 			if (!quadro.getChildren().contains(dinosauroView)) {
