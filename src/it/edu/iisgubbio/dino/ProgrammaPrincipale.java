@@ -95,6 +95,8 @@ public class ProgrammaPrincipale extends Application{
 	private boolean isDinoImage1 = true;
 	boolean rilasciatoW=false;
 	boolean arrivatoGiù=false;
+	boolean sopra=false;
+	boolean sopraSecondo=false;
 	Pane quadro= new Pane();
 	public void start (Stage finestra) {
 
@@ -259,7 +261,10 @@ public class ProgrammaPrincipale extends Application{
 		cactusView2.setX(2170);
 		cactusView2.setY(317);
 		
+		uccelloView.setX(0);
 		uccelloView.setY(259);
+		uccelloView2.setX(1560);
+		uccelloView2.setY(230);
 
 		timelineSfondo.play();
 		timelinePunteggio.play();
@@ -269,7 +274,31 @@ public class ProgrammaPrincipale extends Application{
 	// sistemaz. oggetti vari 
 
 	private void aggiornaSfondo() {
-		boolean sopra=false;
+		
+		if(cactusView.getX()==0) {
+			uccelloView.setVisible(true);
+			System.out.println("comparsoPrimo");
+			uccelloView.setX(780);
+			rettangoloUccello1.setX(800);
+		}
+		
+		if(uccelloView.getX()==0) {
+			cactusView2.setX(700);
+			rettangoloCactus2.setX(782);
+		}
+		
+		if(cactusView2.getX()==0) {
+			uccelloView2.setVisible(true);
+			System.out.println("comparso");
+			uccelloView2.setX(780);
+			rettangoloUccello2.setX(800);
+		}
+		
+		if(uccelloView2.getX()==0) {
+			cactusView.setX(700);
+			rettangoloCactus1.setX(782);
+		}
+		
 		cieloView.setX(cieloView.getX()-0.25);
 		cieloView2.setX(cieloView2.getX()-0.25);
 		if(cieloView.getX()==0) {
@@ -296,80 +325,44 @@ public class ProgrammaPrincipale extends Application{
 		}
 		cactusView.setX(cactusView.getX()-2);
 		rettangoloCactus1.setX(rettangoloCactus1.getX()-2);
-		if(cactusView.getX()==0) {
-			uccelloView.setVisible(true);
-			uccelloView.setX(780);
-			rettangoloUccello1.setX(800);
-			if(uccelloView.getY()==259) {
-				sopra=false;
-			}
-			if(uccelloView.getY()==300) {
-				sopra=true;
-			}
-			if(sopra) {
-				uccelloView.setY(uccelloView.getY()-1);
-			}else {
-				uccelloView.setY(uccelloView.getY()+1);
-			}
-			rettangoloUccello1.setY(259);
-			
-			/*
-			if (x==400) {
-				  avanti=false;
-			  }
-			  
-			  if (x==0) {
-				  avanti=true;
-			  }
-			  
-			  if(y==0) {
-				  sopra=false;
-			  }
-			  if(y==300) {
-				  sopra=true;
-			  }
-			  
-			  if(avanti) {
-				  pallino.setCenterX(x++);
-			  } else {
-				  pallino.setCenterX(x--);
-			  }
-			  
-			  if(sopra) {
-				  pallino.setCenterY(y--);
-			  } else {
-				  pallino.setCenterY(y++);
-			  }
-			  */
+		if(uccelloView.getY()==259) {
+			sopra=false;
 		}
-		rettangoloUccello1.setX(rettangoloUccello1.getX()-2);
-		uccelloView.setX(uccelloView.getX()-2);
-		if(uccelloView.getX()==0) {
-			cactusView2.setX(700);
-			rettangoloCactus2.setX(782);
+		if(uccelloView.getY()==300) {
+			sopra=true;
+		}
+		if(uccelloView2.getY()==230) {
+			sopraSecondo=false;
+		}
+		if(uccelloView2.getY()==270) {
+			sopraSecondo=true;
+		}
+		if(sopra==false) {
+			uccelloView.setY(uccelloView.getY()+0.25);
+			rettangoloUccello1.setY(rettangoloUccello1.getY()+0.25);
+			rettangoloUccello1.setX(rettangoloUccello1.getX()-2.5);
+			uccelloView.setX(uccelloView.getX()-2.5);
+		}else {
+			uccelloView.setY(uccelloView.getY()-0.25);
+			rettangoloUccello1.setY(rettangoloUccello1.getY()-0.25);
+			rettangoloUccello1.setX(rettangoloUccello1.getX()-2.5);
+			uccelloView.setX(uccelloView.getX()-2.5);
+		}
+		if(sopraSecondo==false) {
+			
+			uccelloView2.setY(uccelloView.getY()+0.25);
+			rettangoloUccello2.setY(rettangoloUccello2.getY()+0.25);
+			rettangoloUccello2.setX(rettangoloUccello2.getX()-2.5);
+			uccelloView2.setX(uccelloView2.getX()-2.5);
+			
+		}else {
+			uccelloView2.setY(uccelloView.getY()-0.25);
+			rettangoloUccello2.setY(rettangoloUccello2.getY()-0.25);
+			rettangoloUccello2.setX(rettangoloUccello2.getX()-2.5);
+			uccelloView2.setX(uccelloView2.getX()-2.5);
 		}
 		rettangoloCactus2.setX(rettangoloCactus2.getX()-2);
 		cactusView2.setX(cactusView2.getX()-2);
-		if(cactusView2.getX()==0) {
-			uccelloView2.setVisible(true);
-			uccelloView2.setX(780);
-			rettangoloUccello2.setX(800);
-
-			boolean yCasuale = (Math.random()>0.5);
-			if(yCasuale) {
-				uccelloView2.setY(230);
-				rettangoloUccello2.setY(259);
-			}else {
-				uccelloView2.setY(270);
-				rettangoloUccello2.setY(299);
-			}
-		}
-		rettangoloUccello2.setX(rettangoloUccello2.getX()-2);
-		uccelloView2.setX(uccelloView2.getX()-2);
-		if(uccelloView2.getX()==0) {
-			cactusView.setX(700);
-			rettangoloCactus1.setX(782);
-		}
 
 		// contollo collisione 
 
@@ -641,41 +634,20 @@ public class ProgrammaPrincipale extends Application{
 
 		// funzione fiamma tasto w,W e up
 
-		if(evento.getText().equals("w")) {
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().add(dinosauroView3);
-			}
-
-			salto.play();
-			timelineMovDino.play();
-			timelineZampette.stop();
-		}
-		if(evento.getText().equals("W")) {
+		if(evento.getText().equals("w") || evento.getText().equals("W") || evento.getCode() == KeyCode.UP ) {
 			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)) {
 				quadro.getChildren().remove(dinosauroView);
 				quadro.getChildren().remove(dinosauroView2);
 				quadro.getChildren().add(dinosauroView3);
 			}
 			salto.play();
-			timelineZampette.stop();
 			timelineMovDino.play();
-		}
-		if(evento.getCode() == KeyCode.UP ) {
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().add(dinosauroView3);
-			}
-			salto.play();
 			timelineZampette.stop();
-			timelineMovDino.play();
 		}
 
 		// funzione fiamma tasto d, D e right
 
-		if(evento.getText().equals("d") ) {
+		if(evento.getText().equals("d") || evento.getText().equals("D") || evento.getCode() == KeyCode.RIGHT) {
 			incrementaFiamme++;
 			fiamma.play();
 			vettoreFiamme[incrementaFiamme].setFitHeight(95);
@@ -684,36 +656,6 @@ public class ProgrammaPrincipale extends Application{
 			vettoreFiamme[incrementaFiamme].setY(dinosauroView3.getY()-27);
 			rettangoliFiamme[incrementaFiamme].setX(200);
 			rettangoliFiamme[incrementaFiamme].setY(dinosauroView3.getY()-11);
-			rettangoliFiamme[incrementaFiamme].setRotate(90);
-			quadro.getChildren().add(rettangoliFiamme[incrementaFiamme]);
-			quadro.getChildren().add(vettoreFiamme[incrementaFiamme]);
-			rettangoliFiamme[incrementaFiamme].setVisible(false);
-			timelineFiammata.play();
-		}
-		if(evento.getText().equals("D") ) {
-			incrementaFiamme++;
-			fiamma.play();
-			vettoreFiamme[incrementaFiamme].setFitHeight(95);
-			vettoreFiamme[incrementaFiamme].setPreserveRatio(true);
-			vettoreFiamme[incrementaFiamme].setX(158);
-			vettoreFiamme[incrementaFiamme].setY(273);
-			rettangoliFiamme[incrementaFiamme].setX(200);
-			rettangoliFiamme[incrementaFiamme].setY(289);
-			rettangoliFiamme[incrementaFiamme].setRotate(90);
-			quadro.getChildren().add(rettangoliFiamme[incrementaFiamme]);
-			quadro.getChildren().add(vettoreFiamme[incrementaFiamme]);
-			rettangoliFiamme[incrementaFiamme].setVisible(false);
-			timelineFiammata.play();
-		}
-		if(evento.getCode() == KeyCode.RIGHT ) {
-			incrementaFiamme++;
-			fiamma.play();
-			vettoreFiamme[incrementaFiamme].setFitHeight(95);
-			vettoreFiamme[incrementaFiamme].setPreserveRatio(true);
-			vettoreFiamme[incrementaFiamme].setX(158);
-			vettoreFiamme[incrementaFiamme].setY(273);
-			rettangoliFiamme[incrementaFiamme].setX(200);
-			rettangoliFiamme[incrementaFiamme].setY(289);
 			rettangoliFiamme[incrementaFiamme].setRotate(90);
 			quadro.getChildren().add(rettangoliFiamme[incrementaFiamme]);
 			quadro.getChildren().add(vettoreFiamme[incrementaFiamme]);
