@@ -28,6 +28,7 @@ public class ProgrammaPrincipale extends Application{
 	double velocitàGioco=5;
 	int segnaPunti=0;
 	int incrementaFiamme=1;
+	int indiceRettangoli=0;
 	Timeline timelineSfondo = new Timeline(new KeyFrame(
 			Duration.millis(velocitàGioco),
 			x -> aggiornaSfondo()));
@@ -70,10 +71,6 @@ public class ProgrammaPrincipale extends Application{
 	ImageView dinosauroView3 = new ImageView(dinosauro3);
 	Image dinosauro4 = new Image(getClass().getResourceAsStream("dino 4.png"));
 	ImageView dinosauroView4 = new ImageView(dinosauro4);
-	Image dinosauro5 = new Image(getClass().getResourceAsStream("dino 5.png"));
-	ImageView dinosauroView5 = new ImageView(dinosauro5);
-	Image dinosauro6 = new Image(getClass().getResourceAsStream("dino 6.png"));
-	ImageView dinosauroView6 = new ImageView(dinosauro6);
 	Image cactus = new Image(getClass().getResourceAsStream("cactusPerProgramma.png"));
 	ImageView cactusView = new ImageView(cactus);
 	Image cactus2 = new Image(getClass().getResourceAsStream("cactusPerProgramma.png"));
@@ -90,6 +87,7 @@ public class ProgrammaPrincipale extends Application{
 	final AudioClip scoreup = new AudioClip(getClass().getResource("scoreup.wav").toString());
 	final AudioClip morte = new AudioClip(getClass().getResource("dead.wav").toString());
 	final AudioClip salto = new AudioClip(getClass().getResource("jump.wav").toString());
+	final AudioClip fiamma = new AudioClip(getClass().getResource("fiamma.wav").toString());
 
 	ImageView vettoreFiamme[];
 	Rectangle rettangoliFiamme[];
@@ -131,10 +129,13 @@ public class ProgrammaPrincipale extends Application{
 		timelineZampette.setCycleCount(Timeline.INDEFINITE);
 
 		cieloView.setFitWidth(800);
+		cieloView2.setFitWidth(800);
 		cieloView2.setX(800);
 		montagneView.setFitWidth(800);
+		montagneView2.setFitWidth(800);
 		montagneView2.setX(800);
 		terrenoView.setFitWidth(800);
+		terrenoView2.setFitWidth(800);
 		terrenoView2.setX(800);
 		dinosauroView.setFitHeight(100);
 		dinosauroView.setPreserveRatio(true);
@@ -144,10 +145,6 @@ public class ProgrammaPrincipale extends Application{
 		dinosauroView3.setPreserveRatio(true);
 		dinosauroView4.setFitHeight(100);
 		dinosauroView4.setPreserveRatio(true);
-		dinosauroView6.setFitHeight(60);
-		dinosauroView6.setPreserveRatio(true);
-		dinosauroView6.setFitHeight(60);
-		dinosauroView6.setPreserveRatio(true);
 		cactusView.setFitHeight(85);
 		cactusView.setPreserveRatio(true);
 		cactusView2.setFitHeight(85);
@@ -200,7 +197,7 @@ public class ProgrammaPrincipale extends Application{
 			vettoreFiamme[indiceFiamma]=fiammataView;
 		}
 		rettangoliFiamme = new Rectangle[1000];
-		for(int indiceRettangoli=0; indiceRettangoli<rettangoliFiamme.length;indiceRettangoli++) {
+		for(indiceRettangoli=0; indiceRettangoli<rettangoliFiamme.length;indiceRettangoli++) {
 			Rectangle rettangoloFiamma = new Rectangle(2,79);
 			rettangoliFiamme[indiceRettangoli]=rettangoloFiamma;
 		}
@@ -256,15 +253,13 @@ public class ProgrammaPrincipale extends Application{
 		dinosauroView3.setY(300);
 		dinosauroView4.setX(70);
 		dinosauroView4.setY(300);
-		dinosauroView5.setX(70);
-		dinosauroView5.setY(325);
-		dinosauroView6.setX(70);
-		dinosauroView6.setY(325);
 
 		cactusView.setX(700);
 		cactusView.setY(317);
 		cactusView2.setX(2170);
 		cactusView2.setY(317);
+		
+		uccelloView.setY(259);
 
 		timelineSfondo.play();
 		timelinePunteggio.play();
@@ -274,18 +269,19 @@ public class ProgrammaPrincipale extends Application{
 	// sistemaz. oggetti vari 
 
 	private void aggiornaSfondo() {
+		boolean sopra=false;
 		cieloView.setX(cieloView.getX()-0.25);
 		cieloView2.setX(cieloView2.getX()-0.25);
-		if(cieloView2.getX()==0) {
-			cieloView.setX(735);
-		}
 		if(cieloView.getX()==0) {
 			cieloView2.setX(800);
+		}
+		if(cieloView2.getX()==0) {
+			cieloView.setX(800);
 		}
 		montagneView.setX(montagneView.getX()-0.5);
 		montagneView2.setX(montagneView2.getX()-0.5);
 		if(montagneView2.getX()==0) {
-			montagneView.setX(720);
+			montagneView.setX(800);
 		}
 		if(montagneView.getX()==0) {
 			montagneView2.setX(800);
@@ -304,16 +300,47 @@ public class ProgrammaPrincipale extends Application{
 			uccelloView.setVisible(true);
 			uccelloView.setX(780);
 			rettangoloUccello1.setX(800);
-
-			boolean yCasuale = (Math.random()>0.5);
-			if(yCasuale) {
-				uccelloView.setY(230);
-				rettangoloUccello1.setY(259);
-			}else {
-				uccelloView.setY(270);
-				rettangoloUccello1.setY(299);
+			if(uccelloView.getY()==259) {
+				sopra=false;
 			}
-
+			if(uccelloView.getY()==300) {
+				sopra=true;
+			}
+			if(sopra) {
+				uccelloView.setY(uccelloView.getY()-1);
+			}else {
+				uccelloView.setY(uccelloView.getY()+1);
+			}
+			rettangoloUccello1.setY(259);
+			
+			/*
+			if (x==400) {
+				  avanti=false;
+			  }
+			  
+			  if (x==0) {
+				  avanti=true;
+			  }
+			  
+			  if(y==0) {
+				  sopra=false;
+			  }
+			  if(y==300) {
+				  sopra=true;
+			  }
+			  
+			  if(avanti) {
+				  pallino.setCenterX(x++);
+			  } else {
+				  pallino.setCenterX(x--);
+			  }
+			  
+			  if(sopra) {
+				  pallino.setCenterY(y--);
+			  } else {
+				  pallino.setCenterY(y++);
+			  }
+			  */
 		}
 		rettangoloUccello1.setX(rettangoloUccello1.getX()-2);
 		uccelloView.setX(uccelloView.getX()-2);
@@ -358,10 +385,10 @@ public class ProgrammaPrincipale extends Application{
 		Shape intDinoCorpoUccello2 = Shape.intersect(rettangoloDinoCorpo, rettangoloUccello2);
 		Shape intDinoCodaUccello1 = Shape.intersect(rettangoloDinoCoda, rettangoloUccello1);
 		Shape intDinoCodaUccello2 = Shape.intersect(rettangoloDinoCoda, rettangoloUccello2);
-		/*
-		Shape intDinoUccelloFiamma1 = Shape.intersect(rettangoloFiamma, rettangoloUccello1);
-		Shape intDinoUccelloFiamma2 = Shape.intersect(rettangoloFiamma, rettangoloUccello2);
-		 */
+		
+//		Shape intDinoUccelloFiamma1 = Shape.intersect(rettangoliFiamme[indiceRettangoli], rettangoloUccello1);
+//		Shape intDinoUccelloFiamma2 = Shape.intersect(rettangoliFiamme[indiceRettangoli], rettangoloUccello2);
+		
 
 		if (intDino1.getBoundsInLocal().getWidth() != -1){
 			morte.play();
@@ -508,23 +535,23 @@ public class ProgrammaPrincipale extends Application{
 				quadro.getChildren().add(dinosauroView4);
 			}
 		}
-		/*
-		if (intDinoUccelloFiamma1.getBoundsInLocal().getWidth() != -1){
-			System.out.println("fiamma 1!");
-			esplosioneView.setX(uccelloView.getX()-2);
-			esplosioneView.setY(uccelloView.getY());
-			esplosioneView.setFitHeight(85);
-			esplosioneView.setPreserveRatio(true);
-		}
-		if (intDinoUccelloFiamma2.getBoundsInLocal().getWidth() != -1){
-			System.out.println("fiamma 2!");
-			// quadro.getChildren().add(esplosioneView);
-			esplosioneView.setX(uccelloView2.getX()-2);
-			esplosioneView.setY(uccelloView2.getY());
-			esplosioneView.setFitHeight(85);
-			esplosioneView.setPreserveRatio(true);
-		}
-		 */
+		
+//		if (intDinoUccelloFiamma1.getBoundsInLocal().getWidth() != -1){
+//			System.out.println("fiamma 1!");
+//			esplosioneView.setX(uccelloView.getX()-2);
+//			esplosioneView.setY(uccelloView.getY());
+//			esplosioneView.setFitHeight(85);
+//			esplosioneView.setPreserveRatio(true);
+//		}
+//		if (intDinoUccelloFiamma2.getBoundsInLocal().getWidth() != -1){
+//			System.out.println("fiamma 2!");
+//			// quadro.getChildren().add(esplosioneView);
+//			esplosioneView.setX(uccelloView2.getX()-2);
+//			esplosioneView.setY(uccelloView2.getY());
+//			esplosioneView.setFitHeight(85);
+//			esplosioneView.setPreserveRatio(true);
+//		}
+		
 	}
 
 	// funzione movimento zampe del dino ( camminata )
@@ -572,8 +599,6 @@ public class ProgrammaPrincipale extends Application{
 				}
 			}
 		}
-		System.out.println("saltooo");
-		System.out.println(dinosauroView3.getY());
 		if(arrivatoGiù==true) {
 			timelineMovDino.stop();
 			if (quadro.getChildren().contains(dinosauroView3)) {
@@ -589,6 +614,9 @@ public class ProgrammaPrincipale extends Application{
 	// funzione punteggio
 
 	private void aggiornaPunteggio() {
+		if(segnaPunti%100==0 && segnaPunti!=0) {
+			scoreup.play();
+		}
 		segnaPunti++;
 		ePunteggio.setText(""+segnaPunti);
 	}
@@ -620,7 +648,7 @@ public class ProgrammaPrincipale extends Application{
 				quadro.getChildren().add(dinosauroView3);
 			}
 
-			scoreup.play();
+			salto.play();
 			timelineMovDino.play();
 			timelineZampette.stop();
 		}
@@ -630,6 +658,7 @@ public class ProgrammaPrincipale extends Application{
 				quadro.getChildren().remove(dinosauroView2);
 				quadro.getChildren().add(dinosauroView3);
 			}
+			salto.play();
 			timelineZampette.stop();
 			timelineMovDino.play();
 		}
@@ -639,56 +668,57 @@ public class ProgrammaPrincipale extends Application{
 				quadro.getChildren().remove(dinosauroView2);
 				quadro.getChildren().add(dinosauroView3);
 			}
+			salto.play();
 			timelineZampette.stop();
 			timelineMovDino.play();
 		}
 
 		// funzione fiamma tasto d, D e right
 
-		if(dinosauroView.getY()==300) {
-			if(evento.getText().equals("d") ) {
-				System.out.println("ddddd");
-				incrementaFiamme++;
-				vettoreFiamme[incrementaFiamme].setFitHeight(95);
-				vettoreFiamme[incrementaFiamme].setPreserveRatio(true);
-				vettoreFiamme[incrementaFiamme].setX(158);
-				vettoreFiamme[incrementaFiamme].setY(dinosauroView3.getY()-27);
-				rettangoliFiamme[incrementaFiamme].setX(200);
-				rettangoliFiamme[incrementaFiamme].setY(dinosauroView3.getY()-11);
-				rettangoliFiamme[incrementaFiamme].setRotate(90);
-				quadro.getChildren().add(rettangoliFiamme[incrementaFiamme]);
-				quadro.getChildren().add(vettoreFiamme[incrementaFiamme]);
-				rettangoliFiamme[incrementaFiamme].setVisible(false);
-				timelineFiammata.play();
-			}
-			if(evento.getText().equals("D") ) {
-				incrementaFiamme++;
-				vettoreFiamme[incrementaFiamme].setFitHeight(95);
-				vettoreFiamme[incrementaFiamme].setPreserveRatio(true);
-				vettoreFiamme[incrementaFiamme].setX(158);
-				vettoreFiamme[incrementaFiamme].setY(273);
-				rettangoliFiamme[incrementaFiamme].setX(200);
-				rettangoliFiamme[incrementaFiamme].setY(289);
-				rettangoliFiamme[incrementaFiamme].setRotate(90);
-				quadro.getChildren().add(rettangoliFiamme[incrementaFiamme]);
-				quadro.getChildren().add(vettoreFiamme[incrementaFiamme]);
-				rettangoliFiamme[incrementaFiamme].setVisible(false);
-				timelineFiammata.play();
-			}
-			if(evento.getCode() == KeyCode.RIGHT ) {
-				incrementaFiamme++;
-				vettoreFiamme[incrementaFiamme].setFitHeight(95);
-				vettoreFiamme[incrementaFiamme].setPreserveRatio(true);
-				vettoreFiamme[incrementaFiamme].setX(158);
-				vettoreFiamme[incrementaFiamme].setY(273);
-				rettangoliFiamme[incrementaFiamme].setX(200);
-				rettangoliFiamme[incrementaFiamme].setY(289);
-				rettangoliFiamme[incrementaFiamme].setRotate(90);
-				quadro.getChildren().add(rettangoliFiamme[incrementaFiamme]);
-				quadro.getChildren().add(vettoreFiamme[incrementaFiamme]);
-				rettangoliFiamme[incrementaFiamme].setVisible(false);
-				timelineFiammata.play();
-			}
+		if(evento.getText().equals("d") ) {
+			incrementaFiamme++;
+			fiamma.play();
+			vettoreFiamme[incrementaFiamme].setFitHeight(95);
+			vettoreFiamme[incrementaFiamme].setPreserveRatio(true);
+			vettoreFiamme[incrementaFiamme].setX(158);
+			vettoreFiamme[incrementaFiamme].setY(dinosauroView3.getY()-27);
+			rettangoliFiamme[incrementaFiamme].setX(200);
+			rettangoliFiamme[incrementaFiamme].setY(dinosauroView3.getY()-11);
+			rettangoliFiamme[incrementaFiamme].setRotate(90);
+			quadro.getChildren().add(rettangoliFiamme[incrementaFiamme]);
+			quadro.getChildren().add(vettoreFiamme[incrementaFiamme]);
+			rettangoliFiamme[incrementaFiamme].setVisible(false);
+			timelineFiammata.play();
+		}
+		if(evento.getText().equals("D") ) {
+			incrementaFiamme++;
+			fiamma.play();
+			vettoreFiamme[incrementaFiamme].setFitHeight(95);
+			vettoreFiamme[incrementaFiamme].setPreserveRatio(true);
+			vettoreFiamme[incrementaFiamme].setX(158);
+			vettoreFiamme[incrementaFiamme].setY(273);
+			rettangoliFiamme[incrementaFiamme].setX(200);
+			rettangoliFiamme[incrementaFiamme].setY(289);
+			rettangoliFiamme[incrementaFiamme].setRotate(90);
+			quadro.getChildren().add(rettangoliFiamme[incrementaFiamme]);
+			quadro.getChildren().add(vettoreFiamme[incrementaFiamme]);
+			rettangoliFiamme[incrementaFiamme].setVisible(false);
+			timelineFiammata.play();
+		}
+		if(evento.getCode() == KeyCode.RIGHT ) {
+			incrementaFiamme++;
+			fiamma.play();
+			vettoreFiamme[incrementaFiamme].setFitHeight(95);
+			vettoreFiamme[incrementaFiamme].setPreserveRatio(true);
+			vettoreFiamme[incrementaFiamme].setX(158);
+			vettoreFiamme[incrementaFiamme].setY(273);
+			rettangoliFiamme[incrementaFiamme].setX(200);
+			rettangoliFiamme[incrementaFiamme].setY(289);
+			rettangoliFiamme[incrementaFiamme].setRotate(90);
+			quadro.getChildren().add(rettangoliFiamme[incrementaFiamme]);
+			quadro.getChildren().add(vettoreFiamme[incrementaFiamme]);
+			rettangoliFiamme[incrementaFiamme].setVisible(false);
+			timelineFiammata.play();
 		}
 	}
 
