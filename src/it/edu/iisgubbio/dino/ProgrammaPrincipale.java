@@ -32,6 +32,7 @@ public class ProgrammaPrincipale extends Application{
 	int segnaPunti=0;
 	int incrementaFiamme=1;
 	int indiceRettangoli=0;
+	int contaSec=1;
 	Timeline timelineSfondo = new Timeline(new KeyFrame(
 			Duration.millis(velocitàGioco),
 			x -> aggiornaSfondo()));
@@ -82,7 +83,7 @@ public class ProgrammaPrincipale extends Application{
 	ImageView uccelloView = new ImageView(uccello);
 	Image uccello2 = new Image(getClass().getResourceAsStream("uccelloPerProgramma.png"));
 	ImageView uccelloView2 = new ImageView(uccello2);
-	Image esplosione = new Image(getClass().getResourceAsStream("XCVT.gif"));
+	Image esplosione = new Image(getClass().getResourceAsStream("esplosione.gif"));
 	ImageView esplosioneView = new ImageView(esplosione);
 
 	// aggiunta audio effects
@@ -92,6 +93,9 @@ public class ProgrammaPrincipale extends Application{
 	final AudioClip salto = new AudioClip(getClass().getResource("jump.wav").toString());
 	final AudioClip fiamma = new AudioClip(getClass().getResource("fiamma.wav").toString());
 	int vettorePunti[]= new int[500];
+	int indicePunti=0;
+	int record=0;
+	int indiceBoundFiamma=0;
 	ImageView vettoreFiamme[];
 	Rectangle rettangoliFiamme[];
 	boolean arrivatoSù=false;
@@ -206,6 +210,11 @@ public class ProgrammaPrincipale extends Application{
 		quadro.getChildren().add(rettangoloUccello1);
 		quadro.getChildren().add(rettangoloUccello2);
 		quadro.getChildren().add(esplosioneView);
+		quadro.getChildren().add(eSconfitta);
+		quadro.getChildren().add(pRestart);
+		
+		eSconfitta.setLayoutX(-500);
+		pRestart.setLayoutX(-500);
 
 		vettoreFiamme = new ImageView[1000];
 		for(int indiceFiamma=0; indiceFiamma<vettoreFiamme.length;indiceFiamma++) {
@@ -215,7 +224,7 @@ public class ProgrammaPrincipale extends Application{
 		}
 		rettangoliFiamme = new Rectangle[1000];
 		for(indiceRettangoli=0; indiceRettangoli<rettangoliFiamme.length;indiceRettangoli++) {
-			Rectangle rettangoloFiamma = new Rectangle(2,79);
+			Rectangle rettangoloFiamma = new Rectangle(5,79);
 			rettangoliFiamme[indiceRettangoli]=rettangoloFiamma;
 		}
 		esplosioneView.setX(-550);
@@ -229,7 +238,7 @@ public class ProgrammaPrincipale extends Application{
 		ePunteggio.setLayoutY(20);
 		ePunteggio.setId("punteggio");
 		
-		ePunteggioRecord.setLayoutX(10);
+		ePunteggioRecord.setLayoutX(30);
 		ePunteggioRecord.setLayoutY(20);
 		ePunteggioRecord.setId("punteggio");
 
@@ -291,7 +300,7 @@ public class ProgrammaPrincipale extends Application{
 		uccelloView.setX(0);
 		uccelloView.setY(270);
 		uccelloView2.setX(2340);
-		uccelloView2.setY(190);
+		uccelloView2.setY(200);
 
 		timelineSfondo.play();
 		timelinePunteggio.play();
@@ -329,8 +338,8 @@ public class ProgrammaPrincipale extends Application{
 		rettangoloCactus1.setX(rettangoloCactus1.getX()-2);
 		if(cactusView.getX()==0) {
 			uccelloView.setVisible(true);
-			uccelloView.setX(780);
-			rettangoloUccello1.setX(815);
+			uccelloView.setX(720);
+			rettangoloUccello1.setX(755);
 		}
 		//uccelloView Y
 		if(uccelloView.getY()==259) {
@@ -359,8 +368,8 @@ public class ProgrammaPrincipale extends Application{
 		cactusView2.setX(cactusView2.getX()-2);
 		if(cactusView2.getX()==0) {
 			uccelloView2.setVisible(true);
-			uccelloView2.setX(780);
-			rettangoloUccello2.setX(815);
+			uccelloView2.setX(720);
+			rettangoloUccello2.setX(755);
 		}
 		if(uccelloView2.getY()==200) {
 			sopraSecondo=false;
@@ -399,8 +408,8 @@ public class ProgrammaPrincipale extends Application{
 		Shape intDinoCodaUccello1 = Shape.intersect(rettangoloDinoCoda, rettangoloUccello1);
 		Shape intDinoCodaUccello2 = Shape.intersect(rettangoloDinoCoda, rettangoloUccello2);
 		
-//		Shape intDinoUccelloFiamma1 = Shape.intersect(rettangoliFiamme[indiceRettangoli], rettangoloUccello1);
-//		Shape intDinoUccelloFiamma2 = Shape.intersect(rettangoliFiamme[indiceRettangoli], rettangoloUccello2);
+		Shape intDinoUccelloFiamma1 = Shape.intersect(rettangoliFiamme[incrementaFiamme], rettangoloUccello1);
+		Shape intDinoUccelloFiamma2 = Shape.intersect(rettangoliFiamme[incrementaFiamme], rettangoloUccello2);
 		
 
 		if (intDino1.getBoundsInLocal().getWidth() != -1){
@@ -440,33 +449,57 @@ public class ProgrammaPrincipale extends Application{
 			sconfitta();
 		}
 		
-//		if (intDinoUccelloFiamma1.getBoundsInLocal().getWidth() != -1){
-//			System.out.println("fiamma 1!");
-//			esplosioneView.setX(uccelloView.getX()-2);
-//			esplosioneView.setY(uccelloView.getY());
-//			esplosioneView.setFitHeight(85);
-//			esplosioneView.setPreserveRatio(true);
-//		}
-//		if (intDinoUccelloFiamma2.getBoundsInLocal().getWidth() != -1){
-//			System.out.println("fiamma 2!");
-//			// quadro.getChildren().add(esplosioneView);
-//			esplosioneView.setX(uccelloView2.getX()-2);
-//			esplosioneView.setY(uccelloView2.getY());
-//			esplosioneView.setFitHeight(85);
-//			esplosioneView.setPreserveRatio(true);
-//		}
+		if (intDinoUccelloFiamma1.getBoundsInLocal().getWidth() != -1){
+			indiceBoundFiamma++;
+			contaSec=1;
+			esplosioneView.setX(uccelloView.getX());
+			esplosioneView.setY(uccelloView.getY());
+			esplosioneView.setFitHeight(85);
+			esplosioneView.setPreserveRatio(true);
+			Timeline timelineRimuoviGIF = new Timeline(new KeyFrame(
+					Duration.seconds(1),
+					x -> rimuoviGIF()));
+			timelineRimuoviGIF.setCycleCount(2);
+			timelineRimuoviGIF.play();
+			uccelloView.setVisible(false);
+			rettangoloUccello1.setX(-600);
+		}
+		if (intDinoUccelloFiamma2.getBoundsInLocal().getWidth() != -1){
+			indiceBoundFiamma++;
+			contaSec=1;
+			System.out.println("fiamma 2!");
+			esplosioneView.setFitHeight(85);
+			esplosioneView.setPreserveRatio(true);
+			Timeline timelineRimuoviGIF = new Timeline(new KeyFrame(
+					Duration.seconds(1),
+					x -> rimuoviGIF()));
+			timelineRimuoviGIF.setCycleCount(2);
+			timelineRimuoviGIF.play();
+			uccelloView2.setVisible(false);
+			rettangoloUccello2.setX(-600);
+		}
 		
 	}
-
+	private void rimuoviGIF(){
+		contaSec-=1;
+		esplosioneView.setX(esplosioneView.getX()-1);
+		esplosioneView.setY(esplosioneView.getY()-1);
+		if(contaSec==0) {
+			if(quadro.getChildren().contains(esplosioneView)) {
+				esplosioneView.setX(-500);
+			}
+		}
+		
+	}
 	// funzione punteggio
 
-		private void aggiornaPunteggio() {
-			if(segnaPunti%100==0 && segnaPunti!=0) {
-				scoreup.play();
-			}
-			segnaPunti++;
-			ePunteggio.setText(""+segnaPunti);
+	private void aggiornaPunteggio() {
+		if(segnaPunti%100==0 && segnaPunti!=0) {
+			scoreup.play();
 		}
+		segnaPunti++;
+		ePunteggio.setText(""+segnaPunti);
+	}
 	
 	// funzione movimento zampe del dino ( camminata )
 	private void sconfitta() {
@@ -475,27 +508,30 @@ public class ProgrammaPrincipale extends Application{
 		timelinePunteggio.stop();
 		timelineZampette.stop();
 		ePunteggio.setText(""+segnaPunti);
-		for ( int i = 0, scorrimento = 1; i<vettorePunti.length;) {
-			vettorePunti[i]=segnaPunti;
-			if(vettorePunti[i]>vettorePunti[scorrimento-1]) {
-				ePunteggioRecord.setText("Record: "+segnaPunti);
-				i++;
+		record=segnaPunti;
+		vettorePunti[indicePunti]=segnaPunti;
+		for(int scorrimento=0; scorrimento <= indicePunti; scorrimento++) {
+			if(vettorePunti[scorrimento]>vettorePunti[indicePunti]) {
+				record=vettorePunti[scorrimento];
 			}
 		}
+		ePunteggioRecord.setText("Record: "+record);
+		indicePunti++;
 		if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
 			quadro.getChildren().remove(dinosauroView);
 			quadro.getChildren().remove(dinosauroView2);
 			quadro.getChildren().remove(dinosauroView3);
 			quadro.getChildren().add(dinosauroView4);
 		}
-		quadro.getChildren().add(eSconfitta);
+		
 		eSconfitta.setLayoutX(175);
 		eSconfitta.setLayoutY(110);
-		quadro.getChildren().add(pRestart);
+
 		pRestart.setLayoutX(327);
 		pRestart.setLayoutY(200);
 	}
 	private void restart() {
+		quadro.getChildren().clear();
 		if(segnaPunti>0) {
 			segnaPunti=0;
 		}
