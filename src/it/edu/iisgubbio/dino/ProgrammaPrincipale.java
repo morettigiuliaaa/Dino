@@ -23,6 +23,7 @@ public class ProgrammaPrincipale extends Application{
 	Label eTitolo = new Label("Dino game");
 	Label eSottoTitolo = new Label("affronta il deserto con Dino!");
 	Label ePunteggio = new Label("");
+	Label ePunteggioRecord = new Label("Record: 0000");
 	Label eSconfitta = new Label("G A M E  O V E R !");
 	Button pStart = new Button("start!");
 	Button pRestart = new Button("restart!");
@@ -90,7 +91,7 @@ public class ProgrammaPrincipale extends Application{
 	final AudioClip morte = new AudioClip(getClass().getResource("dead.wav").toString());
 	final AudioClip salto = new AudioClip(getClass().getResource("jump.wav").toString());
 	final AudioClip fiamma = new AudioClip(getClass().getResource("fiamma.wav").toString());
-
+	int vettorePunti[]= new int[500];
 	ImageView vettoreFiamme[];
 	Rectangle rettangoliFiamme[];
 	boolean arrivatoSù=false;
@@ -221,11 +222,16 @@ public class ProgrammaPrincipale extends Application{
 		esplosioneView.setY(-550);
 
 		quadro.getChildren().add(ePunteggio);
+		quadro.getChildren().add(ePunteggioRecord);
 		quadro.setId("sottoTitolo");
 
 		ePunteggio.setLayoutX(700);
 		ePunteggio.setLayoutY(20);
 		ePunteggio.setId("punteggio");
+		
+		ePunteggioRecord.setLayoutX(10);
+		ePunteggioRecord.setLayoutY(20);
+		ePunteggioRecord.setId("punteggio");
 
 		rettangoloCactus1.setX(782);
 		rettangoloCactus1.setY(327);
@@ -245,7 +251,12 @@ public class ProgrammaPrincipale extends Application{
 		rettangoloUccello1.setRotate(90);
 		rettangoloUccello2.setRotate(90);
 		rettangoloUccello1.setY(290);
+		rettangoloUccello1.setX(-800);
 		rettangoloUccello2.setY(215);
+		rettangoloUccello2.setX(-800);
+		
+		rettangoloCactus2.setX(-800);
+		
 
 		rettangoloDinoTesta.setVisible(false);
 		rettangoloDinoCorpo.setVisible(false);
@@ -447,12 +458,30 @@ public class ProgrammaPrincipale extends Application{
 		
 	}
 
+	// funzione punteggio
+
+		private void aggiornaPunteggio() {
+			if(segnaPunti%100==0 && segnaPunti!=0) {
+				scoreup.play();
+			}
+			segnaPunti++;
+			ePunteggio.setText(""+segnaPunti);
+		}
+	
 	// funzione movimento zampe del dino ( camminata )
 	private void sconfitta() {
 		morte.play();
 		timelineSfondo.stop();
 		timelinePunteggio.stop();
 		timelineZampette.stop();
+		ePunteggio.setText(""+segnaPunti);
+		for ( int i = 0, scorrimento = 1; i<vettorePunti.length;) {
+			vettorePunti[i]=segnaPunti;
+			if(vettorePunti[i]>vettorePunti[scorrimento-1]) {
+				ePunteggioRecord.setText("Record: "+segnaPunti);
+				i++;
+			}
+		}
 		if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
 			quadro.getChildren().remove(dinosauroView);
 			quadro.getChildren().remove(dinosauroView2);
@@ -467,6 +496,9 @@ public class ProgrammaPrincipale extends Application{
 		pRestart.setLayoutY(200);
 	}
 	private void restart() {
+		if(segnaPunti>0) {
+			segnaPunti=0;
+		}
 		giocoPrincipale();
 	}
 	private void Zampette() {
@@ -522,16 +554,6 @@ public class ProgrammaPrincipale extends Application{
 				arrivatoGiù=false;
 			}
 		}
-	}
-
-	// funzione punteggio
-
-	private void aggiornaPunteggio() {
-		if(segnaPunti%100==0 && segnaPunti!=0) {
-			scoreup.play();
-		}
-		segnaPunti++;
-		ePunteggio.setText(""+segnaPunti);
 	}
 
 	// sistemaz. fiamma
