@@ -5,23 +5,28 @@
 #titolo{
 	-fx-font-size: 35pt;
 	-fx-font-family: Minecraft;
+	-fx-text-fill: black;
 }
 #sottoTitolo{
 	-fx-font-size: 15pt;
 	-fx-font-family: Minecraft;
+	-fx-text-fill: black;
 }
 #start{
 	-fx-font-size: 15pt;
 	-fx-font-family: Minecraft;
 	-fx-border-color: black;
+	-fx-text-fill: black;
 }
 #restart{
 	-fx-font-size: 15pt;
 	-fx-font-family: Minecraft;
 	-fx-border-color: black;
+	-fx-text-fill: black;
 }
 #punteggio{
 	-fx-font-weight: bold;
+	-fx-text-fill: black;
 }
 #sconfitta{
 	-fx-font-size: 35pt;
