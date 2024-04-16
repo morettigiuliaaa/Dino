@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.AudioClip;
@@ -17,9 +16,10 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-// caricamento elementi necessari 
+// caricamento elementi necessari ( Label, ecc... )
 
 public class ProgrammaPrincipale extends Application{
+	Pane quadro= new Pane();
 	Label eTitolo = new Label("Dino game");
 	Label eSottoTitolo = new Label("affronta il deserto con Dino!");
 	Label ePunteggio = new Label("");
@@ -27,12 +27,15 @@ public class ProgrammaPrincipale extends Application{
 	Label eSconfitta = new Label("G A M E  O V E R !");
 	Button pStart = new Button("start!");
 	Button pRestart = new Button("restart!");
+	Button pMenù = new Button("");
+
+	// variabili per millisec. timeline
+
 	private final int VELOCITA_DINO=20;
-	double velocitàGioco=5;
-	int segnaPunti=0;
-	int incrementaFiamme=1;
-	int indiceRettangoli=0;
-	int contaSec=1;
+	double velocitàGioco=5.0;	
+
+	// varie timeline
+
 	Timeline timelineSfondo = new Timeline(new KeyFrame(
 			Duration.millis(velocitàGioco),
 			x -> aggiornaSfondo()));
@@ -43,11 +46,17 @@ public class ProgrammaPrincipale extends Application{
 			Duration.millis(100),
 			x -> aggiornaPunteggio()));
 	Timeline timelineZampette = new Timeline(new KeyFrame(
-			Duration.millis(59),
+			Duration.millis(52),
 			x -> Zampette()));
+	Timeline timelineEntrataInziale = new Timeline(new KeyFrame(
+			Duration.millis(0.1),
+			x -> EntrataIniziale()));
 	Timeline timelineFiammata = new Timeline(new KeyFrame(
 			Duration.millis(velocitàGioco),
 			x -> spostaFiamma()));
+
+	// creazione dei rettangoli per bound preciso
+
 	Rectangle rettangoloCactus1 = new Rectangle(15,70);
 	Rectangle rettangoloCactus2 = new Rectangle(15,70);
 	Rectangle rettangoloUccello1 = new Rectangle(9,60);
@@ -55,6 +64,9 @@ public class ProgrammaPrincipale extends Application{
 	Rectangle rettangoloDinoTesta = new Rectangle(9,37);
 	Rectangle rettangoloDinoCorpo = new Rectangle(9,70);
 	Rectangle rettangoloDinoCoda = new Rectangle(9,37);
+
+	// caricamento immagini
+
 	Image cielo = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpg"));
 	ImageView cieloView = new ImageView(cielo);
 	Image cielo2 = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpg"));
@@ -85,6 +97,8 @@ public class ProgrammaPrincipale extends Application{
 	ImageView uccelloView2 = new ImageView(uccello2);
 	Image esplosione = new Image(getClass().getResourceAsStream("esplosione.gif"));
 	ImageView esplosioneView = new ImageView(esplosione);
+	Image menù = new Image(getClass().getResourceAsStream("menu.png"));
+	ImageView menùView = new ImageView(menù);
 
 	// aggiunta audio effects
 
@@ -92,50 +106,35 @@ public class ProgrammaPrincipale extends Application{
 	final AudioClip morte = new AudioClip(getClass().getResource("dead.wav").toString());
 	final AudioClip salto = new AudioClip(getClass().getResource("jump.wav").toString());
 	final AudioClip fiamma = new AudioClip(getClass().getResource("fiamma.wav").toString());
-	int vettorePunti[]= new int[500];
+
+	// varie variabili utili nel programma
+
+	int segnaPunti=0;
+	int incrementaFiamme=1;
+	int indiceRettangoli=0;
+	int contaSec=1;
 	int indicePunti=0;
 	int record=0;
 	int indiceBoundFiamma=0;
+
+	// creazione vettori
+
+	int vettorePunti[]= new int[500];
 	ImageView vettoreFiamme[];
 	Rectangle rettangoliFiamme[];
+
+	// creazione boolean
+
 	boolean arrivatoSù=false;
-	private boolean isDinoImage1 = true;
+	boolean isDinoImage1 = true;
 	boolean rilasciatoW=false;
 	boolean arrivatoGiù=false;
 	boolean sopra=false;
 	boolean sopraSecondo=false;
-	Pane quadro= new Pane();
+
 	public void start (Stage finestra) {
 
-		// sistemaz. prima pagina
-
-		quadro.getChildren().add(eTitolo);
-		eTitolo.setLayoutX(252);
-		eTitolo.setLayoutY(80);
-		eTitolo.setId("titolo");
-
-		quadro.getChildren().add(eSottoTitolo);
-		eSottoTitolo.setLayoutX(230);
-		eSottoTitolo.setLayoutY(150);
-		eSottoTitolo.setId("sottoTitolo");
-
-		quadro.getChildren().add(pStart);
-		pStart.setLayoutX(330);
-		pStart.setLayoutY(230);
-		pStart.setId("start");
-		
-		quadro.getChildren().add(eSconfitta);
-		eSconfitta.setLayoutX(-200);
-		eSconfitta.setLayoutY(-200);
-		eSconfitta.setId("sconfitta");
-		
-		quadro.getChildren().add(pRestart);
-		pRestart.setLayoutX(-300);
-		pRestart.setLayoutY(-300);
-		pRestart.setId("restart");
-		
-		quadro.getChildren().add(ePunteggio);
-		quadro.setId("sottoTitolo");
+		// sistemaz. cyclecount timeline
 
 		timelineSfondo.setCycleCount(Timeline.INDEFINITE);
 
@@ -146,6 +145,58 @@ public class ProgrammaPrincipale extends Application{
 		timelinePunteggio.setCycleCount(Timeline.INDEFINITE);
 
 		timelineZampette.setCycleCount(Timeline.INDEFINITE);
+
+		// sistemaz. prima schermata
+
+		quadro.getChildren().add(eSconfitta);
+		eSconfitta.setLayoutX(-200);
+		eSconfitta.setLayoutY(-200);
+		eSconfitta.setId("sconfitta");
+
+		quadro.getChildren().add(pRestart);
+		pRestart.setLayoutX(-300);
+		pRestart.setLayoutY(-300);
+		pRestart.setId("restart");
+
+		quadro.getChildren().add(ePunteggio);
+		quadro.setId("sottoTitolo");
+
+		quadro.getChildren().add(cieloView);
+
+		quadro.getChildren().add(montagneView);
+		montagneView.setY(160);
+
+		quadro.getChildren().add(terrenoView);
+		terrenoView.setY(370);
+
+		quadro.getChildren().add(cactusView);
+		cactusView.setX(420);
+		cactusView.setY(50);
+
+		quadro.getChildren().add(eTitolo);
+		eTitolo.setLayoutX(252);
+		eTitolo.setLayoutY(80);
+		eTitolo.setId("titolo");
+
+		quadro.getChildren().add(pMenù);
+		pMenù.setLayoutX(10);
+		pMenù.setLayoutY(10);
+		pMenù.setGraphic(menùView);
+		menùView.setPreserveRatio(true);
+		menùView.setFitHeight(2);
+		pMenù.getStyleClass().add("menu");
+
+		quadro.getChildren().add(eSottoTitolo);
+		eSottoTitolo.setLayoutX(230);
+		eSottoTitolo.setLayoutY(150);
+		eSottoTitolo.setId("sottoTitolo");
+
+		quadro.getChildren().add(pStart);
+		pStart.setLayoutX(330);
+		pStart.setLayoutY(230);
+		pStart.setId("start");
+
+		//sistemaz. fit dei vari oggetti
 
 		cieloView.setFitWidth(800);
 		cieloView2.setFitWidth(800);
@@ -174,23 +225,28 @@ public class ProgrammaPrincipale extends Application{
 		uccelloView2.setPreserveRatio(true);
 
 
+		// aggiunta bottoni
+
 		pStart.setOnAction(e -> giocoPrincipale());
 		pRestart.setOnAction(e -> restart());
-		
+
 		Scene scena = new Scene (quadro, 750, 500);
 		scena.getStylesheets().add("it/edu/iisgubbio/dino/Dino.css");
 		scena.setOnKeyPressed(e -> pigiato(e));
 
-		finestra.setTitle("Gioca con Dino!");
-
 		// aggiunta icona finestra
 
 		finestra.getIcons().add(dinosauro3);
+
+		finestra.setTitle("Gioca con Dino!");
 		finestra.setScene(scena);
 		finestra.show();
 
 	}
 	public void giocoPrincipale() {
+
+		// aggiunta elementi a pane
+
 		quadro.getChildren().clear();
 		quadro.getChildren().add(cieloView);
 		quadro.getChildren().add(cieloView2);
@@ -212,9 +268,8 @@ public class ProgrammaPrincipale extends Application{
 		quadro.getChildren().add(esplosioneView);
 		quadro.getChildren().add(eSconfitta);
 		quadro.getChildren().add(pRestart);
-		
-		eSconfitta.setLayoutX(-500);
-		pRestart.setLayoutX(-500);
+
+		// caricamento vettori fiamme e rettangoli fiamme
 
 		vettoreFiamme = new ImageView[1000];
 		for(int indiceFiamma=0; indiceFiamma<vettoreFiamme.length;indiceFiamma++) {
@@ -224,11 +279,12 @@ public class ProgrammaPrincipale extends Application{
 		}
 		rettangoliFiamme = new Rectangle[1000];
 		for(indiceRettangoli=0; indiceRettangoli<rettangoliFiamme.length;indiceRettangoli++) {
-			Rectangle rettangoloFiamma = new Rectangle(5,79);
+			Rectangle rettangoloFiamma = new Rectangle(10,60);
+
 			rettangoliFiamme[indiceRettangoli]=rettangoloFiamma;
 		}
-		esplosioneView.setX(-550);
-		esplosioneView.setY(-550);
+
+		// sistemaz. punteggi 
 
 		quadro.getChildren().add(ePunteggio);
 		quadro.getChildren().add(ePunteggioRecord);
@@ -237,14 +293,29 @@ public class ProgrammaPrincipale extends Application{
 		ePunteggio.setLayoutX(700);
 		ePunteggio.setLayoutY(20);
 		ePunteggio.setId("punteggio");
-		
+
 		ePunteggioRecord.setLayoutX(30);
 		ePunteggioRecord.setLayoutY(20);
 		ePunteggioRecord.setId("punteggio");
 
+		// sistemaz. pulsanti
+
+		eSconfitta.setLayoutX(-500);
+		pRestart.setLayoutX(-500);
+
+		// sistemaz. GIF esplosione
+
+		esplosioneView.setX(-550);
+		esplosioneView.setY(-550);
+
+		// sistemaz. coordinate rettangoli cactus
+
 		rettangoloCactus1.setX(782);
 		rettangoloCactus1.setY(327);
 		rettangoloCactus2.setY(327);
+		rettangoloCactus2.setX(-800);
+
+		// sistemaz. rettangoli dietro del dino
 
 		rettangoloDinoTesta.setX(140);
 		rettangoloDinoTesta.setY(290);
@@ -257,15 +328,16 @@ public class ProgrammaPrincipale extends Application{
 		rettangoloDinoCoda.setY(350);
 		rettangoloDinoCoda.setRotate(90);
 
+		// sistemaz. rettangoli uccelli
+
 		rettangoloUccello1.setRotate(90);
 		rettangoloUccello2.setRotate(90);
-		rettangoloUccello1.setY(290);
+		rettangoloUccello1.setY(295);
 		rettangoloUccello1.setX(-800);
-		rettangoloUccello2.setY(215);
+		rettangoloUccello2.setY(220);
 		rettangoloUccello2.setX(-800);
-		
-		rettangoloCactus2.setX(-800);
-		
+
+		// sistemaz. oggetti da nascondere
 
 		rettangoloDinoTesta.setVisible(false);
 		rettangoloDinoCorpo.setVisible(false);
@@ -277,39 +349,47 @@ public class ProgrammaPrincipale extends Application{
 		uccelloView2.setVisible(false);
 		uccelloView.setVisible(false);
 
+		// sistemaz. coordinate elementi grafici terreno e montagne
+
 		montagneView.setY(160);
 		montagneView2.setY(160);
 
 		terrenoView.setY(370);
 		terrenoView2.setY(370);
 
-		dinosauroView.setX(70);
+		// sistemaz. coordinate elementi grafici dinosauro
+
+		dinosauroView.setX(-30);
 		dinosauroView.setY(300);
-		dinosauroView2.setX(70);
+		dinosauroView2.setX(-30);
 		dinosauroView2.setY(300);
 		dinosauroView3.setX(70);
 		dinosauroView3.setY(300);
 		dinosauroView4.setX(70);
 		dinosauroView4.setY(300);
 
+		// sistemaz. coordinate elementi grafici cactus e uccello
+
 		cactusView.setX(700);
 		cactusView.setY(317);
 		cactusView2.setX(2170);
 		cactusView2.setY(317);
-		
+
 		uccelloView.setX(0);
 		uccelloView.setY(270);
 		uccelloView2.setX(2340);
 		uccelloView2.setY(200);
 
-		timelineSfondo.play();
+		// avvio timeline
+
 		timelinePunteggio.play();
 		timelineZampette.play();
 	}
 
-	// sistemaz. oggetti vari 
+	// sistemaz. oggetti vari e aggiornamento dello sfondo
 
 	private void aggiornaSfondo() {
+
 		cieloView.setX(cieloView.getX()-0.25);
 		cieloView2.setX(cieloView2.getX()-0.25);
 		if(cieloView2.getX()==0) {
@@ -341,7 +421,9 @@ public class ProgrammaPrincipale extends Application{
 			uccelloView.setX(720);
 			rettangoloUccello1.setX(755);
 		}
+
 		//uccelloView Y
+
 		if(uccelloView.getY()==259) {
 			sopra=false;
 		}
@@ -359,11 +441,11 @@ public class ProgrammaPrincipale extends Application{
 			rettangoloUccello1.setX(rettangoloUccello1.getX()-2);
 			uccelloView.setX(uccelloView.getX()-2);
 		}
-		
 		if(uccelloView.getX()==0) {
 			cactusView2.setX(700);
 			rettangoloCactus2.setX(782);
 		}
+
 		rettangoloCactus2.setX(rettangoloCactus2.getX()-2);
 		cactusView2.setX(cactusView2.getX()-2);
 		if(cactusView2.getX()==0) {
@@ -392,8 +474,8 @@ public class ProgrammaPrincipale extends Application{
 			cactusView.setX(700);
 			rettangoloCactus1.setX(782);
 		}
-		
-		// contollo collisione 
+
+		// contollo collisione bound 
 
 		Shape intDino1 = Shape.intersect(rettangoloDinoTesta, rettangoloCactus1);
 		Shape intDino2 = Shape.intersect(rettangoloDinoTesta, rettangoloCactus2);
@@ -407,10 +489,10 @@ public class ProgrammaPrincipale extends Application{
 		Shape intDinoCorpoUccello2 = Shape.intersect(rettangoloDinoCorpo, rettangoloUccello2);
 		Shape intDinoCodaUccello1 = Shape.intersect(rettangoloDinoCoda, rettangoloUccello1);
 		Shape intDinoCodaUccello2 = Shape.intersect(rettangoloDinoCoda, rettangoloUccello2);
-		
+
 		Shape intDinoUccelloFiamma1 = Shape.intersect(rettangoliFiamme[incrementaFiamme], rettangoloUccello1);
 		Shape intDinoUccelloFiamma2 = Shape.intersect(rettangoliFiamme[incrementaFiamme], rettangoloUccello2);
-		
+
 
 		if (intDino1.getBoundsInLocal().getWidth() != -1){
 			sconfitta();
@@ -448,7 +530,9 @@ public class ProgrammaPrincipale extends Application{
 		if (intDinoCodaUccello2.getBoundsInLocal().getWidth() != -1){
 			sconfitta();
 		}
-		
+
+		// condizione per bound con fiamma e appariz. GIF 
+
 		if (intDinoUccelloFiamma1.getBoundsInLocal().getWidth() != -1){
 			indiceBoundFiamma++;
 			contaSec=1;
@@ -478,8 +562,10 @@ public class ProgrammaPrincipale extends Application{
 			uccelloView2.setVisible(false);
 			rettangoloUccello2.setX(-600);
 		}
-		
 	}
+
+	// funzione della rimoz. della GIF dopo bound di uccelli con fiamma
+
 	private void rimuoviGIF(){
 		contaSec-=1;
 		esplosioneView.setX(esplosioneView.getX()-1);
@@ -489,19 +575,22 @@ public class ProgrammaPrincipale extends Application{
 				esplosioneView.setX(-500);
 			}
 		}
-		
 	}
-	// funzione punteggio
+
+	// funzione giiornamento del punteggio
 
 	private void aggiornaPunteggio() {
-		if(segnaPunti%100==0 && segnaPunti!=0) {
-			scoreup.play();
+		if(dinosauroView.getX()> 70||dinosauroView2.getX()> 70||dinosauroView3.getX()> 70) {
+			if(segnaPunti%100==0 && segnaPunti!=0) {
+				scoreup.play();
+			}
+			segnaPunti++;
+			ePunteggio.setText(""+segnaPunti);	
 		}
-		segnaPunti++;
-		ePunteggio.setText(""+segnaPunti);
 	}
-	
-	// funzione movimento zampe del dino ( camminata )
+
+	// funzione della sconfitta in caso di bound con oggetti 
+
 	private void sconfitta() {
 		morte.play();
 		timelineSfondo.stop();
@@ -510,8 +599,8 @@ public class ProgrammaPrincipale extends Application{
 		ePunteggio.setText(""+segnaPunti);
 		record=segnaPunti;
 		vettorePunti[indicePunti]=segnaPunti;
-		for(int scorrimento=0; scorrimento <= indicePunti; scorrimento++) {
-			if(vettorePunti[scorrimento]>vettorePunti[indicePunti]) {
+		for(int scorrimento=0; scorrimento < indicePunti; scorrimento++) {
+			if(record<vettorePunti[scorrimento]) {
 				record=vettorePunti[scorrimento];
 			}
 		}
@@ -523,13 +612,16 @@ public class ProgrammaPrincipale extends Application{
 			quadro.getChildren().remove(dinosauroView3);
 			quadro.getChildren().add(dinosauroView4);
 		}
-		
+
 		eSconfitta.setLayoutX(175);
 		eSconfitta.setLayoutY(110);
 
 		pRestart.setLayoutX(327);
 		pRestart.setLayoutY(200);
 	}
+
+	// funzione restart in caso di morte 
+
 	private void restart() {
 		quadro.getChildren().clear();
 		if(segnaPunti>0) {
@@ -537,8 +629,16 @@ public class ProgrammaPrincipale extends Application{
 		}
 		giocoPrincipale();
 	}
+
+	// funzione del movimento alternato delle zampette del dino
+
 	private void Zampette() {
 		if (isDinoImage1) {
+			if(dinosauroView.getX()<=70) {
+				timelineEntrataInziale.play();
+			}else {
+				timelineSfondo.play();
+			}
 			if (!quadro.getChildren().contains(dinosauroView)) {
 				quadro.getChildren().add(dinosauroView);
 			}
@@ -546,6 +646,11 @@ public class ProgrammaPrincipale extends Application{
 				quadro.getChildren().remove(dinosauroView2);
 			}
 		} else {
+			if(dinosauroView2.getX()<=70) {
+				timelineEntrataInziale.play();
+			}else {
+				timelineSfondo.play();
+			}
 			if (!quadro.getChildren().contains(dinosauroView2)) {
 				quadro.getChildren().add(dinosauroView2);
 			}
@@ -556,7 +661,14 @@ public class ProgrammaPrincipale extends Application{
 		isDinoImage1 = !isDinoImage1;
 	}
 
-	// funzione movimento salto dino 
+	// funzione timer per movimento iniziale da sinistra del dino
+
+	private void EntrataIniziale() {
+		dinosauroView.setX(dinosauroView.getX()+8);
+		dinosauroView2.setX(dinosauroView2.getX()+8);
+	}
+
+	// funzione movimento salto dino con tasti w e W 
 
 	private void muoviDino() {
 
@@ -592,7 +704,7 @@ public class ProgrammaPrincipale extends Application{
 		}
 	}
 
-	// sistemaz. fiamma
+	// scorrimento vettore fiamme e animaz. fiamma
 
 	private void spostaFiamma() {
 		for(int indiceMinoreFiamme=0; indiceMinoreFiamme<incrementaFiamme;indiceMinoreFiamme++) {
@@ -610,9 +722,9 @@ public class ProgrammaPrincipale extends Application{
 	}
 	private void pigiato(KeyEvent evento) {
 
-		// funzione fiamma tasto w,W e up
+		// funzione fiamma tasto w e W
 
-		if(evento.getText().equals("w") || evento.getText().equals("W") || evento.getCode() == KeyCode.UP ) {
+		if(evento.getText().equals("w") || evento.getText().equals("W")) {
 			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)) {
 				quadro.getChildren().remove(dinosauroView);
 				quadro.getChildren().remove(dinosauroView2);
@@ -623,9 +735,9 @@ public class ProgrammaPrincipale extends Application{
 			timelineZampette.stop();
 		}
 
-		// funzione fiamma tasto d, D e right
+		// funzione fiamma tasto d e D
 
-		if(evento.getText().equals("d") || evento.getText().equals("D") || evento.getCode() == KeyCode.RIGHT) {
+		if(evento.getText().equals("d") || evento.getText().equals("D")) {
 			incrementaFiamme++;
 			fiamma.play();
 			vettoreFiamme[incrementaFiamme].setFitHeight(95);
