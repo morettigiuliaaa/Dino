@@ -6,10 +6,12 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.media.AudioClip;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -25,13 +27,23 @@ public class ProgrammaPrincipale extends Application{
 	Label ePunteggio = new Label("");
 	Label ePunteggioRecord = new Label("Record: 0000");
 	Label eSconfitta = new Label("G A M E  O V E R !");
+	Label eDifficoltà= new Label("Come vuoi giocare?");
 	Button pStart = new Button("start!");
 	Button pRestart = new Button("restart!");
 	Button pMenù = new Button("");
+	Button pFacile = new Button("facile");
+	Button pMedio = new Button("medio");
+	Button pDifficile = new Button("difficile");
+	Button pEstremo = new Button("estremo");
 
 	// variabili per millisec. timeline
 
-	private final int VELOCITA_DINO=20;
+	final int VELOCITA_DINO=20;
+	double velocitaCielo=0.25;
+	double velocitàMontagne=0.5;
+	double velocitàCactusUccelli=2;
+	double velocitàSaltoSu=20;
+	double velocitàSaltoGiu=8;
 	double velocitàGioco=5.0;	
 
 	// varie timeline
@@ -47,10 +59,10 @@ public class ProgrammaPrincipale extends Application{
 			x -> aggiornaPunteggio()));
 	Timeline timelineZampette = new Timeline(new KeyFrame(
 			Duration.millis(52),
-			x -> Zampette()));
+			x -> zampette()));
 	Timeline timelineEntrataInziale = new Timeline(new KeyFrame(
 			Duration.millis(0.1),
-			x -> EntrataIniziale()));
+			x -> entrataIniziale()));
 	Timeline timelineFiammata = new Timeline(new KeyFrame(
 			Duration.millis(velocitàGioco),
 			x -> spostaFiamma()));
@@ -170,11 +182,11 @@ public class ProgrammaPrincipale extends Application{
 		terrenoView.setY(370);
 
 		quadro.getChildren().add(cactusView);
-		cactusView.setX(420);
+		cactusView.setX(410);
 		cactusView.setY(50);
 
 		quadro.getChildren().add(eTitolo);
-		eTitolo.setLayoutX(252);
+		eTitolo.setLayoutX(230);
 		eTitolo.setLayoutY(80);
 		eTitolo.setId("titolo");
 
@@ -183,8 +195,8 @@ public class ProgrammaPrincipale extends Application{
 		pMenù.setLayoutY(10);
 		pMenù.setGraphic(menùView);
 		menùView.setPreserveRatio(true);
-		menùView.setFitHeight(2);
-		pMenù.getStyleClass().add("menu");
+		menùView.setFitHeight(15);
+		pMenù.getStyleClass().add("menuBottone");
 
 		quadro.getChildren().add(eSottoTitolo);
 		eSottoTitolo.setLayoutX(230);
@@ -227,9 +239,13 @@ public class ProgrammaPrincipale extends Application{
 
 		// aggiunta bottoni
 
-		pStart.setOnAction(e -> giocoPrincipale());
-		pRestart.setOnAction(e -> restart());
-
+		pStart.setOnAction(e -> sceltaDifficoltà());
+		pRestart.setOnAction(e -> sceltaDifficoltà());
+		pFacile.setOnAction(e -> facile());
+		pMedio.setOnAction(e -> medio());
+		pDifficile.setOnAction(e -> difficile());
+		pEstremo.setOnAction(e -> estremo());
+		
 		Scene scena = new Scene (quadro, 750, 500);
 		scena.getStylesheets().add("it/edu/iisgubbio/dino/Dino.css");
 		scena.setOnKeyPressed(e -> pigiato(e));
@@ -243,8 +259,87 @@ public class ProgrammaPrincipale extends Application{
 		finestra.show();
 
 	}
+	public void sceltaDifficoltà(){
+		quadro.getChildren().remove(eSconfitta);
+		quadro.getChildren().remove(pRestart);
+		Region sceltaMenu = new Region();
+		sceltaMenu.setPrefWidth(250);
+		sceltaMenu.setPrefHeight(300);
+		sceltaMenu.setLayoutX(250);
+		sceltaMenu.setLayoutY(150);
+		quadro.getChildren().remove(pStart);
+		quadro.getChildren().remove(eTitolo);
+		quadro.getChildren().remove(eSottoTitolo);
+		quadro.getChildren().add(sceltaMenu);
+		quadro.getChildren().add(eDifficoltà);
+		eDifficoltà.setId("difficolta");
+		eDifficoltà.setLayoutX(195);
+		eDifficoltà.setLayoutY(65);
+		sceltaMenu.setId("menu");
+		cactusView.setX(-70);
+		cactusView.setY(-100);
+		quadro.getChildren().add(pFacile);
+		pFacile.getStyleClass().add("bottoniDifficolta");
+		pFacile.setLayoutX(322);
+		pFacile.setLayoutY(180);
+		pFacile.setPrefSize(110, 30);
+		
+		quadro.getChildren().add(pMedio);
+		pMedio.getStyleClass().add("bottoniDifficolta");
+		pMedio.setLayoutX(322);
+		pMedio.setLayoutY(243);
+		pMedio.setPrefSize(110, 30);
+		
+		quadro.getChildren().add(pDifficile);
+		pDifficile.getStyleClass().add("bottoniDifficolta");
+		pDifficile.setLayoutX(322);
+		pDifficile.setLayoutY(307);
+		pDifficile.setPrefSize(110, 30);
+		
+		quadro.getChildren().add(pEstremo);
+		pEstremo.getStyleClass().add("bottoniDifficolta");
+		pEstremo.setLayoutX(322);
+		pEstremo.setLayoutY(372);
+		pEstremo.setPrefSize(110, 30);
+		
+		InnerShadow ombra = new InnerShadow();
+		ombra.setRadius(10);
+		sceltaMenu.setEffect(ombra);
+	}
+	public void facile() {
+		velocitaCielo=0.05;
+		velocitàMontagne=0.25;
+		velocitàCactusUccelli=0.5;
+		velocitàSaltoSu=15;
+		velocitàSaltoGiu=6;
+		giocoPrincipale();
+	}
+	public void medio() {
+		velocitaCielo=0.25;
+		velocitàMontagne=0.5;
+		velocitàCactusUccelli=1;
+		velocitàSaltoSu=20;
+		velocitàSaltoGiu=8;
+		giocoPrincipale();
+	}
+	public void difficile() {
+		velocitaCielo=0.5;
+		velocitàMontagne=1;
+		velocitàCactusUccelli=2.5;
+		velocitàSaltoSu=22;
+		velocitàSaltoGiu=10;
+		giocoPrincipale();
+	}
+	public void estremo() {
+		velocitaCielo=1;
+		velocitàMontagne=2;
+		velocitàCactusUccelli=4;
+		velocitàSaltoSu=20;
+		velocitàSaltoGiu=8;
+		giocoPrincipale();
+	}
 	public void giocoPrincipale() {
-
+		
 		// aggiunta elementi a pane
 
 		quadro.getChildren().clear();
@@ -389,33 +484,32 @@ public class ProgrammaPrincipale extends Application{
 	// sistemaz. oggetti vari e aggiornamento dello sfondo
 
 	private void aggiornaSfondo() {
-
-		cieloView.setX(cieloView.getX()-0.25);
-		cieloView2.setX(cieloView2.getX()-0.25);
+		cieloView.setX(cieloView.getX()-velocitaCielo);
+		cieloView2.setX(cieloView2.getX()-velocitaCielo);
 		if(cieloView2.getX()==0) {
 			cieloView.setX(800);
 		}
 		if(cieloView.getX()==0) {
 			cieloView2.setX(800);
 		}
-		montagneView.setX(montagneView.getX()-0.5);
-		montagneView2.setX(montagneView2.getX()-0.5);
+		montagneView.setX(montagneView.getX()-velocitàMontagne);
+		montagneView2.setX(montagneView2.getX()-velocitàMontagne);
 		if(montagneView2.getX()==0) {
 			montagneView.setX(800);
 		}
 		if(montagneView.getX()==0) {
 			montagneView2.setX(800);
 		}
-		terrenoView.setX(terrenoView.getX()-2);
-		terrenoView2.setX(terrenoView2.getX()-2);
+		terrenoView.setX(terrenoView.getX()-velocitàCactusUccelli);
+		terrenoView2.setX(terrenoView2.getX()-velocitàCactusUccelli);
 		if(terrenoView2.getX()==0) {
 			terrenoView.setX(800);
 		}
 		if(terrenoView.getX()==0) {
 			terrenoView2.setX(800);
 		}
-		cactusView.setX(cactusView.getX()-2);
-		rettangoloCactus1.setX(rettangoloCactus1.getX()-2);
+		cactusView.setX(cactusView.getX()-velocitàCactusUccelli);
+		rettangoloCactus1.setX(rettangoloCactus1.getX()-velocitàCactusUccelli);
 		if(cactusView.getX()==0) {
 			uccelloView.setVisible(true);
 			uccelloView.setX(720);
@@ -433,21 +527,21 @@ public class ProgrammaPrincipale extends Application{
 		if(sopra==false) {
 			uccelloView.setY(uccelloView.getY()+0.25);
 			rettangoloUccello1.setY(rettangoloUccello1.getY()+0.25);
-			rettangoloUccello1.setX(rettangoloUccello1.getX()-2);
-			uccelloView.setX(uccelloView.getX()-2);
+			rettangoloUccello1.setX(rettangoloUccello1.getX()-velocitàCactusUccelli);
+			uccelloView.setX(uccelloView.getX()-velocitàCactusUccelli);
 		}else {
 			uccelloView.setY(uccelloView.getY()-0.25);
 			rettangoloUccello1.setY(rettangoloUccello1.getY()-0.25);
-			rettangoloUccello1.setX(rettangoloUccello1.getX()-2);
-			uccelloView.setX(uccelloView.getX()-2);
+			rettangoloUccello1.setX(rettangoloUccello1.getX()-velocitàCactusUccelli);
+			uccelloView.setX(uccelloView.getX()-velocitàCactusUccelli);
 		}
 		if(uccelloView.getX()==0) {
 			cactusView2.setX(700);
 			rettangoloCactus2.setX(782);
 		}
 
-		rettangoloCactus2.setX(rettangoloCactus2.getX()-2);
-		cactusView2.setX(cactusView2.getX()-2);
+		rettangoloCactus2.setX(rettangoloCactus2.getX()-velocitàCactusUccelli);
+		cactusView2.setX(cactusView2.getX()-velocitàCactusUccelli);
 		if(cactusView2.getX()==0) {
 			uccelloView2.setVisible(true);
 			uccelloView2.setX(720);
@@ -462,13 +556,13 @@ public class ProgrammaPrincipale extends Application{
 		if(sopraSecondo==false) {
 			uccelloView2.setY(uccelloView2.getY()+0.25);
 			rettangoloUccello2.setY(rettangoloUccello2.getY()+0.25);
-			rettangoloUccello2.setX(rettangoloUccello2.getX()-2);
-			uccelloView2.setX(uccelloView2.getX()-2);
+			rettangoloUccello2.setX(rettangoloUccello2.getX()-velocitàCactusUccelli);
+			uccelloView2.setX(uccelloView2.getX()-velocitàCactusUccelli);
 		}else {
 			uccelloView2.setY(uccelloView2.getY()-0.25);
 			rettangoloUccello2.setY(rettangoloUccello2.getY()-0.25);
-			rettangoloUccello2.setX(rettangoloUccello2.getX()-2);
-			uccelloView2.setX(uccelloView2.getX()-2);
+			rettangoloUccello2.setX(rettangoloUccello2.getX()-velocitàCactusUccelli);
+			uccelloView2.setX(uccelloView2.getX()-velocitàCactusUccelli);
 		}
 		if(uccelloView2.getX()==0) {
 			cactusView.setX(700);
@@ -632,7 +726,7 @@ public class ProgrammaPrincipale extends Application{
 
 	// funzione del movimento alternato delle zampette del dino
 
-	private void Zampette() {
+	private void zampette() {
 		if (isDinoImage1) {
 			if(dinosauroView.getX()<=70) {
 				timelineEntrataInziale.play();
@@ -663,7 +757,7 @@ public class ProgrammaPrincipale extends Application{
 
 	// funzione timer per movimento iniziale da sinistra del dino
 
-	private void EntrataIniziale() {
+	private void entrataIniziale() {
 		dinosauroView.setX(dinosauroView.getX()+8);
 		dinosauroView2.setX(dinosauroView2.getX()+8);
 	}
@@ -671,22 +765,21 @@ public class ProgrammaPrincipale extends Application{
 	// funzione movimento salto dino con tasti w e W 
 
 	private void muoviDino() {
-
 		if(arrivatoSù==false) {
-			rettangoloDinoTesta.setY(rettangoloDinoTesta.getY()-20);
-			rettangoloDinoCorpo.setY(rettangoloDinoCorpo.getY()-20);
-			rettangoloDinoCoda.setY(rettangoloDinoCoda.getY()-20);
-			dinosauroView3.setY(dinosauroView3.getY()-20);
+			rettangoloDinoTesta.setY(rettangoloDinoTesta.getY()-velocitàSaltoSu);
+			rettangoloDinoCorpo.setY(rettangoloDinoCorpo.getY()-velocitàSaltoSu);
+			rettangoloDinoCoda.setY(rettangoloDinoCoda.getY()-velocitàSaltoSu);
+			dinosauroView3.setY(dinosauroView3.getY()-velocitàSaltoSu);
 			if(dinosauroView3.getY()<=120) {
 				salto.play();
 				arrivatoSù=true;
 			}
 		}else {
 			if(arrivatoSù) {
-				rettangoloDinoTesta.setY(rettangoloDinoTesta.getY()+8);
-				rettangoloDinoCorpo.setY(rettangoloDinoCorpo.getY()+8);
-				rettangoloDinoCoda.setY(rettangoloDinoCoda.getY()+8);
-				dinosauroView3.setY(dinosauroView3.getY()+8);
+				rettangoloDinoTesta.setY(rettangoloDinoTesta.getY()+velocitàSaltoGiu);
+				rettangoloDinoCorpo.setY(rettangoloDinoCorpo.getY()+velocitàSaltoGiu);
+				rettangoloDinoCoda.setY(rettangoloDinoCoda.getY()+velocitàSaltoGiu);
+				dinosauroView3.setY(dinosauroView3.getY()+velocitàSaltoGiu);
 				if(dinosauroView3.getY()>=300) {
 					arrivatoGiù=true;
 				}
@@ -723,35 +816,39 @@ public class ProgrammaPrincipale extends Application{
 	private void pigiato(KeyEvent evento) {
 
 		// funzione fiamma tasto w e W
-
-		if(evento.getText().equals("w") || evento.getText().equals("W")) {
-			if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)) {
-				quadro.getChildren().remove(dinosauroView);
-				quadro.getChildren().remove(dinosauroView2);
-				quadro.getChildren().add(dinosauroView3);
+		if(dinosauroView.getX()>=70 || dinosauroView2.getX()>=70) {
+			if(evento.getText().equals("w") || evento.getText().equals("W")) {
+				if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)) {
+					quadro.getChildren().remove(dinosauroView);
+					quadro.getChildren().remove(dinosauroView2);
+					quadro.getChildren().add(dinosauroView3);
+				}
+				salto.play();
+				timelineMovDino.play();
+				timelineZampette.stop();
 			}
-			salto.play();
-			timelineMovDino.play();
-			timelineZampette.stop();
 		}
+			
 
 		// funzione fiamma tasto d e D
-
-		if(evento.getText().equals("d") || evento.getText().equals("D")) {
-			incrementaFiamme++;
-			fiamma.play();
-			vettoreFiamme[incrementaFiamme].setFitHeight(95);
-			vettoreFiamme[incrementaFiamme].setPreserveRatio(true);
-			vettoreFiamme[incrementaFiamme].setX(158);
-			vettoreFiamme[incrementaFiamme].setY(dinosauroView3.getY()-27);
-			rettangoliFiamme[incrementaFiamme].setX(200);
-			rettangoliFiamme[incrementaFiamme].setY(dinosauroView3.getY()-11);
-			rettangoliFiamme[incrementaFiamme].setRotate(90);
-			quadro.getChildren().add(rettangoliFiamme[incrementaFiamme]);
-			quadro.getChildren().add(vettoreFiamme[incrementaFiamme]);
-			rettangoliFiamme[incrementaFiamme].setVisible(false);
-			timelineFiammata.play();
+		if(dinosauroView.getX()>=70 || dinosauroView2.getX()>=70) {
+			if(evento.getText().equals("d") || evento.getText().equals("D")) {
+				incrementaFiamme++;
+				fiamma.play();
+				vettoreFiamme[incrementaFiamme].setFitHeight(95);
+				vettoreFiamme[incrementaFiamme].setPreserveRatio(true);
+				vettoreFiamme[incrementaFiamme].setX(158);
+				vettoreFiamme[incrementaFiamme].setY(dinosauroView3.getY()-27);
+				rettangoliFiamme[incrementaFiamme].setX(200);
+				rettangoliFiamme[incrementaFiamme].setY(dinosauroView3.getY()-11);
+				rettangoliFiamme[incrementaFiamme].setRotate(90);
+				quadro.getChildren().add(rettangoliFiamme[incrementaFiamme]);
+				quadro.getChildren().add(vettoreFiamme[incrementaFiamme]);
+				rettangoliFiamme[incrementaFiamme].setVisible(false);
+				timelineFiammata.play();
+			}
 		}
+		
 	}
 
 	public static void main(String[] args) {

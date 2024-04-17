@@ -33,3 +33,23 @@
 	-fx-font-family: Minecraft;
 	-fx-text-fill: red;
 }
+.menuBottone{
+	-fx-background-color: white;
+	-fx-border-radius: 200px;
+	-fx-background-radius: 200px;
+	-fx-border-color: black;
+}
+#menu{
+	-fx-background-color: #c7ae65;
+	-fx-background-radius: 23;
+}
+#difficolta{
+	-fx-font-size: 30pt;
+	-fx-font-family: Minecraft;
+	-fx-text-fill: black;
+}
+.bottoniDifficolta{
+	-fx-background-color: #ede6cd;
+	-fx-border-radius: 70px;
+	-fx-background-radius: 70px;
+}
