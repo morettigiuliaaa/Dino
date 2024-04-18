@@ -38,22 +38,18 @@ public class ProgrammaPrincipale extends Application{
 
 	// variabili per millisec. timeline
 
-	final int VELOCITA_DINO=20;
+	int velocitàDino=20;
 	double velocitaCielo=0.25;
 	double velocitàMontagne=0.5;
 	double velocitàCactusUccelli=2;
 	double velocitàSaltoSu=20;
 	double velocitàSaltoGiu=8;
-	double velocitàGioco=5.0;	
+	double velocitàGioco=5;	
 
 	// varie timeline
 
-	Timeline timelineSfondo = new Timeline(new KeyFrame(
-			Duration.millis(velocitàGioco),
-			x -> aggiornaSfondo()));
-	Timeline timelineMovDino = new Timeline(new KeyFrame(
-			Duration.millis(VELOCITA_DINO),
-			x -> muoviDino()));
+	Timeline timelineSfondo;
+	Timeline timelineMovDino;
 	Timeline timelinePunteggio = new Timeline(new KeyFrame(
 			Duration.millis(100),
 			x -> aggiornaPunteggio()));
@@ -148,11 +144,7 @@ public class ProgrammaPrincipale extends Application{
 
 		// sistemaz. cyclecount timeline
 
-		timelineSfondo.setCycleCount(Timeline.INDEFINITE);
-
 		timelineFiammata.setCycleCount(Timeline.INDEFINITE);
-
-		timelineMovDino.setCycleCount(Timeline.INDEFINITE);
 
 		timelinePunteggio.setCycleCount(Timeline.INDEFINITE);
 
@@ -195,6 +187,8 @@ public class ProgrammaPrincipale extends Application{
 		pMenù.setLayoutY(10);
 		pMenù.setGraphic(menùView);
 		menùView.setPreserveRatio(true);
+		menùView.setVisible(false);
+		pMenù.setVisible(false);
 		menùView.setFitHeight(15);
 		pMenù.getStyleClass().add("menuBottone");
 
@@ -204,7 +198,7 @@ public class ProgrammaPrincipale extends Application{
 		eSottoTitolo.setId("sottoTitolo");
 
 		quadro.getChildren().add(pStart);
-		pStart.setLayoutX(330);
+		pStart.setLayoutX(319);
 		pStart.setLayoutY(230);
 		pStart.setId("start");
 
@@ -239,6 +233,7 @@ public class ProgrammaPrincipale extends Application{
 
 		// aggiunta bottoni
 
+		pStart.setPrefWidth(100);
 		pStart.setOnAction(e -> sceltaDifficoltà());
 		pRestart.setOnAction(e -> sceltaDifficoltà());
 		pFacile.setOnAction(e -> facile());
@@ -259,83 +254,149 @@ public class ProgrammaPrincipale extends Application{
 		finestra.show();
 
 	}
+	
+	// funz. di scelta della difficoltà
+	
 	public void sceltaDifficoltà(){
+		
+		// rimoz. bottoni
+		
 		quadro.getChildren().remove(eSconfitta);
 		quadro.getChildren().remove(pRestart);
+		
+		// creaz. regione
+		
 		Region sceltaMenu = new Region();
 		sceltaMenu.setPrefWidth(250);
 		sceltaMenu.setPrefHeight(300);
-		sceltaMenu.setLayoutX(250);
+		sceltaMenu.setLayoutX(243);
 		sceltaMenu.setLayoutY(150);
+		sceltaMenu.setId("menu");
+		
+		// settagg. finestra
+		
 		quadro.getChildren().remove(pStart);
 		quadro.getChildren().remove(eTitolo);
 		quadro.getChildren().remove(eSottoTitolo);
 		quadro.getChildren().add(sceltaMenu);
 		quadro.getChildren().add(eDifficoltà);
 		eDifficoltà.setId("difficolta");
-		eDifficoltà.setLayoutX(195);
+		eDifficoltà.setLayoutX(180);
 		eDifficoltà.setLayoutY(65);
-		sceltaMenu.setId("menu");
 		cactusView.setX(-70);
 		cactusView.setY(-100);
+		
+		// aggiunta bottoni
+		
 		quadro.getChildren().add(pFacile);
 		pFacile.getStyleClass().add("bottoniDifficolta");
-		pFacile.setLayoutX(322);
+		pFacile.setLayoutX(314);
 		pFacile.setLayoutY(180);
 		pFacile.setPrefSize(110, 30);
 		
 		quadro.getChildren().add(pMedio);
 		pMedio.getStyleClass().add("bottoniDifficolta");
-		pMedio.setLayoutX(322);
+		pMedio.setLayoutX(314);
 		pMedio.setLayoutY(243);
 		pMedio.setPrefSize(110, 30);
 		
 		quadro.getChildren().add(pDifficile);
 		pDifficile.getStyleClass().add("bottoniDifficolta");
-		pDifficile.setLayoutX(322);
+		pDifficile.setLayoutX(314);
 		pDifficile.setLayoutY(307);
 		pDifficile.setPrefSize(110, 30);
 		
 		quadro.getChildren().add(pEstremo);
 		pEstremo.getStyleClass().add("bottoniDifficolta");
-		pEstremo.setLayoutX(322);
+		pEstremo.setLayoutX(314);
 		pEstremo.setLayoutY(372);
 		pEstremo.setPrefSize(110, 30);
 		
-		InnerShadow ombra = new InnerShadow();
-		ombra.setRadius(10);
-		sceltaMenu.setEffect(ombra);
+		// aggiunta ombra alla regione
+		
+		InnerShadow ombraInterna = new InnerShadow();
+		ombraInterna.setRadius(10);
+		sceltaMenu.setEffect(ombraInterna);
 	}
+	
+	// funz. gioco facile
+	
 	public void facile() {
-		velocitaCielo=0.05;
-		velocitàMontagne=0.25;
-		velocitàCactusUccelli=0.5;
-		velocitàSaltoSu=15;
-		velocitàSaltoGiu=6;
+		
+		// settaggio delle timeline
+		
+		velocitàGioco=6;
+		velocitàDino=21;
+		timelineSfondo = new Timeline(new KeyFrame(
+				Duration.millis(velocitàGioco),
+				x -> aggiornaSfondo()));
+		timelineSfondo.setCycleCount(Timeline.INDEFINITE);
+		
+		timelineMovDino = new Timeline(new KeyFrame(
+				Duration.millis(velocitàDino),
+				x -> muoviDino()));
+		timelineMovDino.setCycleCount(Timeline.INDEFINITE);
 		giocoPrincipale();
 	}
+	
+	// funz. gioco medio
+	
 	public void medio() {
-		velocitaCielo=0.25;
-		velocitàMontagne=0.5;
-		velocitàCactusUccelli=1;
-		velocitàSaltoSu=20;
-		velocitàSaltoGiu=8;
+		
+		// settaggio delle timeline
+		
+		velocitàGioco=5;
+		velocitàDino=20;
+		timelineSfondo = new Timeline(new KeyFrame(
+				Duration.millis(velocitàGioco),
+				x -> aggiornaSfondo()));
+		timelineSfondo.setCycleCount(Timeline.INDEFINITE);
+		
+		timelineMovDino = new Timeline(new KeyFrame(
+				Duration.millis(velocitàDino),
+				x -> muoviDino()));
+		timelineMovDino.setCycleCount(Timeline.INDEFINITE);
 		giocoPrincipale();
+		
 	}
+	
+	// funz. gioco difficile
+	
 	public void difficile() {
-		velocitaCielo=0.5;
-		velocitàMontagne=1;
-		velocitàCactusUccelli=2.5;
-		velocitàSaltoSu=22;
-		velocitàSaltoGiu=10;
+		
+		// settaggio delle timeline
+		
+		velocitàGioco=4.5;
+		velocitàDino=19;
+		timelineSfondo = new Timeline(new KeyFrame(
+				Duration.millis(velocitàGioco),
+				x -> aggiornaSfondo()));
+		timelineSfondo.setCycleCount(Timeline.INDEFINITE);
+		
+		timelineMovDino = new Timeline(new KeyFrame(
+				Duration.millis(velocitàDino),
+				x -> muoviDino()));
+		timelineMovDino.setCycleCount(Timeline.INDEFINITE);
 		giocoPrincipale();
 	}
+	
+	// funz. gioco estremo
+	
 	public void estremo() {
-		velocitaCielo=1;
-		velocitàMontagne=2;
-		velocitàCactusUccelli=4;
-		velocitàSaltoSu=20;
-		velocitàSaltoGiu=8;
+		
+		// settaggio delle timeline
+		
+		velocitàGioco=3.5;
+		velocitàDino=18;
+		timelineSfondo = new Timeline(new KeyFrame(
+				Duration.millis(velocitàGioco),
+				x -> aggiornaSfondo()));
+		timelineSfondo.setCycleCount(Timeline.INDEFINITE);
+		
+		timelineMovDino = new Timeline(new KeyFrame(
+				Duration.millis(velocitàDino),
+				x -> muoviDino()));
+		timelineMovDino.setCycleCount(Timeline.INDEFINITE);
 		giocoPrincipale();
 	}
 	public void giocoPrincipale() {
@@ -484,32 +545,32 @@ public class ProgrammaPrincipale extends Application{
 	// sistemaz. oggetti vari e aggiornamento dello sfondo
 
 	private void aggiornaSfondo() {
-		cieloView.setX(cieloView.getX()-velocitaCielo);
-		cieloView2.setX(cieloView2.getX()-velocitaCielo);
+		cieloView.setX(cieloView.getX()-0.25);
+		cieloView2.setX(cieloView2.getX()-0.25);
 		if(cieloView2.getX()==0) {
 			cieloView.setX(800);
 		}
 		if(cieloView.getX()==0) {
 			cieloView2.setX(800);
 		}
-		montagneView.setX(montagneView.getX()-velocitàMontagne);
-		montagneView2.setX(montagneView2.getX()-velocitàMontagne);
+		montagneView.setX(montagneView.getX()-0.5);
+		montagneView2.setX(montagneView2.getX()-0.5);
 		if(montagneView2.getX()==0) {
 			montagneView.setX(800);
 		}
 		if(montagneView.getX()==0) {
 			montagneView2.setX(800);
 		}
-		terrenoView.setX(terrenoView.getX()-velocitàCactusUccelli);
-		terrenoView2.setX(terrenoView2.getX()-velocitàCactusUccelli);
+		terrenoView.setX(terrenoView.getX()-2);
+		terrenoView2.setX(terrenoView2.getX()-2);
 		if(terrenoView2.getX()==0) {
 			terrenoView.setX(800);
 		}
 		if(terrenoView.getX()==0) {
 			terrenoView2.setX(800);
 		}
-		cactusView.setX(cactusView.getX()-velocitàCactusUccelli);
-		rettangoloCactus1.setX(rettangoloCactus1.getX()-velocitàCactusUccelli);
+		cactusView.setX(cactusView.getX()-2);
+		rettangoloCactus1.setX(rettangoloCactus1.getX()-2);
 		if(cactusView.getX()==0) {
 			uccelloView.setVisible(true);
 			uccelloView.setX(720);
@@ -690,6 +751,8 @@ public class ProgrammaPrincipale extends Application{
 		timelineSfondo.stop();
 		timelinePunteggio.stop();
 		timelineZampette.stop();
+		menùView.setVisible(true);
+		pMenù.setVisible(true);
 		ePunteggio.setText(""+segnaPunti);
 		record=segnaPunti;
 		vettorePunti[indicePunti]=segnaPunti;
@@ -707,6 +770,8 @@ public class ProgrammaPrincipale extends Application{
 			quadro.getChildren().add(dinosauroView4);
 		}
 
+		segnaPunti=0;
+		
 		eSconfitta.setLayoutX(175);
 		eSconfitta.setLayoutY(110);
 
@@ -793,6 +858,8 @@ public class ProgrammaPrincipale extends Application{
 				timelineZampette.play();
 				arrivatoSù=false;
 				arrivatoGiù=false;
+				System.out.println("arrivatoSù="+arrivatoSù);
+				System.out.println("arrivatoGiù="+arrivatoGiù);
 			}
 		}
 	}
@@ -829,7 +896,6 @@ public class ProgrammaPrincipale extends Application{
 			}
 		}
 			
-
 		// funzione fiamma tasto d e D
 		if(dinosauroView.getX()>=70 || dinosauroView2.getX()>=70) {
 			if(evento.getText().equals("d") || evento.getText().equals("D")) {
