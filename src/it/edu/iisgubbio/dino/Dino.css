@@ -15,32 +15,37 @@
 #start{
 	-fx-font-size: 15pt;
 	-fx-font-family: Minecraft;
-	-fx-border-color: black;
 	-fx-text-fill: black;
+	-fx-background-color: rgb(226, 205, 173);
+	-fx-border-radius: 70px;
+	-fx-background-radius: 70px;
+	
 }
 #restart{
 	-fx-font-size: 15pt;
 	-fx-font-family: Minecraft;
-	-fx-border-color: black;
 	-fx-text-fill: black;
+	-fx-background-color: rgb(226, 205, 173);
+	-fx-border-radius: 70px;
+	-fx-background-radius: 70px;
 }
 #punteggio{
 	-fx-font-weight: bold;
-	-fx-text-fill: black;
+	-fx-text-fill: rgb(0,0,0);
 }
 #sconfitta{
 	-fx-font-size: 35pt;
 	-fx-font-family: Minecraft;
-	-fx-text-fill: red;
+	-fx-text-fill: rgb(114, 32, 7);
 }
 .menuBottone{
-	-fx-background-color: white;
+	-fx-background-color: rgb(204, 160, 96);
 	-fx-border-radius: 200px;
 	-fx-background-radius: 200px;
 	-fx-border-color: black;
 }
 #menu{
-	-fx-background-color: #c7ae65;
+	-fx-background-color: rgb(204, 160, 96);
 	-fx-background-radius: 23;
 }
 #difficolta{
@@ -49,7 +54,7 @@
 	-fx-text-fill: black;
 }
 .bottoniDifficolta{
-	-fx-background-color: #ede6cd;
+	-fx-background-color: rgb(226, 205, 173);
 	-fx-border-radius: 70px;
 	-fx-background-radius: 70px;
 }
