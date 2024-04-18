@@ -18,9 +18,10 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-// caricamento elementi necessari ( Label, ecc... )
-
 public class ProgrammaPrincipale extends Application{
+	
+	//elementi necessari per la struttura del programma( Label, ecc... )
+	
 	Pane quadro= new Pane();
 	Label eTitolo = new Label("Dino game");
 	Label eSottoTitolo = new Label("affronta il deserto con Dino!");
@@ -67,25 +68,25 @@ public class ProgrammaPrincipale extends Application{
 
 	Rectangle rettangoloCactus1 = new Rectangle(15,70);
 	Rectangle rettangoloCactus2 = new Rectangle(15,70);
-	Rectangle rettangoloUccello1 = new Rectangle(9,60);
-	Rectangle rettangoloUccello2 = new Rectangle(9,60);
+	Rectangle rettangoloUccello1 = new Rectangle(16,60);
+	Rectangle rettangoloUccello2 = new Rectangle(16,60);
 	Rectangle rettangoloDinoTesta = new Rectangle(9,37);
 	Rectangle rettangoloDinoCorpo = new Rectangle(9,70);
 	Rectangle rettangoloDinoCoda = new Rectangle(9,37);
 
 	// caricamento immagini
 
-	Image cielo = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpg"));
+	Image cielo = new Image(getClass().getResourceAsStream("sfondoProgrammaCielo.jpg"));
 	ImageView cieloView = new ImageView(cielo);
-	Image cielo2 = new Image(getClass().getResourceAsStream("Sfondoprogramma_cielo.jpg"));
+	Image cielo2 = new Image(getClass().getResourceAsStream("sfondoProgrammaCielo.jpg"));
 	ImageView cieloView2 = new ImageView(cielo2);
-	Image montagne = new Image(getClass().getResourceAsStream("Sfondoprogramma_montagne.png"));
+	Image montagne = new Image(getClass().getResourceAsStream("sfondoProgrammaMontagne.png"));
 	ImageView montagneView = new ImageView(montagne);
-	Image montagne2 = new Image(getClass().getResourceAsStream("Sfondoprogramma_montagne.png"));
+	Image montagne2 = new Image(getClass().getResourceAsStream("sfondoProgrammaMontagne.png"));
 	ImageView montagneView2 = new ImageView(montagne2);
-	Image terreno = new Image(getClass().getResourceAsStream("Sfondoprogramma_terreno.PNG"));
+	Image terreno = new Image(getClass().getResourceAsStream("sfondoProgrammaTerreno.PNG"));
 	ImageView terrenoView = new ImageView(terreno);
-	Image terreno2 = new Image(getClass().getResourceAsStream("Sfondoprogramma_terreno.PNG"));
+	Image terreno2 = new Image(getClass().getResourceAsStream("sfondoProgrammaTerreno.PNG"));
 	ImageView terrenoView2 = new ImageView(terreno2);
 	Image dinosauro = new Image(getClass().getResourceAsStream("dino 1.png"));
 	ImageView dinosauroView = new ImageView(dinosauro);
@@ -115,7 +116,7 @@ public class ProgrammaPrincipale extends Application{
 	final AudioClip salto = new AudioClip(getClass().getResource("jump.wav").toString());
 	final AudioClip fiamma = new AudioClip(getClass().getResource("fiamma.wav").toString());
 
-	// varie variabili utili nel programma
+	// variabili utili nel programma (punteggio, fiamme ecc.)
 
 	int segnaPunti=0;
 	int incrementaFiamme=1;
@@ -131,7 +132,7 @@ public class ProgrammaPrincipale extends Application{
 	ImageView vettoreFiamme[];
 	Rectangle rettangoliFiamme[];
 
-	// creazione boolean
+	// creazione variabili booleane
 
 	boolean arrivatoSù=false;
 	boolean isDinoImage1 = true;
@@ -174,23 +175,13 @@ public class ProgrammaPrincipale extends Application{
 		terrenoView.setY(370);
 
 		quadro.getChildren().add(cactusView);
-		cactusView.setX(410);
+		cactusView.setX(405);
 		cactusView.setY(50);
 
 		quadro.getChildren().add(eTitolo);
-		eTitolo.setLayoutX(230);
+		eTitolo.setLayoutX(225);
 		eTitolo.setLayoutY(80);
 		eTitolo.setId("titolo");
-
-		quadro.getChildren().add(pMenù);
-		pMenù.setLayoutX(10);
-		pMenù.setLayoutY(10);
-		pMenù.setGraphic(menùView);
-		menùView.setPreserveRatio(true);
-		menùView.setVisible(false);
-		pMenù.setVisible(false);
-		menùView.setFitHeight(15);
-		pMenù.getStyleClass().add("menuBottone");
 
 		quadro.getChildren().add(eSottoTitolo);
 		eSottoTitolo.setLayoutX(230);
@@ -235,7 +226,8 @@ public class ProgrammaPrincipale extends Application{
 
 		pStart.setPrefWidth(100);
 		pStart.setOnAction(e -> sceltaDifficoltà());
-		pRestart.setOnAction(e -> sceltaDifficoltà());
+		pRestart.setOnAction(e -> restart());
+		pMenù.setOnAction(e -> sceltaDifficoltà());
 		pFacile.setOnAction(e -> facile());
 		pMedio.setOnAction(e -> medio());
 		pDifficile.setOnAction(e -> difficile());
@@ -254,27 +246,23 @@ public class ProgrammaPrincipale extends Application{
 		finestra.show();
 
 	}
-	
 	// funz. di scelta della difficoltà
 	
-	public void sceltaDifficoltà(){
-		
+	public void sceltaDifficoltà() {
 		// rimoz. bottoni
 		
 		quadro.getChildren().remove(eSconfitta);
 		quadro.getChildren().remove(pRestart);
 		
 		// creaz. regione
-		
 		Region sceltaMenu = new Region();
 		sceltaMenu.setPrefWidth(250);
 		sceltaMenu.setPrefHeight(300);
 		sceltaMenu.setLayoutX(243);
 		sceltaMenu.setLayoutY(150);
-		sceltaMenu.setId("menu");
+		sceltaMenu.setId("menuRegione");
 		
 		// settagg. finestra
-		
 		quadro.getChildren().remove(pStart);
 		quadro.getChildren().remove(eTitolo);
 		quadro.getChildren().remove(eSottoTitolo);
@@ -287,7 +275,6 @@ public class ProgrammaPrincipale extends Application{
 		cactusView.setY(-100);
 		
 		// aggiunta bottoni
-		
 		quadro.getChildren().add(pFacile);
 		pFacile.getStyleClass().add("bottoniDifficolta");
 		pFacile.setLayoutX(314);
@@ -322,9 +309,9 @@ public class ProgrammaPrincipale extends Application{
 	// funz. gioco facile
 	
 	public void facile() {
-		
 		// settaggio delle timeline
 		
+		ePunteggioRecord.setVisible(true);
 		velocitàGioco=6;
 		velocitàDino=21;
 		timelineSfondo = new Timeline(new KeyFrame(
@@ -342,9 +329,9 @@ public class ProgrammaPrincipale extends Application{
 	// funz. gioco medio
 	
 	public void medio() {
-		
 		// settaggio delle timeline
 		
+		ePunteggioRecord.setVisible(true);
 		velocitàGioco=5;
 		velocitàDino=20;
 		timelineSfondo = new Timeline(new KeyFrame(
@@ -357,15 +344,14 @@ public class ProgrammaPrincipale extends Application{
 				x -> muoviDino()));
 		timelineMovDino.setCycleCount(Timeline.INDEFINITE);
 		giocoPrincipale();
-		
 	}
 	
 	// funz. gioco difficile
 	
 	public void difficile() {
-		
 		// settaggio delle timeline
 		
+		ePunteggioRecord.setVisible(true);
 		velocitàGioco=4.5;
 		velocitàDino=19;
 		timelineSfondo = new Timeline(new KeyFrame(
@@ -383,9 +369,9 @@ public class ProgrammaPrincipale extends Application{
 	// funz. gioco estremo
 	
 	public void estremo() {
-		
 		// settaggio delle timeline
 		
+		ePunteggioRecord.setVisible(true);
 		velocitàGioco=3.5;
 		velocitàDino=18;
 		timelineSfondo = new Timeline(new KeyFrame(
@@ -424,6 +410,14 @@ public class ProgrammaPrincipale extends Application{
 		quadro.getChildren().add(esplosioneView);
 		quadro.getChildren().add(eSconfitta);
 		quadro.getChildren().add(pRestart);
+		
+		quadro.getChildren().add(pMenù);
+		pMenù.setGraphic(menùView);
+		menùView.setPreserveRatio(true);
+		menùView.setVisible(false);
+		pMenù.setVisible(false);
+		menùView.setFitHeight(15);
+		pMenù.getStyleClass().add("menuBottone");
 
 		// caricamento vettori fiamme e rettangoli fiamme
 
@@ -449,7 +443,8 @@ public class ProgrammaPrincipale extends Application{
 		ePunteggio.setLayoutX(700);
 		ePunteggio.setLayoutY(20);
 		ePunteggio.setId("punteggio");
-
+		
+		ePunteggioRecord.setVisible(true);
 		ePunteggioRecord.setLayoutX(30);
 		ePunteggioRecord.setLayoutY(20);
 		ePunteggioRecord.setId("punteggio");
@@ -488,7 +483,7 @@ public class ProgrammaPrincipale extends Application{
 
 		rettangoloUccello1.setRotate(90);
 		rettangoloUccello2.setRotate(90);
-		rettangoloUccello1.setY(295);
+		rettangoloUccello1.setY(290);
 		rettangoloUccello1.setX(-800);
 		rettangoloUccello2.setY(220);
 		rettangoloUccello2.setX(-800);
@@ -706,7 +701,6 @@ public class ProgrammaPrincipale extends Application{
 		if (intDinoUccelloFiamma2.getBoundsInLocal().getWidth() != -1){
 			indiceBoundFiamma++;
 			contaSec=1;
-			System.out.println("fiamma 2!");
 			esplosioneView.setFitHeight(85);
 			esplosioneView.setPreserveRatio(true);
 			Timeline timelineRimuoviGIF = new Timeline(new KeyFrame(
@@ -732,11 +726,11 @@ public class ProgrammaPrincipale extends Application{
 		}
 	}
 
-	// funzione giiornamento del punteggio
+	// funzione aggiornamento del punteggio
 
 	private void aggiornaPunteggio() {
-		if(dinosauroView.getX()> 70||dinosauroView2.getX()> 70||dinosauroView3.getX()> 70) {
-			if(segnaPunti%100==0 && segnaPunti!=0) {
+		if(dinosauroView.getX()> 70||dinosauroView2.getX()>70||dinosauroView3.getX()>70) {
+			if(segnaPunti%100==0 && segnaPunti!=0) { // ogni 100 punti parte il suono
 				scoreup.play();
 			}
 			segnaPunti++;
@@ -753,6 +747,8 @@ public class ProgrammaPrincipale extends Application{
 		timelineZampette.stop();
 		menùView.setVisible(true);
 		pMenù.setVisible(true);
+		pMenù.setLayoutX(10);
+		pMenù.setLayoutY(10);
 		ePunteggio.setText(""+segnaPunti);
 		record=segnaPunti;
 		vettorePunti[indicePunti]=segnaPunti;
@@ -763,6 +759,7 @@ public class ProgrammaPrincipale extends Application{
 		}
 		ePunteggioRecord.setText("Record: "+record);
 		indicePunti++;
+		ePunteggioRecord.setVisible(false);
 		if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)||quadro.getChildren().contains(dinosauroView3)) {
 			quadro.getChildren().remove(dinosauroView);
 			quadro.getChildren().remove(dinosauroView2);
@@ -858,8 +855,6 @@ public class ProgrammaPrincipale extends Application{
 				timelineZampette.play();
 				arrivatoSù=false;
 				arrivatoGiù=false;
-				System.out.println("arrivatoSù="+arrivatoSù);
-				System.out.println("arrivatoGiù="+arrivatoGiù);
 			}
 		}
 	}
