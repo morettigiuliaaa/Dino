@@ -42,7 +42,7 @@ public class ProgrammaPrincipale extends Application{
 	int velocitàDino=20;
 	double velocitaCielo=0.25;
 	double velocitàMontagne=0.5;
-	double velocitàCactusUccelli=2;
+	double velocitàCactusEUccelli=2;
 	double velocitàSaltoSu=20;
 	double velocitàSaltoGiu=8;
 	double velocitàGioco=5;	
@@ -115,7 +115,7 @@ public class ProgrammaPrincipale extends Application{
 	final AudioClip morte = new AudioClip(getClass().getResource("dead.wav").toString());
 	final AudioClip salto = new AudioClip(getClass().getResource("jump.wav").toString());
 	final AudioClip fiamma = new AudioClip(getClass().getResource("fiamma.wav").toString());
-
+	
 	// variabili utili nel programma (punteggio, fiamme ecc.)
 
 	int segnaPunti=0;
@@ -192,6 +192,13 @@ public class ProgrammaPrincipale extends Application{
 		pStart.setLayoutX(319);
 		pStart.setLayoutY(230);
 		pStart.setId("start");
+		
+		// sistemaz. volume audio
+		
+		morte.setVolume(0.7);
+		scoreup.setVolume(0.5);
+		salto.setVolume(0.7);
+		fiamma.setVolume(0.5);
 
 		//sistemaz. fit dei vari oggetti
 
@@ -221,7 +228,6 @@ public class ProgrammaPrincipale extends Application{
 		uccelloView2.setFitHeight(85);
 		uccelloView2.setPreserveRatio(true);
 
-
 		// aggiunta bottoni
 
 		pStart.setPrefWidth(100);
@@ -246,15 +252,18 @@ public class ProgrammaPrincipale extends Application{
 		finestra.show();
 
 	}
+	
 	// funz. di scelta della difficoltà
 	
 	public void sceltaDifficoltà() {
+		
 		// rimoz. bottoni
 		
 		quadro.getChildren().remove(eSconfitta);
 		quadro.getChildren().remove(pRestart);
 		
 		// creaz. regione
+		
 		Region sceltaMenu = new Region();
 		sceltaMenu.setPrefWidth(250);
 		sceltaMenu.setPrefHeight(300);
@@ -263,6 +272,7 @@ public class ProgrammaPrincipale extends Application{
 		sceltaMenu.setId("menuRegione");
 		
 		// settagg. finestra
+		
 		quadro.getChildren().remove(pStart);
 		quadro.getChildren().remove(eTitolo);
 		quadro.getChildren().remove(eSottoTitolo);
@@ -275,6 +285,7 @@ public class ProgrammaPrincipale extends Application{
 		cactusView.setY(-100);
 		
 		// aggiunta bottoni
+		
 		quadro.getChildren().add(pFacile);
 		pFacile.getStyleClass().add("bottoniDifficolta");
 		pFacile.setLayoutX(314);
@@ -309,6 +320,7 @@ public class ProgrammaPrincipale extends Application{
 	// funz. gioco facile
 	
 	public void facile() {
+		
 		// settaggio delle timeline
 		
 		ePunteggioRecord.setVisible(true);
@@ -329,6 +341,7 @@ public class ProgrammaPrincipale extends Application{
 	// funz. gioco medio
 	
 	public void medio() {
+		
 		// settaggio delle timeline
 		
 		ePunteggioRecord.setVisible(true);
@@ -349,6 +362,7 @@ public class ProgrammaPrincipale extends Application{
 	// funz. gioco difficile
 	
 	public void difficile() {
+		
 		// settaggio delle timeline
 		
 		ePunteggioRecord.setVisible(true);
@@ -369,6 +383,7 @@ public class ProgrammaPrincipale extends Application{
 	// funz. gioco estremo
 	
 	public void estremo() {
+		
 		// settaggio delle timeline
 		
 		ePunteggioRecord.setVisible(true);
@@ -385,6 +400,7 @@ public class ProgrammaPrincipale extends Application{
 		timelineMovDino.setCycleCount(Timeline.INDEFINITE);
 		giocoPrincipale();
 	}
+	
 	public void giocoPrincipale() {
 		
 		// aggiunta elementi a pane
@@ -540,6 +556,7 @@ public class ProgrammaPrincipale extends Application{
 	// sistemaz. oggetti vari e aggiornamento dello sfondo
 
 	private void aggiornaSfondo() {
+		
 		cieloView.setX(cieloView.getX()-0.25);
 		cieloView2.setX(cieloView2.getX()-0.25);
 		if(cieloView2.getX()==0) {
@@ -583,21 +600,21 @@ public class ProgrammaPrincipale extends Application{
 		if(sopra==false) {
 			uccelloView.setY(uccelloView.getY()+0.25);
 			rettangoloUccello1.setY(rettangoloUccello1.getY()+0.25);
-			rettangoloUccello1.setX(rettangoloUccello1.getX()-velocitàCactusUccelli);
-			uccelloView.setX(uccelloView.getX()-velocitàCactusUccelli);
+			rettangoloUccello1.setX(rettangoloUccello1.getX()-velocitàCactusEUccelli);
+			uccelloView.setX(uccelloView.getX()-velocitàCactusEUccelli);
 		}else {
 			uccelloView.setY(uccelloView.getY()-0.25);
 			rettangoloUccello1.setY(rettangoloUccello1.getY()-0.25);
-			rettangoloUccello1.setX(rettangoloUccello1.getX()-velocitàCactusUccelli);
-			uccelloView.setX(uccelloView.getX()-velocitàCactusUccelli);
+			rettangoloUccello1.setX(rettangoloUccello1.getX()-velocitàCactusEUccelli);
+			uccelloView.setX(uccelloView.getX()-velocitàCactusEUccelli);
 		}
 		if(uccelloView.getX()==0) {
 			cactusView2.setX(700);
 			rettangoloCactus2.setX(782);
 		}
 
-		rettangoloCactus2.setX(rettangoloCactus2.getX()-velocitàCactusUccelli);
-		cactusView2.setX(cactusView2.getX()-velocitàCactusUccelli);
+		rettangoloCactus2.setX(rettangoloCactus2.getX()-velocitàCactusEUccelli);
+		cactusView2.setX(cactusView2.getX()-velocitàCactusEUccelli);
 		if(cactusView2.getX()==0) {
 			uccelloView2.setVisible(true);
 			uccelloView2.setX(720);
@@ -612,13 +629,13 @@ public class ProgrammaPrincipale extends Application{
 		if(sopraSecondo==false) {
 			uccelloView2.setY(uccelloView2.getY()+0.25);
 			rettangoloUccello2.setY(rettangoloUccello2.getY()+0.25);
-			rettangoloUccello2.setX(rettangoloUccello2.getX()-velocitàCactusUccelli);
-			uccelloView2.setX(uccelloView2.getX()-velocitàCactusUccelli);
+			rettangoloUccello2.setX(rettangoloUccello2.getX()-velocitàCactusEUccelli);
+			uccelloView2.setX(uccelloView2.getX()-velocitàCactusEUccelli);
 		}else {
 			uccelloView2.setY(uccelloView2.getY()-0.25);
 			rettangoloUccello2.setY(rettangoloUccello2.getY()-0.25);
-			rettangoloUccello2.setX(rettangoloUccello2.getX()-velocitàCactusUccelli);
-			uccelloView2.setX(uccelloView2.getX()-velocitàCactusUccelli);
+			rettangoloUccello2.setX(rettangoloUccello2.getX()-velocitàCactusEUccelli);
+			uccelloView2.setX(uccelloView2.getX()-velocitàCactusEUccelli);
 		}
 		if(uccelloView2.getX()==0) {
 			cactusView.setX(700);
@@ -639,7 +656,6 @@ public class ProgrammaPrincipale extends Application{
 		Shape intDinoCorpoUccello2 = Shape.intersect(rettangoloDinoCorpo, rettangoloUccello2);
 		Shape intDinoCodaUccello1 = Shape.intersect(rettangoloDinoCoda, rettangoloUccello1);
 		Shape intDinoCodaUccello2 = Shape.intersect(rettangoloDinoCoda, rettangoloUccello2);
-
 		Shape intDinoUccelloFiamma1 = Shape.intersect(rettangoliFiamme[incrementaFiamme], rettangoloUccello1);
 		Shape intDinoUccelloFiamma2 = Shape.intersect(rettangoliFiamme[incrementaFiamme], rettangoloUccello2);
 
@@ -878,6 +894,7 @@ public class ProgrammaPrincipale extends Application{
 	private void pigiato(KeyEvent evento) {
 
 		// funzione fiamma tasto w e W
+		
 		if(dinosauroView.getX()>=70 || dinosauroView2.getX()>=70) {
 			if(evento.getText().equals("w") || evento.getText().equals("W")) {
 				if (quadro.getChildren().contains(dinosauroView)||quadro.getChildren().contains(dinosauroView2)) {
@@ -892,6 +909,7 @@ public class ProgrammaPrincipale extends Application{
 		}
 			
 		// funzione fiamma tasto d e D
+		
 		if(dinosauroView.getX()>=70 || dinosauroView2.getX()>=70) {
 			if(evento.getText().equals("d") || evento.getText().equals("D")) {
 				incrementaFiamme++;
@@ -909,7 +927,6 @@ public class ProgrammaPrincipale extends Application{
 				timelineFiammata.play();
 			}
 		}
-		
 	}
 
 	public static void main(String[] args) {

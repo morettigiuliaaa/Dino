@@ -2,16 +2,19 @@
     font-family: Minecraft;
     src: url('Minecraft.ttf');
 }
+
 #titolo{
 	-fx-font-size: 35pt;
 	-fx-font-family: Minecraft;
 	-fx-text-fill: black;
 }
+
 #sottoTitolo{
 	-fx-font-size: 15pt;
 	-fx-font-family: Minecraft;
 	-fx-text-fill: black;
 }
+
 #start{
 	-fx-font-size: 15pt;
 	-fx-font-family: Minecraft;
@@ -21,6 +24,7 @@
 	-fx-background-radius: 70px;
 	
 }
+
 #restart{
 	-fx-font-size: 15pt;
 	-fx-font-family: Minecraft;
@@ -29,29 +33,35 @@
 	-fx-border-radius: 70px;
 	-fx-background-radius: 70px;
 }
+
 #punteggio{
 	-fx-font-weight: bold;
 	-fx-text-fill: rgb(0,0,0);
 }
+
 #sconfitta{
 	-fx-font-size: 35pt;
 	-fx-font-family: Minecraft;
 	-fx-text-fill: rgb(166, 46, 11);
 }
+
 .menuBottone{
 	-fx-background-color: rgb(226, 205, 173);
 	-fx-border-radius: 300px;
 	-fx-background-radius: 300px;
 }
+
 #menuRegione{
 	-fx-background-color: rgb(204, 160, 96);
 	-fx-background-radius: 23;
 }
+
 #difficolta{
 	-fx-font-size: 30pt;
 	-fx-font-family: Minecraft;
 	-fx-text-fill: black;
 }
+
 .bottoniDifficolta{
 	-fx-background-color: rgb(226, 205, 173);
 	-fx-border-radius: 70px;
