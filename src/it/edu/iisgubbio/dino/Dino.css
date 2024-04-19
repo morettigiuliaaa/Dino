@@ -30,7 +30,7 @@
 	-fx-font-size: 15pt;
 	-fx-font-family: Minecraft;
 	-fx-text-fill: black;
-	-fx-background-color: rgb(226, 205, 173);
+	-fx-background-color: rgb(219, 191, 151);
 	-fx-border-radius: 70px;
 	-fx-background-radius: 70px;
 	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 10 , 0.6 , 0, 1.2 );
@@ -48,7 +48,7 @@
 }
 
 .menuBottone{
-	-fx-background-color: rgb(226, 205, 173);
+	-fx-background-color: rgb(219, 191, 151);
 	-fx-border-radius: 300px;
 	-fx-background-radius: 300px;
 	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 10 , 0.6 , 0, 1.2 );

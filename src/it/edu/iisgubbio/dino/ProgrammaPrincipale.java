@@ -18,17 +18,17 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class ProgrammaPrincipale extends Application{
+public class ProgrammaPrincipale extends Application {
 
-	//elementi necessari per la struttura del programma( Label, ecc... )
+	// elementi necessari per la struttura del programma( Label, ecc... )
 
-	Pane areaGioco= new Pane();
+	Pane areaGioco = new Pane();
 	Label eTitolo = new Label("Dino game");
 	Label eSottoTitolo = new Label("affronta il deserto con Dino!");
 	Label ePunteggio = new Label("");
 	Label ePunteggioRecord = new Label("Record: 0000");
 	Label eSconfitta = new Label("G A M E  O V E R !");
-	Label eDifficoltà= new Label("Come vuoi giocare?");
+	Label eDifficoltà = new Label("Come vuoi giocare?");
 	Button pStart = new Button("start!");
 	Button pRestart = new Button("restart!");
 	Button pMenù = new Button("");
@@ -39,43 +39,37 @@ public class ProgrammaPrincipale extends Application{
 
 	// variabili per millisec. timeline
 
-	int velocitàDino=20;
-	double velocitaCielo=0.25;
-	double velocitàMontagne=0.5;
-	double velocitàCactusEUccelli=2;
-	double velocitàSaltoSu=20;
-	double velocitàSaltoGiu=8;
-	double velocitàGioco=5;	
+	double velocitaCielo = 0.25;
+	double velocitàMontagne = 0.5;
+	double velocitàCactusEUccelli = 2;
+	double velocitàSaltoSu = 20;
+	double velocitàSaltoGiu = 8;
+	double velocitàGioco = 5;
+	int velocitàDino = 20;
+	final int LARGHEZZA_AREA_GIOCO = 750;
+	final int ALTEZZA_AREA_GIOCO = 500;
 
 	// varie timeline
 
 	Timeline timelineSfondo;
 	Timeline timelineMovDino;
-	Timeline timelinePunteggio = new Timeline(new KeyFrame(
-			Duration.millis(100),
-			x -> aggiornaPunteggio()));
-	Timeline timelineZampette = new Timeline(new KeyFrame(
-			Duration.millis(52),
-			x -> zampette()));
+	Timeline timelinePunteggio = new Timeline(new KeyFrame(Duration.millis(100), x -> aggiornaPunteggio()));
+	Timeline timelineZampette = new Timeline(new KeyFrame(Duration.millis(52), x -> zampette()));
 
 	// timeline per far apparire il dino dalla sinistra della schermata
 
-	Timeline timelineEntrataInziale = new Timeline(new KeyFrame( 
-			Duration.millis(0.1),
-			x -> entrataIniziale()));
-	Timeline timelineFiammata = new Timeline(new KeyFrame(
-			Duration.millis(velocitàGioco),
-			x -> spostaFiamma()));
+	Timeline timelineEntrataInziale = new Timeline(new KeyFrame(Duration.millis(0.1), x -> entrataIniziale()));
+	Timeline timelineFiammata = new Timeline(new KeyFrame(Duration.millis(velocitàGioco), x -> spostaFiamma()));
 
 	// creazione dei rettangoli per bound preciso
 
-	Rectangle rettangoloCactus1 = new Rectangle(15,70);
-	Rectangle rettangoloCactus2 = new Rectangle(15,70);
-	Rectangle rettangoloUccello1 = new Rectangle(16,60);
-	Rectangle rettangoloUccello2 = new Rectangle(16,60);
-	Rectangle rettangoloDinoTesta = new Rectangle(9,37);
-	Rectangle rettangoloDinoCorpo = new Rectangle(9,70);
-	Rectangle rettangoloDinoCoda = new Rectangle(9,37);
+	Rectangle rettangoloCactus1 = new Rectangle(15, 70);
+	Rectangle rettangoloCactus2 = new Rectangle(15, 70);
+	Rectangle rettangoloUccello1 = new Rectangle(16, 60);
+	Rectangle rettangoloUccello2 = new Rectangle(16, 60);
+	Rectangle rettangoloDinoTesta = new Rectangle(9, 37);
+	Rectangle rettangoloDinoCorpo = new Rectangle(9, 70);
+	Rectangle rettangoloDinoCoda = new Rectangle(9, 37);
 
 	// caricamento immagini
 
@@ -91,13 +85,13 @@ public class ProgrammaPrincipale extends Application{
 	ImageView terrenoView = new ImageView(terreno);
 	Image terreno2 = new Image(getClass().getResourceAsStream("sfondoProgrammaTerreno.PNG"));
 	ImageView terrenoView2 = new ImageView(terreno2);
-	Image dinosauro = new Image(getClass().getResourceAsStream("dino 1.png"));
+	Image dinosauro = new Image(getClass().getResourceAsStream("dino1.png"));
 	ImageView dinosauroView = new ImageView(dinosauro);
-	Image dinosauro2 = new Image(getClass().getResourceAsStream("dino 2.png"));
+	Image dinosauro2 = new Image(getClass().getResourceAsStream("dino2.png"));
 	ImageView dinosauroView2 = new ImageView(dinosauro2);
-	Image dinosauro3 = new Image(getClass().getResourceAsStream("dino 3.png"));
+	Image dinosauro3 = new Image(getClass().getResourceAsStream("dino3.png"));
 	ImageView dinosauroView3 = new ImageView(dinosauro3);
-	Image dinosauro4 = new Image(getClass().getResourceAsStream("dino 4.png"));
+	Image dinosauro4 = new Image(getClass().getResourceAsStream("dino4.png"));
 	ImageView dinosauroView4 = new ImageView(dinosauro4);
 	Image cactus = new Image(getClass().getResourceAsStream("cactusPerProgramma.png"));
 	ImageView cactusView = new ImageView(cactus);
@@ -114,41 +108,41 @@ public class ProgrammaPrincipale extends Application{
 
 	// aggiunta audio effects
 
-	final AudioClip scoreup = new AudioClip(getClass().getResource("scoreup.wav").toString());
-	final AudioClip morte = new AudioClip(getClass().getResource("dead.wav").toString());
-	final AudioClip salto = new AudioClip(getClass().getResource("jump.wav").toString());
-	final AudioClip fiamma = new AudioClip(getClass().getResource("fiamma.wav").toString());
-	final AudioClip canzoneMenùIniziale = new AudioClip(getClass().getResource("canzoneMenùIniziale.wav").toString());
-	final AudioClip confermaDifficoltà = new AudioClip(getClass().getResource("confermaDifficoltà.wav").toString());
+	AudioClip scoreup = new AudioClip(getClass().getResource("scoreup.wav").toString());
+	AudioClip morte = new AudioClip(getClass().getResource("dead.wav").toString());
+	AudioClip salto = new AudioClip(getClass().getResource("jump.wav").toString());
+	AudioClip fiamma = new AudioClip(getClass().getResource("fiamma.wav").toString());
+	AudioClip canzoneMenùIniziale = new AudioClip(getClass().getResource("canzoneMenùIniziale.wav").toString());
+	AudioClip confermaDifficoltà = new AudioClip(getClass().getResource("confermaDifficoltà.wav").toString());
 
 	// variabili utili nel programma (punteggio, fiamme ecc.)
 
-	int segnaPunti=0;
-	int incrementaFiamme=1;
-	int indiceRettangoli=0;
-	int contaSec=1;
-	int indicePunti=0;
-	int record=0;
-	int indiceBoundFiamma=0;
-	long tempoFiammata=0;
-	long tempoSalto=0;
+	int segnaPunti = 0;
+	int incrementaFiamme = 1;
+	int indiceRettangoli = 0;
+	int contaSec = 1;
+	int indicePunti = 0;
+	int record = 0;
+	int indiceBoundFiamma = 0;
+	long tempoFiammata = 0;
+	long tempoSalto = 0;
 
 	// creazione vettori
 
-	int vettorePunti[]= new int[500];
+	int vettorePunti[] = new int[500];
 	ImageView vettoreFiamme[];
 	Rectangle rettangoliFiamme[];
 
 	// creazione variabili booleane
 
-	boolean arrivatoSù=false;
+	boolean arrivatoSù = false;
 	boolean isDinoImage1 = true;
-	boolean rilasciatoW=false;
-	boolean arrivatoGiù=false;
-	boolean sopra=false;
-	boolean sopraSecondo=false;
+	boolean rilasciatoW = false;
+	boolean arrivatoGiù = false;
+	boolean sopra = false;
+	boolean sopraSecondo = false;
 
-	public void start (Stage finestra) {
+	public void start(Stage finestra) {
 
 		// start canzone menù
 
@@ -211,7 +205,7 @@ public class ProgrammaPrincipale extends Application{
 		salto.setVolume(0.9);
 		fiamma.setVolume(0.5);
 
-		//sistemaz. fit dei vari oggetti
+		// sistemaz. fit dei vari oggetti
 
 		cieloView.setFitWidth(800);
 		cieloView2.setFitWidth(800);
@@ -250,7 +244,7 @@ public class ProgrammaPrincipale extends Application{
 		pDifficile.setOnAction(e -> difficile());
 		pEstremo.setOnAction(e -> estremo());
 
-		Scene scena = new Scene (areaGioco, 750, 500);
+		Scene scena = new Scene(areaGioco, LARGHEZZA_AREA_GIOCO, ALTEZZA_AREA_GIOCO);
 		scena.getStylesheets().add("it/edu/iisgubbio/dino/Dino.css");
 		scena.setOnKeyPressed(e -> pigiato(e));
 
@@ -333,13 +327,13 @@ public class ProgrammaPrincipale extends Application{
 
 	public void facile() {
 
-		// settaggio delle timeline e degli effetti
+		// settaggio delle timeline e degli effetti sonori
 
 		canzoneMenùIniziale.stop();
 		confermaDifficoltà.play();
 		ePunteggioRecord.setVisible(true);
-		velocitàGioco=5;
-		velocitàDino=21;
+		velocitàGioco = 5;
+		velocitàDino = 21;
 		timelineSfondo = new Timeline(new KeyFrame(
 				Duration.millis(velocitàGioco),
 				x -> aggiornaSfondo()));
@@ -356,13 +350,13 @@ public class ProgrammaPrincipale extends Application{
 
 	public void medio() {
 
-		// settaggio delle timeline e degli effetti
+		// settaggio delle timeline e degli effetti sonori
 
 		canzoneMenùIniziale.stop();
 		confermaDifficoltà.play();
 		ePunteggioRecord.setVisible(true);
-		velocitàGioco=4;
-		velocitàDino=20;
+		velocitàGioco = 4;
+		velocitàDino = 20;
 		timelineSfondo = new Timeline(new KeyFrame(
 				Duration.millis(velocitàGioco),
 				x -> aggiornaSfondo()));
@@ -379,13 +373,13 @@ public class ProgrammaPrincipale extends Application{
 
 	public void difficile() {
 
-		// settaggio delle timeline e degli effetti
+		// settaggio delle timeline e degli effetti sonori
 
 		canzoneMenùIniziale.stop();
 		confermaDifficoltà.play();
 		ePunteggioRecord.setVisible(true);
-		velocitàGioco=3.5;
-		velocitàDino=19;
+		velocitàGioco = 3.5;
+		velocitàDino = 19;
 		timelineSfondo = new Timeline(new KeyFrame(
 				Duration.millis(velocitàGioco),
 				x -> aggiornaSfondo()));
@@ -402,13 +396,13 @@ public class ProgrammaPrincipale extends Application{
 
 	public void estremo() {
 
-		// settaggio delle timeline e degli effetti
+		// settaggio delle timeline e degli effetti sonori
 
 		canzoneMenùIniziale.stop();
 		confermaDifficoltà.play();
 		ePunteggioRecord.setVisible(true);
-		velocitàGioco=3;
-		velocitàDino=18;
+		velocitàGioco = 3;
+		velocitàDino = 18;
 		timelineSfondo = new Timeline(new KeyFrame(
 				Duration.millis(velocitàGioco),
 				x -> aggiornaSfondo()));
@@ -424,14 +418,14 @@ public class ProgrammaPrincipale extends Application{
 	public void giocoPrincipale() {
 
 		/*
-		 *  setto le booleane a false altrimenti quando si viene eliminati in aria
-		 *  rimangono a true e il primo salto non funzionerebbe
+		 * setto le booleane a false altrimenti quando si viene eliminati in aria
+		 * rimangono a true e il primo salto non funzionerebbe
 		 */
 
-		arrivatoGiù=false;
-		arrivatoSù=false;
+		arrivatoGiù = false;
+		arrivatoSù = false;
 
-		// aggiunta elementi a pane
+		// aggiunta elementi al pane
 
 		areaGioco.getChildren().clear();
 		areaGioco.getChildren().add(cieloView);
@@ -466,19 +460,18 @@ public class ProgrammaPrincipale extends Application{
 		// caricamento vettori fiamme e rettangoli fiamme
 
 		vettoreFiamme = new ImageView[1000];
-		for(int indiceFiamma=0; indiceFiamma<vettoreFiamme.length;indiceFiamma++) {
+		for (int indiceFiamma = 0; indiceFiamma < vettoreFiamme.length; indiceFiamma++) {
 			Image fiammata = new Image(getClass().getResourceAsStream("fiammata.png"));
 			ImageView fiammataView = new ImageView(fiammata);
-			vettoreFiamme[indiceFiamma]=fiammataView;
+			vettoreFiamme[indiceFiamma] = fiammataView;
 		}
 		rettangoliFiamme = new Rectangle[1000];
-		for(indiceRettangoli=0; indiceRettangoli<rettangoliFiamme.length;indiceRettangoli++) {
-			Rectangle rettangoloFiamma = new Rectangle(15,60);
-
-			rettangoliFiamme[indiceRettangoli]=rettangoloFiamma;
+		for (indiceRettangoli = 0; indiceRettangoli < rettangoliFiamme.length; indiceRettangoli++) {
+			Rectangle rettangoloFiamma = new Rectangle(15, 60);
+			rettangoliFiamme[indiceRettangoli] = rettangoloFiamma;
 		}
 
-		// sistemaz. punteggi 
+		// sistemaz. punteggi
 
 		areaGioco.getChildren().add(ePunteggio);
 		areaGioco.getChildren().add(ePunteggioRecord);
@@ -510,7 +503,7 @@ public class ProgrammaPrincipale extends Application{
 		rettangoloCactus2.setY(327);
 		rettangoloCactus2.setX(-800);
 
-		// sistemaz. rettangoli dietro del dino
+		// sistemaz. rettangoli dietro al dino
 
 		rettangoloDinoTesta.setX(140);
 		rettangoloDinoTesta.setY(290);
@@ -563,7 +556,10 @@ public class ProgrammaPrincipale extends Application{
 		dinosauroView4.setX(70);
 		dinosauroView4.setY(300);
 
-		// sistemaz. coordinate elementi grafici cactus e uccello
+		/*
+		 *  sistemaz. coordinate elementi grafici cactus e uccello,
+		 *  lontani perchè altrimenti comparirebbero troppo vicini ad altri elementi
+		 */
 
 		cactusView.setX(700);
 		cactusView.setY(317);
@@ -585,92 +581,92 @@ public class ProgrammaPrincipale extends Application{
 
 	private void aggiornaSfondo() {
 
-		cieloView.setX(cieloView.getX()-0.25);
-		cieloView2.setX(cieloView2.getX()-0.25);
-		if(cieloView2.getX()==0) {
+		cieloView.setX(cieloView.getX() - 0.25);
+		cieloView2.setX(cieloView2.getX() - 0.25);
+		if (cieloView2.getX() == 0) {
 			cieloView.setX(800);
 		}
-		if(cieloView.getX()==0) {
+		if (cieloView.getX() == 0) {
 			cieloView2.setX(800);
 		}
-		montagneView.setX(montagneView.getX()-0.5);
-		montagneView2.setX(montagneView2.getX()-0.5);
-		if(montagneView2.getX()==0) {
+		montagneView.setX(montagneView.getX() - 0.5);
+		montagneView2.setX(montagneView2.getX() - 0.5);
+		if (montagneView2.getX() == 0) {
 			montagneView.setX(800);
 		}
-		if(montagneView.getX()==0) {
+		if (montagneView.getX() == 0) {
 			montagneView2.setX(800);
 		}
-		terrenoView.setX(terrenoView.getX()-2);
-		terrenoView2.setX(terrenoView2.getX()-2);
-		if(terrenoView2.getX()==0) {
+		terrenoView.setX(terrenoView.getX() - 2);
+		terrenoView2.setX(terrenoView2.getX() - 2);
+		if (terrenoView2.getX() == 0) {
 			terrenoView.setX(800);
 		}
-		if(terrenoView.getX()==0) {
+		if (terrenoView.getX() == 0) {
 			terrenoView2.setX(800);
 		}
-		cactusView.setX(cactusView.getX()-2);
-		rettangoloCactus1.setX(rettangoloCactus1.getX()-2);
-		if(cactusView.getX()==0) {
+		cactusView.setX(cactusView.getX() - 2);
+		rettangoloCactus1.setX(rettangoloCactus1.getX() - 2);
+		if (cactusView.getX() == 0) {
 			uccelloView.setVisible(true);
 			uccelloView.setX(720);
 			rettangoloUccello1.setX(755);
 		}
 
-		//uccelloView Y
+		// uccelloView Y
 
-		if(uccelloView.getY()==259) {
-			sopra=false;
+		if (uccelloView.getY() == 259) {
+			sopra = false;
 		}
-		if(uccelloView.getY()==300) {
-			sopra=true;
+		if (uccelloView.getY() == 300) {
+			sopra = true;
 		}
-		if(sopra==false) {
-			uccelloView.setY(uccelloView.getY()+0.25);
-			rettangoloUccello1.setY(rettangoloUccello1.getY()+0.25);
-			rettangoloUccello1.setX(rettangoloUccello1.getX()-velocitàCactusEUccelli);
-			uccelloView.setX(uccelloView.getX()-velocitàCactusEUccelli);
-		}else {
-			uccelloView.setY(uccelloView.getY()-0.25);
-			rettangoloUccello1.setY(rettangoloUccello1.getY()-0.25);
-			rettangoloUccello1.setX(rettangoloUccello1.getX()-velocitàCactusEUccelli);
-			uccelloView.setX(uccelloView.getX()-velocitàCactusEUccelli);
+		if (sopra == false) {
+			uccelloView.setY(uccelloView.getY() + 0.25);
+			rettangoloUccello1.setY(rettangoloUccello1.getY() + 0.25);
+			rettangoloUccello1.setX(rettangoloUccello1.getX() - velocitàCactusEUccelli);
+			uccelloView.setX(uccelloView.getX() - velocitàCactusEUccelli);
+		} else {
+			uccelloView.setY(uccelloView.getY() - 0.25);
+			rettangoloUccello1.setY(rettangoloUccello1.getY() - 0.25);
+			rettangoloUccello1.setX(rettangoloUccello1.getX() - velocitàCactusEUccelli);
+			uccelloView.setX(uccelloView.getX() - velocitàCactusEUccelli);
 		}
-		if(uccelloView.getX()==0) {
+		if (uccelloView.getX() == 0) {
 			cactusView2.setX(700);
 			rettangoloCactus2.setX(782);
 		}
 
-		rettangoloCactus2.setX(rettangoloCactus2.getX()-velocitàCactusEUccelli);
-		cactusView2.setX(cactusView2.getX()-velocitàCactusEUccelli);
-		if(cactusView2.getX()==0) {
+		rettangoloCactus2.setX(rettangoloCactus2.getX() - velocitàCactusEUccelli);
+		cactusView2.setX(cactusView2.getX() - velocitàCactusEUccelli);
+		if (cactusView2.getX() == 0) {
 			uccelloView2.setVisible(true);
 			uccelloView2.setX(720);
 			rettangoloUccello2.setX(755);
 		}
-		if(uccelloView2.getY()==200) {
-			sopraSecondo=false;
+		if (uccelloView2.getY() == 190) {
+			sopraSecondo = false;
 		}
-		if(uccelloView2.getY()==240) {
-			sopraSecondo=true;
+		if (uccelloView2.getY() == 230) {
+			sopraSecondo = true;
 		}
-		if(sopraSecondo==false) {
-			uccelloView2.setY(uccelloView2.getY()+0.25);
-			rettangoloUccello2.setY(rettangoloUccello2.getY()+0.25);
-			rettangoloUccello2.setX(rettangoloUccello2.getX()-velocitàCactusEUccelli);
-			uccelloView2.setX(uccelloView2.getX()-velocitàCactusEUccelli);
-		}else {
-			uccelloView2.setY(uccelloView2.getY()-0.25);
-			rettangoloUccello2.setY(rettangoloUccello2.getY()-0.25);
-			rettangoloUccello2.setX(rettangoloUccello2.getX()-velocitàCactusEUccelli);
-			uccelloView2.setX(uccelloView2.getX()-velocitàCactusEUccelli);
+		if (sopraSecondo == false) {
+			uccelloView2.setY(uccelloView2.getY() + 0.25);
+			rettangoloUccello2.setY(rettangoloUccello2.getY() + 0.25);
+			rettangoloUccello2.setX(rettangoloUccello2.getX() - velocitàCactusEUccelli);
+			uccelloView2.setX(uccelloView2.getX() - velocitàCactusEUccelli);
+		} else {
+			uccelloView2.setY(uccelloView2.getY() - 0.25);
+			rettangoloUccello2.setY(rettangoloUccello2.getY() - 0.25);
+			rettangoloUccello2.setX(rettangoloUccello2.getX() - velocitàCactusEUccelli);
+			uccelloView2.setX(uccelloView2.getX() - velocitàCactusEUccelli);
 		}
-		if(uccelloView2.getX()==0) {
+		if (uccelloView2.getX() == 0) {
 			cactusView.setX(700);
 			rettangoloCactus1.setX(782);
 		}
 
-		// contollo collisione bound 
+		// controllo collisione bound
 
 		Shape intDino1 = Shape.intersect(rettangoloDinoTesta, rettangoloCactus1);
 		Shape intDino2 = Shape.intersect(rettangoloDinoTesta, rettangoloCactus2);
@@ -687,49 +683,48 @@ public class ProgrammaPrincipale extends Application{
 		Shape intDinoUccelloFiamma1 = Shape.intersect(rettangoliFiamme[incrementaFiamme], rettangoloUccello1);
 		Shape intDinoUccelloFiamma2 = Shape.intersect(rettangoliFiamme[incrementaFiamme], rettangoloUccello2);
 
+		if (intDino1.getBoundsInLocal().getWidth() != -1) {
+			sconfitta();
+		}
+		if (intDino2.getBoundsInLocal().getWidth() != -1) {
+			sconfitta();
+		}
+		if (intDinoCorpo1.getBoundsInLocal().getWidth() != -1) {
+			sconfitta();
+		}
+		if (intDinoCorpo2.getBoundsInLocal().getWidth() != -1) {
+			sconfitta();
+		}
+		if (intDinoCoda1.getBoundsInLocal().getWidth() != -1) {
+			sconfitta();
+		}
+		if (intDinoCoda2.getBoundsInLocal().getWidth() != -1) {
+			sconfitta();
+		}
+		if (intDinoUccello1.getBoundsInLocal().getWidth() != -1) {
+			sconfitta();
+		}
+		if (intDinoUccello2.getBoundsInLocal().getWidth() != -1) {
+			sconfitta();
+		}
+		if (intDinoCorpoUccello1.getBoundsInLocal().getWidth() != -1) {
+			sconfitta();
+		}
+		if (intDinoCorpoUccello2.getBoundsInLocal().getWidth() != -1) {
+			sconfitta();
+		}
+		if (intDinoCodaUccello1.getBoundsInLocal().getWidth() != -1) {
+			sconfitta();
+		}
+		if (intDinoCodaUccello2.getBoundsInLocal().getWidth() != -1) {
+			sconfitta();
+		}
 
-		if (intDino1.getBoundsInLocal().getWidth() != -1){
-			sconfitta();
-		}
-		if (intDino2.getBoundsInLocal().getWidth() != -1){
-			sconfitta();
-		}
-		if (intDinoCorpo1.getBoundsInLocal().getWidth() != -1){
-			sconfitta();
-		}
-		if (intDinoCorpo2.getBoundsInLocal().getWidth() != -1){
-			sconfitta();
-		}
-		if (intDinoCoda1.getBoundsInLocal().getWidth() != -1){
-			sconfitta();
-		}
-		if (intDinoCoda2.getBoundsInLocal().getWidth() != -1){
-			sconfitta();
-		}
-		if (intDinoUccello1.getBoundsInLocal().getWidth() != -1){
-			sconfitta();
-		}
-		if (intDinoUccello2.getBoundsInLocal().getWidth() != -1){
-			sconfitta();
-		}
-		if (intDinoCorpoUccello1.getBoundsInLocal().getWidth() != -1){
-			sconfitta();
-		}
-		if (intDinoCorpoUccello2.getBoundsInLocal().getWidth() != -1){
-			sconfitta();
-		}
-		if (intDinoCodaUccello1.getBoundsInLocal().getWidth() != -1){
-			sconfitta();
-		}
-		if (intDinoCodaUccello2.getBoundsInLocal().getWidth() != -1){
-			sconfitta();
-		}
+		// condizione per bound con fiamma e appariz. GIF
 
-		// condizione per bound con fiamma e appariz. GIF 
-
-		if (intDinoUccelloFiamma1.getBoundsInLocal().getWidth() != -1){
+		if (intDinoUccelloFiamma1.getBoundsInLocal().getWidth() != -1) {
 			indiceBoundFiamma++;
-			contaSec=1;
+			contaSec = 1;
 			esplosioneView.setX(uccelloView.getX());
 			esplosioneView.setY(uccelloView.getY());
 			esplosioneView.setFitHeight(85);
@@ -742,9 +737,9 @@ public class ProgrammaPrincipale extends Application{
 			uccelloView.setVisible(false);
 			rettangoloUccello1.setX(-600);
 		}
-		if (intDinoUccelloFiamma2.getBoundsInLocal().getWidth() != -1){
+		if (intDinoUccelloFiamma2.getBoundsInLocal().getWidth() != -1) {
 			indiceBoundFiamma++;
-			contaSec=1;
+			contaSec = 1;
 			esplosioneView.setX(uccelloView2.getX());
 			esplosioneView.setY(uccelloView2.getY());
 			esplosioneView.setFitHeight(85);
@@ -761,12 +756,12 @@ public class ProgrammaPrincipale extends Application{
 
 	// funzione della rimoz. della GIF dopo bound di uccelli con fiamma
 
-	private void rimuoviGIF(){
-		contaSec-=1;
-		esplosioneView.setX(esplosioneView.getX()-1);
-		esplosioneView.setY(esplosioneView.getY()-1);
-		if(contaSec==0) {
-			if(areaGioco.getChildren().contains(esplosioneView)) {
+	private void rimuoviGIF() {
+		contaSec -= 1;
+		esplosioneView.setX(esplosioneView.getX() - 1);
+		esplosioneView.setY(esplosioneView.getY() - 1);
+		if (contaSec == 0) {
+			if (areaGioco.getChildren().contains(esplosioneView)) {
 				esplosioneView.setX(-500);
 			}
 		}
@@ -775,16 +770,16 @@ public class ProgrammaPrincipale extends Application{
 	// funzione aggiornamento del punteggio
 
 	private void aggiornaPunteggio() {
-		if(dinosauroView.getX()> 70||dinosauroView2.getX()>70||dinosauroView3.getX()>70) {
-			if(segnaPunti%100==0 && segnaPunti!=0) { // ogni 100 punti parte il suono
+		if (dinosauroView.getX() > 70 || dinosauroView2.getX() > 70 || dinosauroView3.getX() > 70) {
+			if (segnaPunti % 100 == 0 && segnaPunti != 0) { // ogni 100 punti parte il suono
 				scoreup.play();
 			}
 			segnaPunti++;
-			ePunteggio.setText(""+segnaPunti);	
+			ePunteggio.setText("" + segnaPunti);
 		}
 	}
 
-	// funzione della sconfitta in caso di bound con oggetti 
+	// funzione della sconfitta in caso di bound con oggetti
 
 	private void sconfitta() {
 		morte.play();
@@ -795,25 +790,26 @@ public class ProgrammaPrincipale extends Application{
 		pMenù.setVisible(true);
 		pMenù.setLayoutX(10);
 		pMenù.setLayoutY(10);
-		ePunteggio.setText(""+segnaPunti);
-		record=segnaPunti;
-		vettorePunti[indicePunti]=segnaPunti;
-		for(int scorrimento=0; scorrimento < indicePunti; scorrimento++) {
-			if(record<vettorePunti[scorrimento]) {
-				record=vettorePunti[scorrimento];
+		ePunteggio.setText("" + segnaPunti);
+		record = segnaPunti;
+		vettorePunti[indicePunti] = segnaPunti;
+		for (int scorrimento = 0; scorrimento < indicePunti; scorrimento++) {
+			if (record < vettorePunti[scorrimento]) {
+				record = vettorePunti[scorrimento];
 			}
 		}
-		ePunteggioRecord.setText("Record: "+record);
+		ePunteggioRecord.setText("Record: " + record);
 		indicePunti++;
 		ePunteggioRecord.setVisible(false);
-		if (areaGioco.getChildren().contains(dinosauroView)||areaGioco.getChildren().contains(dinosauroView2)||areaGioco.getChildren().contains(dinosauroView3)) {
+		if (areaGioco.getChildren().contains(dinosauroView) || areaGioco.getChildren().contains(dinosauroView2)
+				|| areaGioco.getChildren().contains(dinosauroView3)) {
 			areaGioco.getChildren().remove(dinosauroView);
 			areaGioco.getChildren().remove(dinosauroView2);
 			areaGioco.getChildren().remove(dinosauroView3);
 			areaGioco.getChildren().add(dinosauroView4);
 		}
 
-		segnaPunti=0;
+		segnaPunti = 0;
 
 		eSconfitta.setLayoutX(175);
 		eSconfitta.setLayoutY(110);
@@ -822,12 +818,12 @@ public class ProgrammaPrincipale extends Application{
 		pRestart.setLayoutY(200);
 	}
 
-	// funzione restart in caso di morte 
+	// funzione restart in caso di morte
 
 	private void restart() {
 		areaGioco.getChildren().clear();
-		if(segnaPunti>0) {
-			segnaPunti=0;
+		if (segnaPunti > 0) {
+			segnaPunti = 0;
 		}
 		giocoPrincipale();
 	}
@@ -836,9 +832,9 @@ public class ProgrammaPrincipale extends Application{
 
 	private void zampette() {
 		if (isDinoImage1) {
-			if(dinosauroView.getX()<=70) {
+			if (dinosauroView.getX() <= 70) {
 				timelineEntrataInziale.play();
-			}else {
+			} else {
 				timelineSfondo.play();
 			}
 			if (!areaGioco.getChildren().contains(dinosauroView)) {
@@ -848,9 +844,9 @@ public class ProgrammaPrincipale extends Application{
 				areaGioco.getChildren().remove(dinosauroView2);
 			}
 		} else {
-			if(dinosauroView2.getX()<=70) {
+			if (dinosauroView2.getX() <= 70) {
 				timelineEntrataInziale.play();
-			}else {
+			} else {
 				timelineSfondo.play();
 			}
 			if (!areaGioco.getChildren().contains(dinosauroView2)) {
@@ -866,42 +862,41 @@ public class ProgrammaPrincipale extends Application{
 	// funzione timer per movimento iniziale da sinistra del dino
 
 	private void entrataIniziale() {
-		dinosauroView.setX(dinosauroView.getX()+8);
-		dinosauroView2.setX(dinosauroView2.getX()+8);
+		dinosauroView.setX(dinosauroView.getX() + 8);
+		dinosauroView2.setX(dinosauroView2.getX() + 8);
 	}
 
-	// funzione movimento salto dino con tasti w e W 
+	// funzione movimento salto dino con tasti w e W
 
 	private void muoviDino() {
-
-		if(arrivatoSù==false) {
-			rettangoloDinoTesta.setY(rettangoloDinoTesta.getY()-velocitàSaltoSu);
-			rettangoloDinoCorpo.setY(rettangoloDinoCorpo.getY()-velocitàSaltoSu);
-			rettangoloDinoCoda.setY(rettangoloDinoCoda.getY()-velocitàSaltoSu);
-			dinosauroView3.setY(dinosauroView3.getY()-velocitàSaltoSu);
-			if(dinosauroView3.getY()<=120) {
+		if (arrivatoSù == false) {
+			rettangoloDinoTesta.setY(rettangoloDinoTesta.getY() - velocitàSaltoSu);
+			rettangoloDinoCorpo.setY(rettangoloDinoCorpo.getY() - velocitàSaltoSu);
+			rettangoloDinoCoda.setY(rettangoloDinoCoda.getY() - velocitàSaltoSu);
+			dinosauroView3.setY(dinosauroView3.getY() - velocitàSaltoSu);
+			if (dinosauroView3.getY() <= 120) {
 				salto.play();
-				arrivatoSù=true;
+				arrivatoSù = true;
 			}
-		}else {
-			if(arrivatoSù) {
-				rettangoloDinoTesta.setY(rettangoloDinoTesta.getY()+velocitàSaltoGiu);
-				rettangoloDinoCorpo.setY(rettangoloDinoCorpo.getY()+velocitàSaltoGiu);
-				rettangoloDinoCoda.setY(rettangoloDinoCoda.getY()+velocitàSaltoGiu);
-				dinosauroView3.setY(dinosauroView3.getY()+velocitàSaltoGiu);
-				if(dinosauroView3.getY()>=300) {
-					arrivatoGiù=true;
+		} else {
+			if (arrivatoSù) {
+				rettangoloDinoTesta.setY(rettangoloDinoTesta.getY() + velocitàSaltoGiu);
+				rettangoloDinoCorpo.setY(rettangoloDinoCorpo.getY() + velocitàSaltoGiu);
+				rettangoloDinoCoda.setY(rettangoloDinoCoda.getY() + velocitàSaltoGiu);
+				dinosauroView3.setY(dinosauroView3.getY() + velocitàSaltoGiu);
+				if (dinosauroView3.getY() >= 300) {
+					arrivatoGiù = true;
 				}
 			}
 		}
-		if(arrivatoGiù==true) {
+		if (arrivatoGiù == true) {
 			timelineMovDino.stop();
 			if (areaGioco.getChildren().contains(dinosauroView3)) {
 				areaGioco.getChildren().remove(dinosauroView3);
 				areaGioco.getChildren().add(dinosauroView);
 				timelineZampette.play();
-				arrivatoSù=false;
-				arrivatoGiù=false;
+				arrivatoSù = false;
+				arrivatoGiù = false;
 			}
 		}
 	}
@@ -909,63 +904,84 @@ public class ProgrammaPrincipale extends Application{
 	// scorrimento vettore fiamme e animaz. fiamma
 
 	private void spostaFiamma() {
-		for(int indiceMinoreFiamme=0; indiceMinoreFiamme<incrementaFiamme;indiceMinoreFiamme++) {
-			if(areaGioco.getChildren().contains(vettoreFiamme[indiceMinoreFiamme])) {
-				vettoreFiamme[indiceMinoreFiamme].setX(vettoreFiamme[indiceMinoreFiamme].getX()+6);
-				rettangoliFiamme[indiceMinoreFiamme].setX(rettangoliFiamme[indiceMinoreFiamme].getX()+6);
+		for (int indiceMinoreFiamme = 0; indiceMinoreFiamme < incrementaFiamme; indiceMinoreFiamme++) {
+			if (areaGioco.getChildren().contains(vettoreFiamme[indiceMinoreFiamme])) {
+				vettoreFiamme[indiceMinoreFiamme].setX(vettoreFiamme[indiceMinoreFiamme].getX() + 6);
+				rettangoliFiamme[indiceMinoreFiamme].setX(rettangoliFiamme[indiceMinoreFiamme].getX() + 6);
 			}
 		}
-		vettoreFiamme[incrementaFiamme].setX(vettoreFiamme[incrementaFiamme].getX()+6);
-		rettangoliFiamme[incrementaFiamme].setX(rettangoliFiamme[incrementaFiamme].getX()+6);
-		if(rettangoliFiamme[incrementaFiamme].getX()>=700 && vettoreFiamme[incrementaFiamme].getX()>=700) {
+		vettoreFiamme[incrementaFiamme].setX(vettoreFiamme[incrementaFiamme].getX() + 6);
+		rettangoliFiamme[incrementaFiamme].setX(rettangoliFiamme[incrementaFiamme].getX() + 6);
+		if (rettangoliFiamme[incrementaFiamme].getX() >= 700 && vettoreFiamme[incrementaFiamme].getX() >= 700) {
 			areaGioco.getChildren().remove(rettangoliFiamme[incrementaFiamme]);
 			areaGioco.getChildren().remove(vettoreFiamme[incrementaFiamme]);
 		}
 	}
+
 	private void pigiato(KeyEvent evento) {
 
 		// funzione fiamma tasto w e W
 
-		if(dinosauroView.getX()>=70 || dinosauroView2.getX()>=70) {
-			if((System.currentTimeMillis()-tempoSalto)>200) {
-				if(evento.getText().equals("w") || evento.getText().equals("W")) {
-					if (areaGioco.getChildren().contains(dinosauroView)||areaGioco.getChildren().contains(dinosauroView2)) {
-						areaGioco.getChildren().remove(dinosauroView);
-						areaGioco.getChildren().remove(dinosauroView2);
-						areaGioco.getChildren().add(dinosauroView3);
+		if (dinosauroView.getX() >= 70 || dinosauroView2.getX() >= 70) {
+
+			// controllo se è passato abbastanza tempo per poter premere di nuovo w
+
+			if ((System.currentTimeMillis() - tempoSalto) > 150) {
+				if (evento.getText().equals("w") || evento.getText().equals("W")) {
+					if(areaGioco.getChildren().contains(dinosauroView4)) {
+						
+					}else {
+						if (areaGioco.getChildren().contains(dinosauroView)
+								|| areaGioco.getChildren().contains(dinosauroView2)) {
+							areaGioco.getChildren().remove(dinosauroView);
+							areaGioco.getChildren().remove(dinosauroView2);
+							areaGioco.getChildren().add(dinosauroView3);
+						}
+						salto.play();
+						timelineMovDino.play();
+						timelineZampette.stop();
+
+						// imposto il tempo che dovrà passare per poter premere di nuovo w
+
+						tempoSalto = System.currentTimeMillis();
 					}
-					salto.play();
-					timelineMovDino.play();
-					timelineZampette.stop();
 				}
 			}
-
 		}
 
 		// funzione fiamma tasto d e D
 
-		if(dinosauroView.getX()>=70 || dinosauroView2.getX()>=70) {
-			if((System.currentTimeMillis()-tempoFiammata)>300) {
-				if(evento.getText().equals("d") || evento.getText().equals("D")) {
-					incrementaFiamme++;
-					fiamma.play();
-					vettoreFiamme[incrementaFiamme].setFitHeight(95);
-					vettoreFiamme[incrementaFiamme].setPreserveRatio(true);
-					vettoreFiamme[incrementaFiamme].setX(158);
-					vettoreFiamme[incrementaFiamme].setY(dinosauroView3.getY()-27);
-					rettangoliFiamme[incrementaFiamme].setX(200);
-					rettangoliFiamme[incrementaFiamme].setY(dinosauroView3.getY()-11);
-					rettangoliFiamme[incrementaFiamme].setRotate(90);
-					areaGioco.getChildren().add(rettangoliFiamme[incrementaFiamme]);
-					areaGioco.getChildren().add(vettoreFiamme[incrementaFiamme]);
-					rettangoliFiamme[incrementaFiamme].setVisible(false);
-					timelineFiammata.play();
-					tempoFiammata=System.currentTimeMillis();
+		if (dinosauroView.getX() >= 70 || dinosauroView2.getX() >= 70) {
+
+			// controllo se è passato abbastanza tempo per poter premere di nuovo d
+
+			if ((System.currentTimeMillis() - tempoFiammata) > 300) {
+				if (evento.getText().equals("d") || evento.getText().equals("D")) {
+					if(areaGioco.getChildren().contains(dinosauroView4)) {
+						
+					}else {
+						incrementaFiamme++;
+						fiamma.play();
+						vettoreFiamme[incrementaFiamme].setFitHeight(95);
+						vettoreFiamme[incrementaFiamme].setPreserveRatio(true);
+						vettoreFiamme[incrementaFiamme].setX(158);
+						vettoreFiamme[incrementaFiamme].setY(dinosauroView3.getY() - 27);
+						rettangoliFiamme[incrementaFiamme].setX(200);
+						rettangoliFiamme[incrementaFiamme].setY(dinosauroView3.getY() - 11);
+						rettangoliFiamme[incrementaFiamme].setRotate(90);
+						areaGioco.getChildren().add(rettangoliFiamme[incrementaFiamme]);
+						areaGioco.getChildren().add(vettoreFiamme[incrementaFiamme]);
+						rettangoliFiamme[incrementaFiamme].setVisible(false);
+						timelineFiammata.play();
+
+						// imposto il tempo che dovrà passare per poter premere di nuovo d
+
+						tempoFiammata = System.currentTimeMillis();
+					}
 				}
 			}
 		}
 	}
-
 	public static void main(String[] args) {
 		launch(args);
 	}
